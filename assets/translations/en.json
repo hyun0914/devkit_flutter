@@ -1,0 +1,41 @@
+{
+  "app_title": "devkit Flutter",
+  "greeting": "Hello!",
+  "welcome": "Welcome, {name}!",
+  "language": "Language",
+  "change_language": "Change Language",
+  "current_language": "Current language: {lang}",
+  "basic": {
+    "title": "Basic Usage",
+    "simple": "Simple Translation",
+    "with_args": "Translation with Args",
+    "description": "Easily implement multi-language with easy_localization"
+  },
+  "plural": {
+    "title": "Pluralization",
+    "apple": {
+      "zero": "No apples",
+      "one": "{count} apple",
+      "other": "{count} apples"
+    },
+    "message": {
+      "zero": "No messages",
+      "one": "{} message",
+      "other": "{} messages"
+    }
+  },
+  "gender": {
+    "title": "Gender",
+    "greeting": {
+      "male": "Hello, Mr. {}!",
+      "female": "Hello, Ms. {}!",
+      "other": "Hello, {}!"
+    }
+  },
+  "info": {
+    "title": "Package Info",
+    "version": "Version: easy_localization ^3.0.8",
+    "supported": "Supported: Korean, English",
+    "storage": "Language setting is saved on device"
+  }
+}

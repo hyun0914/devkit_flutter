@@ -1,0 +1,41 @@
+{
+  "app_title": "devkit Flutter",
+  "greeting": "안녕하세요!",
+  "welcome": "{name}님 환영합니다!",
+  "language": "언어",
+  "change_language": "언어 변경",
+  "current_language": "현재 언어: {lang}",
+  "basic": {
+    "title": "기본 사용",
+    "simple": "단순 번역",
+    "with_args": "인자 포함 번역",
+    "description": "easy_localization으로 다국어를 쉽게 구현할 수 있어요"
+  },
+  "plural": {
+    "title": "복수형",
+    "apple": {
+      "zero": "사과가 없습니다",
+      "one": "사과 {count}개",
+      "other": "사과 {count}개"
+    },
+    "message": {
+      "zero": "메시지가 없습니다",
+      "one": "메시지 {}개",
+      "other": "메시지 {}개"
+    }
+  },
+  "gender": {
+    "title": "성별 처리",
+    "greeting": {
+      "male": "안녕하세요, {}씨!",
+      "female": "안녕하세요, {}님!",
+      "other": "안녕하세요, {}!"
+    }
+  },
+  "info": {
+    "title": "패키지 정보",
+    "version": "버전: easy_localization ^3.0.8",
+    "supported": "지원 언어: 한국어, English",
+    "storage": "언어 설정이 기기에 저장됩니다"
+  }
+}
