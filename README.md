@@ -219,7 +219,6 @@ python3 tools/clean_oss_licenses.py
 - Python 3 (OSS 라이선스 정리용)
 
 ## 📂 프로젝트 구조
-
 ```
 devkit_flutter/
 ├── lib/
@@ -229,7 +228,8 @@ devkit_flutter/
 │   │   ├── ui_package/     # UI 패키지
 │   │   ├── network/        # 네트워크
 │   │   ├── image_file/     # 이미지 & 파일
-│   │   └── advanced/       # 고급 기능
+│   │   ├── advanced/       # 고급 기능
+│   │   └── stateManagement/  # 상태 관리
 │   ├── widget/              # 공통 위젯
 │   ├── oss_licenses/        # OSS 라이선스
 │   │   ├── oss_licenses.dart         # 패키지 데이터
