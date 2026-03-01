@@ -15,10 +15,12 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # ============================================================
-  # 상태 관리 & Hooks
+  # 상태 관리
   # ============================================================
-  equatable: ^2.0.7
+  flutter_bloc: ^9.1.1
   flutter_hooks: ^0.21.2
+  flutter_riverpod: ^3.2.1
+  provider: ^6.1.5+1
 
   # ============================================================
   # UI 컴포넌트 & 위젯
@@ -38,6 +40,7 @@ dependencies:
   easy_rich_text: ^2.2.0
   floating_draggable_widget: ^2.3.0
   flutter_carousel_widget: ^3.1.0
+  flutter_code_view: ^0.0.5
   flutter_keyboard_visibility: ^6.0.0
   flutter_multi_formatter: ^2.13.0
   flutter_rating_bar: ^4.0.1
@@ -61,6 +64,7 @@ dependencies:
   snapping_sheet: ^3.1.0
   spoiler_widget: ^1.0.24
   super_sliver_list: ^0.4.1
+  syntax_highlight: ^0.4.0
   tab_container: ^3.5.3
   toggle_switch: ^2.3.0
   tutorial_coach_mark: ^1.2.12
@@ -80,8 +84,6 @@ dependencies:
   # 날짜 & 시간
   # ============================================================
   board_datetime_picker: ^2.8.5
-  flutter_local_notifications: ^18.0.1
-  intl: ^0.20.2
   syncfusion_flutter_datepicker: ^32.2.4
   table_calendar: ^3.1.3
 
@@ -126,12 +128,13 @@ dependencies:
   shared_preferences: ^2.3.3
 
   # ============================================================
-  # 기기 정보 & 권한 & 센서
+  # 기기 정보 & 권한 & 센서 & 알림
   # ============================================================
   android_intent_plus: ^5.2.2
   battery_plus: ^6.2.1
   device_info_plus: ^12.3.0
   device_preview: ^1.2.0
+  flutter_local_notifications: ^18.0.1
   ios_utsname_ext: ^2.3.0
   package_info_plus: ^9.0.0
   permission_handler: ^12.0.1
@@ -145,9 +148,8 @@ dependencies:
   sizer: ^3.1.3
 
   # ============================================================
-  # 사용자 피드백 & 로깅
+  # 로깅 & 피드백
   # ============================================================
-  easy_localization: ^3.0.8
   feedback: ^3.2.0
   fluttertoast: ^8.2.10
   logger: ^2.5.0
@@ -157,7 +159,10 @@ dependencies:
   # 유틸리티
   # ============================================================
   currency_text_input_formatter: ^2.2.6
+  easy_localization: ^3.0.8
+  equatable: ^2.0.7
   focus_detector: ^2.0.1
+  intl: ^0.20.2
   postal_ko: ^1.1.0
   scrollable_positioned_list: ^0.3.8
   sprintf: ^7.0.0

@@ -389,11 +389,9 @@ class FeedbackScreen extends StatelessWidget {
 // ── 커스텀 피드백 폼 ──
 class _CustomFeedbackForm extends StatefulWidget {
   final OnSubmit onSubmit;
-  final ScrollController? scrollController;
 
   const _CustomFeedbackForm({
     required this.onSubmit,
-    this.scrollController,
   });
 
   @override
@@ -419,7 +417,6 @@ class _CustomFeedbackFormState extends State<_CustomFeedbackForm> {
     final theme = Theme.of(context);
 
     return ListView(
-      controller: widget.scrollController,
       padding: const EdgeInsets.all(16),
       children: [
         Text(
@@ -432,7 +429,7 @@ class _CustomFeedbackFormState extends State<_CustomFeedbackForm> {
 
         // 카테고리
         DropdownButtonFormField<String>(
-          value: _selectedCategory,
+          initialValue: _selectedCategory,
           decoration: InputDecoration(
             labelText: '카테고리',
             border: OutlineInputBorder(

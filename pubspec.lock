@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  base_cod_view:
+    dependency: transitive
+    description:
+      name: base_cod_view
+      sha256: d34a69dc814617ae765551de398cc4faaf47a7f5d705b176073143a1c7a3d45e
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   battery_plus:
     dependency: "direct main"
     description:
@@ -161,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.13"
+  bloc:
+    dependency: transitive
+    description:
+      name: bloc
+      sha256: a48653a82055a900b88cd35f92429f068c5a8057ae9b136d197b3d56c57efb81
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.0"
   board_datetime_picker:
     dependency: "direct main"
     description:
@@ -630,6 +646,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bloc:
+    dependency: "direct main"
+    description:
+      name: flutter_bloc
+      sha256: cf51747952201a455a1c840f8171d273be009b932c75093020f9af64f2123e38
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.1"
   flutter_cache_manager:
     dependency: "direct main"
     description:
@@ -646,6 +670,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  flutter_code_view:
+    dependency: "direct main"
+    description:
+      name: flutter_code_view
+      sha256: "8e10e78f267020de908f3cc396828eb4300459b9475d9dd4444051d0781dafec"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -835,6 +867,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.3"
+  flutter_riverpod:
+    dependency: "direct main"
+    description:
+      name: flutter_riverpod
+      sha256: e2026c72738a925a60db30258ff1f29974e40716749f3c9850aabf34ffc1a14c
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -1718,7 +1758,7 @@ packages:
     source: hosted
     version: "5.14.2"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       sha256: "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272"
@@ -1773,6 +1813,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  riverpod:
+    dependency: transitive
+    description:
+      name: riverpod
+      sha256: "8c22216be8ad3ef2b44af3a329693558c98eca7b8bd4ef495c92db0bba279f83"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   rxdart:
     dependency: transitive
     description:
@@ -2074,6 +2122,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
+  state_notifier:
+    dependency: transitive
+    description:
+      name: state_notifier
+      sha256: b8677376aa54f2d7c58280d5a007f9e8774f1968d1fb1c096adcb4792fba29bb
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   stream_channel:
     dependency: transitive
     description:
@@ -2186,6 +2242,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.0"
+  syntax_highlight:
+    dependency: "direct main"
+    description:
+      name: syntax_highlight
+      sha256: ee33b6aa82cc722bb9b40152a792181dee222353b486c0255fde666a3e3a4997
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
   tab_container:
     dependency: "direct main"
     description:

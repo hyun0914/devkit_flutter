@@ -34,6 +34,7 @@ import 'screen/data_processing/value_listenable_builder_screen.dart';
 
 // ── UI 패키지 ──
 import 'screen/ui_package/animations_screen.dart';
+import 'screen/ui_package/code_view_screen.dart';
 import 'screen/ui_package/complex_drag_screen.dart';
 import 'screen/ui_package/dotted_border_screen.dart';
 import 'screen/ui_package/drag_reorder_screen.dart';
@@ -70,12 +71,17 @@ import 'screen/image_file/pdf_screen.dart';
 // ── 고급 기능 ──
 import 'screen/advanced/app_device_info_screen.dart';
 import 'screen/advanced/app_life_cycle_screen.dart';
-import 'screen/advanced/hooks_screen.dart';
 import 'screen/advanced/logging_screen.dart';
 import 'screen/advanced/easy_localization_screen.dart';
 import 'screen/advanced/feedback_screen.dart';
 import 'screen/advanced/sensors_screen.dart';
 import 'screen/advanced/wakelock_screen.dart';
+
+// ── 상태관리 ──
+import 'screen/stateManagement/hooks_screen.dart';
+import 'screen/stateManagement/bloc_screen.dart';
+import 'screen/stateManagement/provider_screen.dart';
+import 'screen/stateManagement/river_pod_screen.dart';
 
 // ── 공용 ──
 import 'screen/widget/default_scaffold.dart';
@@ -89,6 +95,7 @@ class Categories {
   static const String network = '네트워크';
   static const String imageFile = '이미지/파일';
   static const String advanced = '고급 기능';
+  static const String stateManagement = '상태 관리';
 }
 
 // 예제 아이템 모델
@@ -427,6 +434,12 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         category: Categories.uiPackage,
         icon: Icons.animation,
       ),
+      ExampleItem(
+        title: 'Code View',
+        screen: const CodeViewScreen(),
+        category: Categories.uiPackage,
+        icon: Icons.code,
+      ),
 
       // 네트워크
       ExampleItem(
@@ -488,12 +501,6 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         icon: Icons.terminal,
       ),
       ExampleItem(
-        title: 'Flutter Hooks',
-        screen: const HooksScreen(),
-        category: Categories.advanced,
-        icon: Icons.extension,
-      ),
-      ExampleItem(
         title: 'EasyLocalization',
         screen: const EasyLocalizationScreen(),
         category: Categories.advanced,
@@ -516,6 +523,32 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         screen: const WakelockScreen(),
         category: Categories.advanced,
         icon: Icons.lightbulb,
+      ),
+
+      // 상태 관리 카테고리
+      ExampleItem(
+        title: 'Flutter Hooks',
+        screen: const HooksScreen(),
+        category: Categories.stateManagement,
+        icon: Icons.extension,
+      ),
+      ExampleItem(
+        title: 'Provider',
+        screen: const ProviderScreen(),
+        category: Categories.stateManagement,
+        icon: Icons.layers,
+      ),
+      ExampleItem(
+        title: 'RiverPod',
+        screen: const RiverPodScreen(),
+        category: Categories.stateManagement,
+        icon: Icons.waves,
+      ),
+      ExampleItem(
+        title: 'BLoC',
+        screen: const BlocScreen(),
+        category: Categories.stateManagement,
+        icon: Icons.architecture,
       ),
     ];
   }

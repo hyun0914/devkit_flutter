@@ -99,18 +99,13 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
       switch (result.type) {
         case ResultType.done:
           message = '파일을 열었습니다';
-          break;
         case ResultType.fileNotFound:
           message = '파일을 찾을 수 없습니다';
-          break;
         case ResultType.noAppToOpen:
           message = '파일을 열 수 있는 앱이 없습니다';
-          break;
         case ResultType.permissionDenied:
           message = '권한이 거부되었습니다';
-          break;
         case ResultType.error:
-        default:
           message = '오류: ${result.message}';
       }
 

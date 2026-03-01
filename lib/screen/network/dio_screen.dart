@@ -464,64 +464,72 @@ class DioScreen extends StatelessWidget {
       // 시뮬레이터 체크
       final isSimulator = await _isSimulator();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            isSimulator
-                ? '다운로드 완료: $filename2\n📱 시뮬레이터: 앱 폴더에 저장됨'
-                : '다운로드 완료: $filename2',
-          ),
-          behavior: SnackBarBehavior.floating,
-          duration: isSimulator ? const Duration(seconds: 4) : const Duration(seconds: 2),
-          action: isSimulator
-              ? SnackBarAction(
-            label: '경로 보기',
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('📁 저장 경로'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 12,
-                    children: [
-                      Text(
-                        '시뮬레이터에서는 앱 샌드박스 폴더에 저장됩니다.',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(8),
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isSimulator
+                  ? '다운로드 완료: $filename2\n📱 시뮬레이터: 앱 폴더에 저장됨'
+                  : '다운로드 완료: $filename2',
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: isSimulator ? const Duration(seconds: 4) : const Duration(
+                seconds: 2),
+            action: isSimulator
+                ? SnackBarAction(
+              label: '경로 보기',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                      AlertDialog(
+                        title: const Text('📁 저장 경로'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 12,
+                          children: [
+                            Text(
+                              '시뮬레이터에서는 앱 샌드박스 폴더에 저장됩니다.',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall,
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: SelectableText(
+                                downloadPath,
+                                style: const TextStyle(
+                                  fontFamily: 'monospace',
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        child: SelectableText(
-                          downloadPath,
-                          style: const TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 12,
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('닫기'),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('닫기'),
-                    ),
-                  ],
-                ),
-              );
-            },
-          )
-              : null,
-        ),
-      );
+                );
+              },
+            )
+                : null,
+          ),
+        );
+      }
     }
   }
 

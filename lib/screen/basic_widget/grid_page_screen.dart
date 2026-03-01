@@ -283,9 +283,9 @@ class _GridPageScreenState extends State<GridPageScreen> {
                   ),
                 ),
                 Text(
-                  'R: ${color.red}\n'
-                      'G: ${color.green}\n'
-                      'B: ${color.blue}',
+                  'R: ${(color.r * 255).round()}\n'
+                  'G: ${(color.g * 255).round()}\n'
+                  'B: ${(color.b * 255).round()}',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontFamily: 'monospace',
                   ),

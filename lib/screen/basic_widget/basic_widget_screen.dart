@@ -970,7 +970,7 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
           ),
         ),
         DropdownButtonFormField<String>(
-          value: dropdownFormValue,
+          initialValue: dropdownFormValue,
           decoration: const InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),

@@ -9,8 +9,10 @@
 /// Direct `dependencies`.
 const dependencies = <Package>[
   _cupertino_icons,
-  _equatable,
+  _flutter_bloc,
   _flutter_hooks,
+  _flutter_riverpod,
+  _provider,
   _adaptive_action_sheet,
   _animated_reorderable,
   _animated_reorderable_list,
@@ -26,6 +28,7 @@ const dependencies = <Package>[
   _easy_rich_text,
   _floating_draggable_widget,
   _flutter_carousel_widget,
+  _flutter_code_view,
   _flutter_keyboard_visibility,
   _flutter_multi_formatter,
   _flutter_rating_bar,
@@ -49,6 +52,7 @@ const dependencies = <Package>[
   _snapping_sheet,
   _spoiler_widget,
   _super_sliver_list,
+  _syntax_highlight,
   _tab_container,
   _toggle_switch,
   _tutorial_coach_mark,
@@ -60,8 +64,6 @@ const dependencies = <Package>[
   _gauge_indicator,
   _geekyants_flutter_gauges,
   _board_datetime_picker,
-  _flutter_local_notifications,
-  _intl,
   _syncfusion_flutter_datepicker,
   _table_calendar,
   _cached_network_image,
@@ -88,6 +90,7 @@ const dependencies = <Package>[
   _battery_plus,
   _device_info_plus,
   _device_preview,
+  _flutter_local_notifications,
   _ios_utsname_ext,
   _package_info_plus,
   _permission_handler,
@@ -95,13 +98,15 @@ const dependencies = <Package>[
   _wakelock_plus,
   _responsive_builder,
   _sizer,
-  _easy_localization,
   _feedback,
   _fluttertoast,
   _logger,
   _talker_flutter,
   _currency_text_input_formatter,
+  _easy_localization,
+  _equatable,
   _focus_detector,
+  _intl,
   _postal_ko,
   _scrollable_positioned_list,
   _sprintf,
@@ -1727,6 +1732,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
+/// flutter_bloc 9.1.1
+const _flutter_bloc = Package(
+    name: 'flutter_bloc',
+    description: 'Flutter widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used with the bloc state management package.',
+    homepage: 'https://bloclibrary.dev',
+    repository: 'https://github.com/felangel/bloc/tree/master/packages/flutter_bloc',
+    authors: [],
+    version: '9.1.1',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    license: '''The MIT License (MIT)
+Copyright (c) 2025 Felix Angelov
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.''',
+  );
+
 /// flutter_cache_manager 3.4.1
 const _flutter_cache_manager = Package(
     name: 'flutter_cache_manager',
@@ -1774,6 +1813,39 @@ const _flutter_carousel_widget = Package(
     license: '''MIT License
 
 Copyright (c) 2023 Nikhil Rajput
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// flutter_code_view 0.0.5
+const _flutter_code_view = Package(
+    name: 'flutter_code_view',
+    description: 'A Flutter package for displaying and highlighting code snippets with syntax highlighting and customizable themes.',
+    homepage: 'https://github.com/SwanFlutter/flutter_code_view.git',
+    authors: [],
+    version: '0.0.5',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    license: '''MIT License
+
+Copyright (c) 2024-2025 Swan Flutter
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1990,6 +2062,41 @@ const _flutter_rating_bar = Package(
     license: '''The MIT License (MIT)
 
 Copyright (c) 2021 Sarbagya Dhaubanjar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// flutter_riverpod 3.2.1
+const _flutter_riverpod = Package(
+    name: 'flutter_riverpod',
+    description: '''A reactive caching and data-binding framework. Riverpod makes working with asynchronous code a breeze.
+''',
+    homepage: 'https://riverpod.dev',
+    repository: 'https://github.com/rrousselGit/riverpod',
+    authors: [],
+    version: '3.2.1',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    license: '''MIT License
+
+Copyright (c) 2020 Remi Rousselet
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -4276,6 +4383,39 @@ const _printing = Package(
       of your accepting any such warranty or additional liability.''',
   );
 
+/// provider 6.1.5+1
+const _provider = Package(
+    name: 'provider',
+    description: 'A wrapper around InheritedWidget to make them easier to use and more reusable.',
+    repository: 'https://github.com/rrousselGit/provider',
+    authors: [],
+    version: '6.1.5+1',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    license: '''MIT License
+
+Copyright (c) 2019 Remi Rousselet
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
 /// readmore 3.0.0
 const _readmore = Package(
     name: 'readmore',
@@ -4842,6 +4982,39 @@ Under no circumstances can you use this product without (1) either a Community L
 
 The Syncfusion<sup>&reg;</sup> license that contains the terms and conditions can be found at
 https://www.syncfusion.com/content/downloads/syncfusion_license.pdf''',
+  );
+
+/// syntax_highlight 0.4.0
+const _syntax_highlight = Package(
+    name: 'syntax_highlight',
+    description: 'Syntax highlighting in the style of VSCode for Flutter, takes a string and returns a formatted TextSpan.',
+    repository: 'https://github.com/serverpod/syntax_highlight',
+    authors: [],
+    version: '0.4.0',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    license: '''Copyright 2023 The Serverpod authors
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
 /// tab_container 3.5.3

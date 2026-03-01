@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'home_screen.dart';
 
@@ -13,14 +14,16 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(
-    BetterFeedback(
-      child: EasyLocalization(
-        supportedLocales: [Locale('ko'), Locale('en')],
-        path: 'assets/translations',
-        fallbackLocale: Locale('ko'),
-        child: DevicePreview(
-          enabled: kDebugMode, // 디버그 모드에서만 활성화
-          builder: (context) => const HomeScreen(),
+    ProviderScope(
+      child: BetterFeedback(
+        child: EasyLocalization(
+          supportedLocales: [Locale('ko'), Locale('en')],
+          path: 'assets/translations',
+          fallbackLocale: Locale('ko'),
+          child: DevicePreview(
+            enabled: kDebugMode, // 디버그 모드에서만 활성화
+            builder: (context) => const HomeScreen(),
+          ),
         ),
       ),
     ),

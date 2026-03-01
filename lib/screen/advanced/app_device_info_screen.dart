@@ -158,7 +158,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
     if (Platform.isAndroid) {
       const intent = AndroidIntent(
         action: 'action_application_details_settings',
-        data: 'package:com.example.flutterfirstapp',
+        data: 'package:dev.devkit.flutter.devkit_flutter',
       );
       await intent.launch();
     } else if (Platform.isIOS) {
