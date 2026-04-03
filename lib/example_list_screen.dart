@@ -76,6 +76,7 @@ import 'screen/advanced/easy_localization_screen.dart';
 import 'screen/advanced/feedback_screen.dart';
 import 'screen/advanced/sensors_screen.dart';
 import 'screen/advanced/wakelock_screen.dart';
+import 'screen/advanced/dart3_screen.dart';
 
 // ── 상태관리 ──
 import 'screen/stateManagement/hooks_screen.dart';
@@ -523,6 +524,12 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         screen: const WakelockScreen(),
         category: Categories.advanced,
         icon: Icons.lightbulb,
+      ),
+      ExampleItem(
+        title: 'Dart 3.x 신기능',
+        screen: const Dart3Screen(),
+        category: Categories.advanced,
+        icon: Icons.new_releases,
       ),
 
       // 상태 관리 카테고리
