@@ -4,8 +4,8 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 
 ## 📱 주요 기능
 
-- **65개 이상**의 실용적인 예제
-- **105개 이상**의 패키지 활용
+- **66개 이상**의 실용적인 예제
+- **106개 이상**의 패키지 활용
 - **7개 카테고리**로 체계적 분류
 - **Material 3** 디자인 적용
 - **다크모드** 완벽 지원
@@ -58,13 +58,14 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 - **스크린샷** (Scroll Screenshot)
 - **내부 저장** (Path Provider)
 
-- ### 6. 고급 기능
+### 6. 고급 기능
 - **센서** (가속도계, 자이로스코프, 나침반)
 - **보안 저장소** (Secure Storage)
 - **Wakelock** (화면 깨우기 유지)
 - **앱 라이프 사이클**
 - **기기 & 패키지 정보**
 - **Dart 3.x 신기능** (Sealed Classes, Records, Pattern Matching)
+- **MQTT Client** (IoT 실시간 메시징)
 
 ### 7. 상태 관리
 - **Provider**
@@ -168,6 +169,7 @@ flutter test
 - **HTTP**: dio, http
 - **연결**: connectivity_plus
 - **웹뷰**: webview_flutter
+- **MQTT**: mqtt_client
 
 ### 저장소 & 보안
 - **로컬 저장소**: shared_preferences, path_provider

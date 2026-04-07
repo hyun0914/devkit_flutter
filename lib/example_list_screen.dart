@@ -77,6 +77,7 @@ import 'screen/advanced/feedback_screen.dart';
 import 'screen/advanced/sensors_screen.dart';
 import 'screen/advanced/wakelock_screen.dart';
 import 'screen/advanced/dart3_screen.dart';
+import 'screen/advanced/mqtt_screen.dart';
 
 // ── 상태관리 ──
 import 'screen/stateManagement/hooks_screen.dart';
@@ -530,6 +531,12 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         screen: const Dart3Screen(),
         category: Categories.advanced,
         icon: Icons.new_releases,
+      ),
+      ExampleItem(
+        title: 'MQTT Client',
+        screen: const MqttScreen(),
+        category: Categories.advanced,
+        icon: Icons.cloud_sync,
       ),
 
       // 상태 관리 카테고리

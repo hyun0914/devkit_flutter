@@ -106,7 +106,7 @@ class SelectHomeView extends StatelessWidget {
                       _HomeButton(
                         icon: Icons.apps_rounded,
                         label: '예제 앱 화면 열기',
-                        description: '65개 위젯 & 패키지 샘플',
+                        description: '다양한 위젯 & 패키지 샘플',
                         gradient: LinearGradient(
                           colors: [
                             theme.colorScheme.primaryContainer,
@@ -268,7 +268,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.widgets_outlined,
                     label: '총 예제',
-                    value: '65+',
+                    value: '66+',
                     color: theme.colorScheme.primary,
                   ),
                 ),
@@ -284,7 +284,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.extension_outlined,
                     label: '패키지',
-                    value: '105+',
+                    value: '106+',
                     color: Colors.blue,
                   ),
                 ),
