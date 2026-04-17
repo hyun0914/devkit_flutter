@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 // ── 기본 위젯 ──
+import 'screen/advanced/local_ai_screen.dart';
 import 'screen/basic_widget/animated_widget_screen.dart';
 import 'screen/basic_widget/basic_widget_screen.dart';
 import 'screen/basic_widget/button_style_screen.dart';
@@ -537,6 +538,12 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         screen: const MqttScreen(),
         category: Categories.advanced,
         icon: Icons.cloud_sync,
+      ),
+      ExampleItem(
+        title: 'Local AI (On-Device)',
+        screen: const LocalAiScreen(),
+        category: Categories.advanced,
+        icon: Icons.psychology,
       ),
 
       // 상태 관리 카테고리

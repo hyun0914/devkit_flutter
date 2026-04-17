@@ -268,7 +268,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.widgets_outlined,
                     label: '총 예제',
-                    value: '66+',
+                    value: '67+',
                     color: theme.colorScheme.primary,
                   ),
                 ),
@@ -284,7 +284,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.extension_outlined,
                     label: '패키지',
-                    value: '106+',
+                    value: '107+',
                     color: Colors.blue,
                   ),
                 ),

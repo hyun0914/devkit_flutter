@@ -4,8 +4,8 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 
 ## 📱 주요 기능
 
-- **66개 이상**의 실용적인 예제
-- **106개 이상**의 패키지 활용
+- **67개 이상**의 실용적인 예제
+- **107개 이상**의 패키지 활용
 - **7개 카테고리**로 체계적 분류
 - **Material 3** 디자인 적용
 - **다크모드** 완벽 지원
@@ -66,6 +66,7 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 - **기기 & 패키지 정보**
 - **Dart 3.x 신기능** (Sealed Classes, Records, Pattern Matching)
 - **MQTT Client** (IoT 실시간 메시징)
+- **온디바이스 AI** (flutter_local_ai, Gemini Nano)
 
 ### 7. 상태 관리
 - **Provider**
@@ -170,6 +171,9 @@ flutter test
 - **연결**: connectivity_plus
 - **웹뷰**: webview_flutter
 - **MQTT**: mqtt_client
+
+### 온디바이스 AI
+- **로컬 AI**: flutter_local_ai (ML Kit GenAI, Gemini Nano)
 
 ### 저장소 & 보안
 - **로컬 저장소**: shared_preferences, path_provider
@@ -298,8 +302,8 @@ Flutter 개발 시 자주 사용하는 위젯과 패키지를 모아둔 개인 �
 - 체계적인 예제 라이브러리 구축
 
 **주요 성과:**
-- 65개 이상의 실용적인 예제 작성
-- 105개 패키지 통합 및 활용
+- 67개 이상의 실용적인 예제 작성
+- 107개 패키지 통합 및 활용
 - Python을 활용한 자동화 스크립트 개발
 - 체계적인 문서화 및 테스트 코드 작성
 
