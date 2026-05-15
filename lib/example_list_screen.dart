@@ -99,6 +99,7 @@ class Categories {
   static const String imageFile = '이미지/파일';
   static const String advanced = '고급 기능';
   static const String stateManagement = '상태 관리';
+  static const String favorites = '즐겨찾기';
 }
 
 // 예제 아이템 모델
@@ -116,6 +117,23 @@ class ExampleItem {
   });
 }
 
+class ExampleStats {
+  static const _categoryCounts = {
+    Categories.basicWidget: 15,
+    Categories.dataProcessing: 8,
+    Categories.uiPackage: 24,
+    Categories.network: 3,
+    Categories.imageFile: 3,
+    Categories.advanced: 10,
+    Categories.stateManagement: 4,
+  };
+
+  static int get totalExamples =>
+      _categoryCounts.values.reduce((a, b) => a + b);
+  static int get totalCategories => _categoryCounts.length;
+  static const int totalPackages = 107;
+}
+
 class ExampleListScreen extends StatefulWidget {
   const ExampleListScreen({super.key});
 
@@ -124,25 +142,35 @@ class ExampleListScreen extends StatefulWidget {
 }
 
 class _ExampleListScreenState extends State<ExampleListScreen>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
 
-  final ScrollController scrollController = ScrollController();
   final TextEditingController searchController = TextEditingController();
+
+  late final TabController _tabController;
+  final Map<String, ScrollController> _scrollControllers = {};
 
   GlobalKey tutorialKey = GlobalKey();
   GlobalKey tutorialKey2 = GlobalKey();
   GlobalKey tutorialKey3 = GlobalKey();
 
   String searchQuery = '';
-  String selectedCategory = Categories.all;
   Set<String> favoriteItems = {};
 
-  List<String> get categories {
-    final categorySet = allExamples.map((e) => e.category).toSet();
-    return [Categories.all, ...categorySet.toList()..sort()];
-  }
+  static const List<String> _categories = [
+    Categories.all,
+    Categories.favorites,
+    Categories.basicWidget,
+    Categories.dataProcessing,
+    Categories.uiPackage,
+    Categories.network,
+    Categories.imageFile,
+    Categories.advanced,
+    Categories.stateManagement,
+  ];
+
+  List<String> get categories => _categories;
 
   // 예제 데이터
   late final List<ExampleItem> allExamples;
@@ -152,6 +180,10 @@ class _ExampleListScreenState extends State<ExampleListScreen>
     super.initState();
     _initializeExamples();
     _loadFavorites();
+    _tabController = TabController(length: _categories.length, vsync: this);
+    for (final cat in _categories) {
+      _scrollControllers[cat] = ScrollController();
+    }
   }
 
   void _initializeExamples() {
@@ -593,14 +625,29 @@ class _ExampleListScreenState extends State<ExampleListScreen>
     await prefs.setStringList('favorites', favoriteItems.toList());
   }
 
-  List<ExampleItem> get filteredExamples {
+  List<ExampleItem> _getFilteredItems(String category) {
     return allExamples.where((example) {
       final matchesSearch =
-      example.title.toLowerCase().contains(searchQuery.toLowerCase());
-      final matchesCategory =
-          selectedCategory == Categories.all || example.category == selectedCategory;
+          example.title.toLowerCase().contains(searchQuery.toLowerCase());
+      final matchesCategory = category == Categories.all ||
+          (category == Categories.favorites
+              ? favoriteItems.contains(example.title)
+              : example.category == category);
       return matchesSearch && matchesCategory;
     }).toList();
+  }
+
+  Future<void> _handleTap(BuildContext context, ExampleItem example) async {
+    if (example.title.contains('캐시 이미지')) {
+      await FastCachedImageConfig.init(
+        clearCacheAfter: const Duration(days: 15),
+      );
+    }
+    if (context.mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => example.screen),
+      );
+    }
   }
 
   dynamic targetFocusBasic({
@@ -672,65 +719,142 @@ class _ExampleListScreenState extends State<ExampleListScreen>
           keyTarget: tutorialKey3,
           shape: ShapeLightFocus.RRect,
           paddingFocus: 1,
-          align: ContentAlign.top,
-          padding: const EdgeInsets.fromLTRB(160, 0, 0, 10),
+          align: ContentAlign.bottom,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text('카테고리별로 필터링할 수 있습니다',
+            Text('탭을 눌러 카테고리를 전환할 수 있습니다',
                 style: TextStyle(fontSize: 16, color: Colors.white)),
           ],
         ),
       ],
       colorShadow: Colors.grey.shade200,
-      onClickTarget: (target) {
-        debugPrint('onClickTarget $target');
-      },
-      onClickTargetWithTapPosition: (target, tapDetails) {
-        debugPrint('onClickTargetWithTapPosition\n$target\n$tapDetails');
-      },
-      onClickOverlay: (target) {
-        debugPrint('onClickOverlay $target');
-      },
+      onClickTarget: (target) => debugPrint('onClickTarget $target'),
+      onClickTargetWithTapPosition: (target, tapDetails) =>
+          debugPrint('onClickTargetWithTapPosition\n$target\n$tapDetails'),
+      onClickOverlay: (target) => debugPrint('onClickOverlay $target'),
       onSkip: () {
         debugPrint('onSkip');
         return true;
       },
-      onFinish: () {
-        debugPrint('onFinish');
-      },
+      onFinish: () => debugPrint('onFinish'),
     ).show(context: context);
   }
 
   @override
   void dispose() {
+    _tabController.dispose();
+    for (final ctrl in _scrollControllers.values) {
+      ctrl.dispose();
+    }
     searchController.dispose();
-    scrollController.dispose();
     super.dispose();
+  }
+
+  Widget _buildTabContent(
+    BuildContext context,
+    ThemeData theme,
+    String category,
+    List<ExampleItem> items,
+    ScrollController ctrl,
+  ) {
+    if (items.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              category == Categories.favorites
+                  ? Icons.star_border
+                  : Icons.search_off,
+              size: 64,
+              color: theme.colorScheme.outline,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              category == Categories.favorites && searchQuery.isEmpty
+                  ? '즐겨찾기한 예제가 없습니다'
+                  : '검색 결과가 없습니다',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            if (searchQuery.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              TextButton.icon(
+                onPressed: () {
+                  searchController.clear();
+                  setState(() => searchQuery = '');
+                },
+                icon: const Icon(Icons.clear, size: 16),
+                label: const Text('검색어 초기화'),
+              ),
+            ],
+          ],
+        ),
+      );
+    }
+
+    // 전체·즐겨찾기 탭에서는 카테고리 레이블 표시, 개별 카테고리 탭에서는 생략
+    final showCategory =
+        category == Categories.all || category == Categories.favorites;
+
+    return CustomMaterialIndicator(
+      onRefresh: () async {
+        searchController.clear();
+        setState(() => searchQuery = '');
+      },
+      indicatorBuilder: (context, controller) => const Icon(
+        Icons.refresh,
+        size: 30,
+        color: Colors.green,
+      ),
+      child: ListView.separated(
+        controller: ctrl,
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        itemCount: items.length,
+        separatorBuilder: (context, index) => Divider(
+          height: 1,
+          indent: 72,
+          endIndent: 16,
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+        itemBuilder: (context, index) {
+          final example = items[index];
+          return _ExampleListTile(
+            example: example,
+            isFavorite: favoriteItems.contains(example.title),
+            showCategory: showCategory,
+            onTap: () => _handleTap(context, example),
+            onFavoriteToggle: () => _toggleFavorite(example.title),
+          );
+        },
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
+    final screenSize = MediaQuery.of(context).size;
 
     return FloatingDraggableWidget(
       floatingWidgetWidth: 48,
       floatingWidgetHeight: 48,
-      dx: 340,
-      dy: 800,
+      dx: screenSize.width - 64,
+      dy: screenSize.height - 160,
       floatingWidget: FloatingActionButton.small(
         key: tutorialKey,
         backgroundColor: theme.colorScheme.primaryContainer,
         onPressed: () {
-          if (!scrollController.hasClients) return;
-
-          final position = scrollController.position;
-          final isAtBottom = position.pixels >= position.maxScrollExtent - 10;
-          final target =
-          isAtBottom ? position.minScrollExtent : position.maxScrollExtent;
-
-          scrollController.animateTo(
-            target,
+          final cat = _categories[_tabController.index];
+          final ctrl = _scrollControllers[cat];
+          if (ctrl == null || !ctrl.hasClients) return;
+          final pos = ctrl.position;
+          final isAtBottom = pos.pixels >= pos.maxScrollExtent - 10;
+          ctrl.animateTo(
+            isAtBottom ? pos.minScrollExtent : pos.maxScrollExtent,
             duration: const Duration(milliseconds: 350),
             curve: Curves.easeOutCubic,
           );
@@ -747,207 +871,85 @@ class _ExampleListScreenState extends State<ExampleListScreen>
               tooltip: '튜토리얼',
             ),
           ],
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                key: tutorialKey2,
-                padding: const EdgeInsets.all(16),
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: '예제 검색...',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: searchQuery.isNotEmpty
-                        ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        searchController.clear();
-                        setState(() {
-                          searchQuery = '';
-                        });
-                      },
-                    )
-                        : null,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: theme.colorScheme.surfaceContainerHighest
-                        .withValues(alpha: 0.3),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
-                ),
-              ),
-              Container(
-                key: tutorialKey3,
-                height: 50,
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    final isSelected = selectedCategory == category;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: FilterChip(
-                        label: Text(category),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() {
-                            selectedCategory = category;
-                          });
-                        },
-                        backgroundColor: theme.colorScheme.surface,
-                        selectedColor: theme.colorScheme.primaryContainer,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  children: [
-                    Text(
-                      '${filteredExamples.length}개의 예제',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    if (favoriteItems.isNotEmpty) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.orange.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.star,
-                                size: 12, color: Colors.orange),
-                            const SizedBox(width: 4),
-                            Text(
-                              '즐겨찾기 ${favoriteItems.length}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.orange,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+          bottom: TabBar(
+            key: tutorialKey3,
+            controller: _tabController,
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            tabs: _categories.map((cat) {
+              if (cat == Categories.favorites) {
+                return const Tab(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.star_rounded, size: 14),
+                      SizedBox(width: 4),
+                      Text('즐겨찾기'),
                     ],
-                  ],
-                ),
-              ),
-              Expanded(
-                child: CustomMaterialIndicator(
-                  onRefresh: () => Future.delayed(const Duration(seconds: 1)),
-                  indicatorBuilder: (context, controller) {
-                    return const Icon(
-                      Icons.refresh,
-                      size: 30,
-                      color: Colors.green,
-                    );
-                  },
-                  child: filteredExamples.isEmpty
-                      ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.search_off,
-                          size: 64,
-                          color: theme.colorScheme.outline,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          '검색 결과가 없습니다',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                      : GridView.builder(
-                    controller: scrollController,
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 1.1,
-                    ),
-                    itemCount: filteredExamples.length,
-                    itemBuilder: (context, index) {
-                      final example = filteredExamples[index];
-                      final isFavorite =
-                      favoriteItems.contains(example.title);
-                      final isImageCacheIndex =
-                      example.title.contains('캐시 이미지');
-
-                      Future<void> handleTap() async {
-                        if (isImageCacheIndex) {
-                          await FastCachedImageConfig.init(
-                            clearCacheAfter: const Duration(days: 15),
-                          );
-                        }
-                        if (context.mounted) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => example.screen),
-                          );
-                        }
-                      }
-
-                      return _ExampleCard(
-                        title: example.title,
-                        icon: example.icon,
-                        category: example.category,
-                        isFavorite: isFavorite,
-                        onTap: handleTap,
-                        onFavoriteToggle: () =>
-                            _toggleFavorite(example.title),
-                      );
-                    },
                   ),
-                ),
-              ),
-            ],
+                );
+              }
+              return Tab(text: cat);
+            }).toList(),
           ),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              key: tutorialKey2,
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  hintText: '예제 검색...',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: searchQuery.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            searchController.clear();
+                            setState(() => searchQuery = '');
+                          },
+                        )
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
+                  fillColor: theme.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.3),
+                ),
+                onChanged: (value) => setState(() => searchQuery = value),
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: _categories.map((cat) {
+                  final items = _getFilteredItems(cat);
+                  final ctrl = _scrollControllers[cat]!;
+                  return _buildTabContent(context, theme, cat, items, ctrl);
+                }).toList(),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _ExampleCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final String category;
+class _ExampleListTile extends StatelessWidget {
+  final ExampleItem example;
   final bool isFavorite;
+  final bool showCategory;
   final VoidCallback onTap;
   final VoidCallback onFavoriteToggle;
 
-  const _ExampleCard({
-    required this.title,
-    required this.icon,
-    required this.category,
+  const _ExampleListTile({
+    required this.example,
     required this.isFavorite,
+    required this.showCategory,
     required this.onTap,
     required this.onFavoriteToggle,
   });
@@ -956,87 +958,68 @@ class _ExampleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Material(
-      elevation: 1,
-      borderRadius: BorderRadius.circular(16),
-      color: theme.colorScheme.surface,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      icon,
-                      size: 22,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: Icon(
-                      isFavorite ? Icons.star : Icons.star_border,
-                      size: 22,
-                      color: isFavorite
-                          ? Colors.orange
-                          : theme.colorScheme.outline,
-                    ),
-                    onPressed: onFavoriteToggle,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    splashRadius: 20,
-                  ),
-                ],
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    title,
+              child: Icon(
+                example.icon,
+                size: 22,
+                color: theme.colorScheme.primary,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    example.title,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
-                      height: 1.3,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
+                  if (showCategory) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      example.category,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: onFavoriteToggle,
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  isFavorite
+                      ? Icons.star_rounded
+                      : Icons.star_outline_rounded,
+                  size: 22,
+                  color: isFavorite ? Colors.orange : theme.colorScheme.outline,
                 ),
               ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.secondaryContainer
-                      .withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  category,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSecondaryContainer,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ],
         ),
       ),
     );

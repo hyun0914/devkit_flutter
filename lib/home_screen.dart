@@ -32,7 +32,8 @@ class HomeScreen extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      themeMode: ThemeMode.system, // 시스템 설정 따라가기
+      // 시스템 설정 따라가기
+      themeMode: ThemeMode.system,
       home: MediaQuery(
         data: MediaQuery.of(context).copyWith(
           textScaler: const TextScaler.linear(1.0),
@@ -58,6 +59,18 @@ class SelectHomeView extends StatelessWidget {
         onBackTwo();
       },
       child: Scaffold(
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              '💡 뒤로가기 버튼을 두 번 누르면 앱이 종료됩니다',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.outline,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
         body: SafeArea(
           child: Container(
             width: double.infinity,
@@ -65,13 +78,13 @@ class SelectHomeView extends StatelessWidget {
               gradient: LinearGradient(
                 colors: isDark
                     ? [
-                  theme.colorScheme.surface,
-                  theme.colorScheme.surface,
-                ]
+                        theme.colorScheme.primary.withValues(alpha: 0.08),
+                        theme.colorScheme.surface,
+                      ]
                     : [
-                  theme.colorScheme.primaryContainer,
-                  theme.colorScheme.surface,
-                ],
+                        theme.colorScheme.primaryContainer,
+                        theme.colorScheme.surface,
+                      ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -79,99 +92,88 @@ class SelectHomeView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 480),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 상단 타이틀 영역
-                      _buildHeader(theme),
-                      const SizedBox(height: 32),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 480),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 상단 타이틀 영역
+                        _buildHeader(theme),
+                        const SizedBox(height: 32),
 
-                      // 통계 카드
-                      _buildStatsCard(theme),
-                      const SizedBox(height: 24),
+                        // 통계 카드
+                        _buildStatsCard(theme),
+                        const SizedBox(height: 24),
 
-                      // 메뉴 섹션 타이틀
-                      Text(
-                        '주요 기능',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
+                        // 메뉴 섹션 타이틀
+                        Text(
+                          '주요 기능',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
-                      // 메뉴 버튼들
-                      _HomeButton(
-                        icon: Icons.apps_rounded,
-                        label: '예제 앱 화면 열기',
-                        description: '다양한 위젯 & 패키지 샘플',
-                        gradient: LinearGradient(
-                          colors: [
-                            theme.colorScheme.primaryContainer,
-                            theme.colorScheme.primary.withValues(alpha: 0.3),
-                          ],
+                        // 메뉴 버튼들
+                        _HomeButton(
+                          icon: Icons.apps_rounded,
+                          label: '예제 앱 화면 열기',
+                          description: '다양한 위젯 & 패키지 샘플',
+                          gradient: LinearGradient(
+                            colors: [
+                              theme.colorScheme.primaryContainer,
+                              theme.colorScheme.primary.withValues(alpha: 0.3),
+                            ],
+                          ),
+                          onPressed: () async {
+                            await Future.delayed(
+                              const Duration(milliseconds: 300),
+                            );
+                            if (context.mounted) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const ExampleListScreen(),
+                                ),
+                              );
+                            }
+                          },
                         ),
-                        onPressed: () async {
-                          await Future.delayed(
-                            const Duration(milliseconds: 300),
-                          );
-                          if (context.mounted) {
+                        const SizedBox(height: 12),
+                        _HomeButton(
+                          icon: Icons.wifi_tethering_rounded,
+                          label: '네트워크 상태 체크',
+                          description: 'WiFi / 모바일 데이터 확인',
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.withValues(alpha: 0.2),
+                              Colors.blue.withValues(alpha: 0.1),
+                            ],
+                          ),
+                          onPressed: cheekConnectivity,
+                        ),
+                        const SizedBox(height: 12),
+                        _HomeButton(
+                          icon: Icons.description_outlined,
+                          label: '오픈소스 라이선스',
+                          description: '사용 중인 패키지 목록',
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.orange.withValues(alpha: 0.2),
+                              Colors.orange.withValues(alpha: 0.1),
+                            ],
+                          ),
+                          onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => const ExampleListScreen(),
+                                builder: (_) => const OssLicensesPage(),
                               ),
                             );
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      _HomeButton(
-                        icon: Icons.wifi_tethering_rounded,
-                        label: '네트워크 상태 체크',
-                        description: 'WiFi / 모바일 데이터 확인',
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.blue.withValues(alpha: 0.2),
-                            Colors.blue.withValues(alpha: 0.1),
-                          ],
+                          },
                         ),
-                        onPressed: cheekConnectivity,
-                      ),
-                      const SizedBox(height: 12),
-                      _HomeButton(
-                        icon: Icons.description_outlined,
-                        label: '오픈소스 라이선스',
-                        description: '사용 중인 패키지 목록',
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.orange.withValues(alpha: 0.2),
-                            Colors.orange.withValues(alpha: 0.1),
-                          ],
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const OssLicensesPage(),
-                            ),
-                          );
-                        },
-                      ),
-
-                      const SizedBox(height: 32),
-
-                      // 하단 안내 텍스트
-                      Center(
-                        child: Text(
-                          '💡 뒤로가기 버튼을 두 번 누르면 앱이 종료됩니다',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.outline,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -268,7 +270,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.widgets_outlined,
                     label: '총 예제',
-                    value: '67+',
+                    value: '${ExampleStats.totalExamples}',
                     color: theme.colorScheme.primary,
                   ),
                 ),
@@ -276,7 +278,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.category_outlined,
                     label: '카테고리',
-                    value: '7',
+                    value: '${ExampleStats.totalCategories}',
                     color: Colors.orange,
                   ),
                 ),
@@ -284,7 +286,7 @@ class SelectHomeView extends StatelessWidget {
                   child: _StatItem(
                     icon: Icons.extension_outlined,
                     label: '패키지',
-                    value: '107+',
+                    value: '${ExampleStats.totalPackages}+',
                     color: Colors.blue,
                   ),
                 ),
@@ -439,7 +441,7 @@ void showToast({
 
 void cheekConnectivity() async {
   final List<ConnectivityResult> connectivityResult =
-  await (Connectivity().checkConnectivity());
+      await (Connectivity().checkConnectivity());
 
   if (connectivityResult.contains(ConnectivityResult.wifi)) {
     showToast(msg: '📶 WiFi 사용 중입니다.');

@@ -6,7 +6,9 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 
 - **67개 이상**의 실용적인 예제
 - **107개 이상**의 패키지 활용
-- **7개 카테고리**로 체계적 분류
+- **7개 카테고리** 탭 네비게이션으로 체계적 분류
+- **즐겨찾기** 기능으로 자주 쓰는 예제 바로 접근
+- **예제 검색** (탭 내 실시간 필터링 + pull-to-refresh 초기화)
 - **Material 3** 디자인 적용
 - **다크모드** 완벽 지원
 
@@ -19,7 +21,7 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 - 버튼 트리거, 위젯 숨기기
 - 반응형 위젯, Animated 위젯
 - Flexible/Expanded, 복잡한 드래그
-- 클릭 위젯, ListWheelScrollView
+- ListWheelScrollView, GridView + PageView
 
 ### 2. 데이터 처리
 - String 관련 (포맷, 변환)
@@ -27,8 +29,8 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 - 날짜 관련 (포맷, 계산)
 - List, Map 관련 (조작, 변환)
 - 데이터 비교 (Equatable)
-- print 관련 (디버깅)
 - ValueListenableBuilder
+- SharedPreferences, 보안 저장소
 
 ### 3. UI 패키지
 - 🎨 **로딩 & 스켈레톤** (Shimmer, Skeletonizer, SpinKit)
@@ -40,30 +42,29 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 - 🎛️ **입력 위젯** (Rating, Slider, PinPut, Dropdown)
 - 🎠 **캐러셀 & 탭** (Carousel Widget, Tab Container)
 - 🎭 **애니메이션** (Hero, OpenContainer, SharedAxis, FadeScale)
-- 📝 **피드백 & 로깅** (Talker, Feedback, Easy Localization)
 - 💻 **코드 하이라이팅** (flutter_code_view, syntax_highlight)
-- 🛠️ **기타** (점선, 드래그 리스트, 스포일러, 온보딩)
+- 🛠️ **기타** (점선, 드래그 리스트, 온보딩, Swipe Action)
 
 ### 4. 네트워크
 - **HTTP 통신** (Dio, HTTP)
 - **네트워크 상태** (Connectivity Plus)
 - **WebView** (웹 페이지 표시)
+- **주소 검색** (카카오 우편번호 API)
 
 ### 5. 이미지 & 파일
 - **캐시 이미지** (Fast/Cached Network Image)
-- **이미지 선택 & 관리** (Image Picker, Multi Image Picker)
-- **SVG 이미지** (flutter_svg)
-- **파일 선택 & 열기** (File Picker, Open File Plus)
+- **이미지 선택 & 관리** (Image Picker)
+- **파일 선택 & 열기** (File Picker)
 - **PDF** (생성, 뷰어, 인쇄)
-- **스크린샷** (Scroll Screenshot)
-- **내부 저장** (Path Provider)
 
 ### 6. 고급 기능
 - **센서** (가속도계, 자이로스코프, 나침반)
-- **보안 저장소** (Secure Storage)
-- **Wakelock** (화면 깨우기 유지)
+- **Wakelock** (화면 켜짐 유지)
 - **앱 라이프 사이클**
-- **기기 & 패키지 정보**
+- **앱 & 기기 정보**
+- **로깅** (Talker)
+- **피드백** (사용자 피드백 수집)
+- **다국어** (Easy Localization)
 - **Dart 3.x 신기능** (Sealed Classes, Records, Pattern Matching)
 - **MQTT Client** (IoT 실시간 메시징)
 - **온디바이스 AI** (flutter_local_ai, Gemini Nano)
@@ -162,9 +163,9 @@ flutter test
 
 ### 이미지 & 파일
 - **이미지**: fast_cached_network_image, cached_network_image, flutter_svg
-- **파일 선택**: image_picker, multi_image_picker_view, file_picker
+- **파일 선택**: image_picker, file_picker
 - **PDF**: pdf, printing, syncfusion_flutter_pdfviewer
-- **기타**: open_file, scroll_screenshot, gal
+- **기타**: open_file, gal
 
 ### 네트워크 & 데이터
 - **HTTP**: dio, http
@@ -229,27 +230,27 @@ python3 tools/clean_oss_licenses.py
 ```
 devkit_flutter/
 ├── lib/
-│   ├── screen/              # 예제 화면들
-│   │   ├── basic_widget/   # 기본 위젯
-│   │   ├── data_handling/  # 데이터 처리
-│   │   ├── ui_package/     # UI 패키지
-│   │   ├── network/        # 네트워크
-│   │   ├── image_file/     # 이미지 & 파일
-│   │   ├── advanced/       # 고급 기능
-│   │   └── stateManagement/  # 상태 관리
-│   ├── widget/              # 공통 위젯
-│   ├── oss_licenses/        # OSS 라이선스
+│   ├── screen/                  # 예제 화면들
+│   │   ├── basic_widget/        # 기본 위젯
+│   │   ├── data_processing/     # 데이터 처리
+│   │   ├── ui_package/          # UI 패키지
+│   │   ├── network/             # 네트워크
+│   │   ├── image_file/          # 이미지 & 파일
+│   │   ├── advanced/            # 고급 기능
+│   │   ├── stateManagement/     # 상태 관리
+│   │   └── widget/              # 공통 위젯 (DefaultScaffold 등)
+│   ├── oss_licenses/            # OSS 라이선스
 │   │   ├── oss_licenses.dart         # 패키지 데이터
 │   │   └── oss_licenses_page.dart    # 라이선스 화면 UI
 │   ├── home_screen.dart
 │   ├── example_list_screen.dart
 │   └── main.dart
 ├── assets/
-│   └── translations/        # 다국어 파일 (ko, en, ja)
+│   └── translations/            # 다국어 파일 (ko, en, ja)
 ├── tools/
-│   └── clean_oss_licenses.py  # 라이선스 정리 스크립트
+│   └── clean_oss_licenses.py    # 라이선스 정리 스크립트
 ├── test/
-│   └── widget_test.dart     # 위젯 테스트
+│   └── widget_test.dart         # 위젯 테스트
 └── pubspec.yaml
 ```
 
@@ -271,12 +272,6 @@ devkit_flutter/
 - 자이로스코프 (회전 속도)
 - 나침반 (방향)
 
-### 이미지 & SVG
-- SVG 네트워크 로드
-- SVG 색상 변경 (ColorFilter)
-- 캐시 이미지 (Fast/Cached)
-- 이미지 확대/축소 (InteractiveViewer)
-
 ### 날짜 & 시간
 - Board DateTime Picker (날짜/시간 선택)
 - Table Calendar (달력)
@@ -291,6 +286,25 @@ devkit_flutter/
 - ResponsiveBuilder (화면 크기별 UI)
 - Sizer (반응형 크기)
 - Flexible/Expanded (유연한 레이아웃)
+
+## 🆕 최근 UI/UX 개선 사항
+
+### 홈 화면
+- 통계 카드 수치를 `ExampleStats` 클래스에서 동적으로 참조 (예제 추가 시 자동 반영)
+- 넓은 화면(태블릿/데스크탑)에서 콘텐츠 중앙 정렬 적용
+- 다크모드에서 subtle 그라디언트 배경 추가 (기존 단색 → 투명도 기반 그라디언트)
+- '뒤로가기 두 번 누르면 종료' 안내 문구를 스크롤 영역 밖 하단에 고정
+
+### 예제 목록 화면
+- **탭 네비게이션 도입**: 기존 FilterChip → AppBar 하단 고정 TabBar (9개 탭)
+- **리스트 레이아웃 변경**: 2열 그리드 카드 → ListView + Divider (ListTile 스타일)
+- **즐겨찾기 탭** 추가 (⭐) — 즐겨찾기한 예제만 모아서 보기
+- **카테고리 순서 고정**: 가나다순 정렬 제거 → 기본위젯 → 데이터 → UI → 네트워크 → 이미지 → 고급 → 상태관리
+- **카테고리 레이블**: 전체·즐겨찾기 탭에서만 표시, 개별 카테고리 탭에서 생략
+- **빈 상태 개선**: 즐겨찾기 탭 / 검색 탭 메시지 분리 + 검색어 초기화 버튼
+- **pull-to-refresh**: 검색어 초기화로 동작 연결 (기존 빈 콜백)
+- **플로팅 버튼 위치**: 하드코딩 제거 → 화면 크기 비례 동적 배치
+- **탭별 ScrollController**: 각 탭이 독립적인 스크롤 위치 유지
 
 ## 👨‍💻 프로젝트 소개
 
