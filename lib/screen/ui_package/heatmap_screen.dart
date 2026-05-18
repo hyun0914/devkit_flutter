@@ -168,7 +168,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
               ),
             ),
             Text(
-              '데이터를 색상으로 시각화하는 3가지 방법',
+              '활동 이력·매트릭스 데이터·부위별 강도를 색상으로 표현 — 헬스·분석·대시보드 앱에서 활용',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -181,7 +181,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
             const SizedBox(height: 8),
             _buildInfoCard(
               theme,
-              '깃허브 contribution 차트 - 날짜별 활동 추적',
+              '날짜별 활동 이력을 색상 강도로 표현 — 학습 기록, 운동 습관, 커밋 활동 추적에 활용',
             ),
             const SizedBox(height: 12),
 
@@ -238,7 +238,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
             const SizedBox(height: 8),
             _buildInfoCard(
               theme,
-              '행×열 데이터 시각화 - 년도별/월별 비교',
+              '행×열 교차 데이터를 색상으로 표현 — 월별 매출, 시간대별 트래픽, 요일×시간 패턴 분석에 활용',
             ),
             const SizedBox(height: 12),
 

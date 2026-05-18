@@ -1,18 +1,18 @@
 # DevKit Flutter
 
-Flutter 개발자를 위한 위젯 & 패키지 예제 모음
+실무에서 직접 구현·검증하며 쌓은 Flutter 위젯 & 패키지 레퍼런스
 
-## 📱 주요 기능
+## 구성 현황
 
-- **67개 이상**의 실용적인 예제
-- **107개 이상**의 패키지 활용
+- **67개 이상**의 실무 검증 구현 사례
+- **107개 이상**의 패키지 직접 통합 및 검증
 - **7개 카테고리** 탭 네비게이션으로 체계적 분류
-- **즐겨찾기** 기능으로 자주 쓰는 예제 바로 접근
-- **예제 검색** (탭 내 실시간 필터링 + pull-to-refresh 초기화)
+- **즐겨찾기** 기능으로 자주 쓰는 레퍼런스 바로 접근
+- **레퍼런스 검색** (탭 내 실시간 필터링 + pull-to-refresh 초기화)
 - **Material 3** 디자인 적용
 - **다크모드** 완벽 지원
 
-## 🎯 카테고리
+## 카테고리
 
 ### 1. 기본 위젯
 - Text 위젯, 공통 위젯 모음
@@ -75,66 +75,46 @@ Flutter 개발자를 위한 위젯 & 패키지 예제 모음
 - **BLoC**
 - **Flutter Hooks**
 
-## 🚀 시작하기
+## 시작하기
 
-### 1. 프로젝트 클론
 ```bash
 git clone https://github.com/yourusername/devkit_flutter.git
 cd devkit_flutter
-```
-
-### 2. 패키지 설치
-```bash
 flutter pub get
-```
-
-### 3. 실행
-
-**에뮬레이터 준비:**
-```bash
-# Android Studio 또는 Xcode에서 에뮬레이터 실행
-# 또는 실제 기기를 USB로 연결
-```
-
-**앱 실행:**
-```bash
-# 기본 실행 (디버그 모드)
 flutter run
-
-# 연결된 기기 확인
-flutter devices
-
-# 특정 기기에서 실행
-flutter run -d <device_id>
-
-# 릴리즈 모드 (최종 배포용)
-flutter run --release
-
-# 프로파일 모드 (성능 분석용)
-flutter run --profile
 ```
 
-**실행 중 단축키:** (터미널에서 키만 누르면 됨)
-- `r` - 핫 리로드 (코드 수정 즉시 반영)
-- `R` - 핫 리스타트 (앱 재시작)
-- `h` - 도움말 (모든 단축키 보기)
-- `q` - 앱 종료
+**실행 중 단축키:**
+- `r` — 핫 리로드
+- `R` — 핫 리스타트
+- `q` — 종료
 
-> 💡 디버그 모드에서는 핫 리로드(`r`)로 빠르게 개발할 수 있습니다.
+## 실무 구현 레퍼런스
 
-## 🧪 테스트
+### 애니메이션
+- **Hero** — 이미지 확대 전환
+- **OpenContainer** — 카드 → 상세 페이지 전환
+- **SharedAxisTransition** — 페이지 간 슬라이드/스케일 전환
+- **FadeScaleTransition** — 모달/다이얼로그 페이드
 
-```bash
-# 모든 테스트 실행
-flutter test
-```
+### 히트맵
+- **Contribution Heatmap** — GitHub 스타일 기여도
+- **FL Heatmap** — 데이터 시각화
+- **BodyChart Heatmap** — 신체 부위 시각화
 
-**테스트 항목:**
-- 위젯 UI 검증
-- 아이콘 표시 확인
-- 네비게이션 테스트
+### 센서
+- 가속도계 (기기 기울기), 자이로스코프 (회전 속도), 나침반 (방향)
 
-## 📦 사용된 주요 패키지
+### 날짜 & 시간
+- Board DateTime Picker, Table Calendar, Syncfusion DatePicker
+
+### 피드백 & 로깅
+- Talker (강력한 로거), Feedback (사용자 피드백), Easy Localization (다국어)
+
+### 반응형 & 레이아웃
+- ResponsiveBuilder, Sizer, Flexible/Expanded
+
+## 사용된 주요 패키지
 
 ### 상태 관리
 - **Provider**: provider
@@ -202,35 +182,26 @@ flutter test
 - **기기 프리뷰**: device_preview
 - **OSS 라이선스**: dart_pubspec_licenses
 
-## 🔧 OSS 라이선스 관리
+## OSS 라이선스 관리
 
 패키지 추가 후 라이선스 자동 업데이트:
 
 ```bash
-# 1. 라이선스 생성
 dart run dart_pubspec_licenses:generate
-
-# 2. Python 스크립트로 정리 (SDK 패키지 제거, 죽은 코드 제거)
 python3 tools/clean_oss_licenses.py
 ```
 
-자동으로:
-- SDK 기본 패키지 제거 (_flutter, _flutter_test 등)
-- 사용하지 않는 패키지 정의 제거
-- 빈 줄 정리
-- 깔끔한 코드 생성
-
-## 🛠️ 요구 사항
+## 요구 사항
 
 - Flutter SDK: ^3.10.8
 - Dart SDK: ^3.5.0
 - Python 3 (OSS 라이선스 정리용)
 
-## 📂 프로젝트 구조
+## 프로젝트 구조
 ```
 devkit_flutter/
 ├── lib/
-│   ├── screen/                  # 예제 화면들
+│   ├── screen/                  # 구현 화면들
 │   │   ├── basic_widget/        # 기본 위젯
 │   │   ├── data_processing/     # 데이터 처리
 │   │   ├── ui_package/          # UI 패키지
@@ -250,81 +221,20 @@ devkit_flutter/
 ├── tools/
 │   └── clean_oss_licenses.py    # 라이선스 정리 스크립트
 ├── test/
-│   └── widget_test.dart         # 위젯 테스트
+│   └── widget_test.dart
 └── pubspec.yaml
 ```
 
-## 🌟 주요 예제 하이라이트
+## 소개
 
-### 애니메이션
-- **Hero**: 이미지 확대 전환
-- **OpenContainer**: 카드 → 상세 페이지 전환
-- **SharedAxisTransition**: 페이지 간 슬라이드/스케일 전환
-- **FadeScaleTransition**: 모달/다이얼로그 페이드
+실무 Flutter 개발에서 반복적으로 필요한 위젯과 패키지를 직접 구현하고 검증하며 쌓은 개인 레퍼런스입니다.
 
-### 히트맵
-- **Contribution Heatmap**: GitHub 스타일 기여도
-- **FL Heatmap**: 데이터 시각화
-- **BodyChart Heatmap**: 신체 부위 시각화
+단순 예제가 아닌, 실제 프로젝트에 투입 가능한 수준으로 구현하고 동작을 확인한 코드만 포함합니다. 빠른 코드 참조와 재사용을 목적으로 지속적으로 확장하고 있습니다.
 
-### 센서
-- 가속도계 (기기 기울기)
-- 자이로스코프 (회전 속도)
-- 나침반 (방향)
-
-### 날짜 & 시간
-- Board DateTime Picker (날짜/시간 선택)
-- Table Calendar (달력)
-- Syncfusion DatePicker (고급 날짜 선택)
-
-### 피드백 & 로깅
-- Talker (강력한 로거)
-- Feedback (사용자 피드백 수집)
-- Easy Localization (다국어)
-
-### 반응형 & 레이아웃
-- ResponsiveBuilder (화면 크기별 UI)
-- Sizer (반응형 크기)
-- Flexible/Expanded (유연한 레이아웃)
-
-## 🆕 최근 UI/UX 개선 사항
-
-### 홈 화면
-- 통계 카드 수치를 `ExampleStats` 클래스에서 동적으로 참조 (예제 추가 시 자동 반영)
-- 넓은 화면(태블릿/데스크탑)에서 콘텐츠 중앙 정렬 적용
-- 다크모드에서 subtle 그라디언트 배경 추가 (기존 단색 → 투명도 기반 그라디언트)
-- '뒤로가기 두 번 누르면 종료' 안내 문구를 스크롤 영역 밖 하단에 고정
-
-### 예제 목록 화면
-- **탭 네비게이션 도입**: 기존 FilterChip → AppBar 하단 고정 TabBar (9개 탭)
-- **리스트 레이아웃 변경**: 2열 그리드 카드 → ListView + Divider (ListTile 스타일)
-- **즐겨찾기 탭** 추가 (⭐) — 즐겨찾기한 예제만 모아서 보기
-- **카테고리 순서 고정**: 가나다순 정렬 제거 → 기본위젯 → 데이터 → UI → 네트워크 → 이미지 → 고급 → 상태관리
-- **카테고리 레이블**: 전체·즐겨찾기 탭에서만 표시, 개별 카테고리 탭에서 생략
-- **빈 상태 개선**: 즐겨찾기 탭 / 검색 탭 메시지 분리 + 검색어 초기화 버튼
-- **pull-to-refresh**: 검색어 초기화로 동작 연결 (기존 빈 콜백)
-- **플로팅 버튼 위치**: 하드코딩 제거 → 화면 크기 비례 동적 배치
-- **탭별 ScrollController**: 각 탭이 독립적인 스크롤 위치 유지
-
-## 👨‍💻 프로젝트 소개
-
-Flutter 개발 시 자주 사용하는 위젯과 패키지를 모아둔 개인 레퍼런스입니다.
-
-**목적:**
-- 실무에서 빠른 코드 참조 및 재사용
-- Flutter 개발 역량 강화 및 학습
-- 체계적인 예제 라이브러리 구축
-
-**주요 성과:**
-- 67개 이상의 실용적인 예제 작성
-- 107개 패키지 통합 및 활용
-- Python을 활용한 자동화 스크립트 개발
-- 체계적인 문서화 및 테스트 코드 작성
-
-## 📄 라이선스
+## 라이선스
 
 MIT License
 
 ---
 
-**DevKit Flutter** - Flutter 개발을 더 쉽게! 🚀
+**DevKit Flutter** — 실무에서 검증한 Flutter 레퍼런스

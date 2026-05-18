@@ -37,7 +37,7 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
               ),
             ),
             Text(
-              '데이터 시각화 위젯',
+              '통계 대시보드·진행률·수치 현황을 표시할 때 활용',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -485,19 +485,19 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
                   ),
                   _buildInfoItem(
                     theme: theme,
-                    text: 'DChart: 간단한 차트 (Pie, Bar)',
+                    text: 'DChart: 카테고리 비율(Pie) · 항목 비교(Bar) — 통계 대시보드, 리포트',
                   ),
                   _buildInfoItem(
                     theme: theme,
-                    text: 'Gauge Indicator: 애니메이션 게이지',
+                    text: 'Gauge Indicator: 목표 달성률, 배터리 잔량, 속도계 — 수치 시각화',
                   ),
                   _buildInfoItem(
                     theme: theme,
-                    text: 'Geekyants Gauges: Linear & Radial',
+                    text: 'Geekyants Gauges: Linear(진행 바) · Radial(원형 계기판) — 헬스·IoT 대시보드',
                   ),
                   _buildInfoItem(
                     theme: theme,
-                    text: 'Transform: 위젯 회전/반전',
+                    text: 'Transform: 차트 방향 전환, 미러 효과 — 좌우 대칭 비교 차트',
                   ),
                   _buildInfoItem(
                     theme: theme,
