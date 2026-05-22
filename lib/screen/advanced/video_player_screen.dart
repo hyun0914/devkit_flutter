@@ -17,7 +17,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   String? _error;
 
   static const _sampleUrl =
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
 
   @override
   void initState() {

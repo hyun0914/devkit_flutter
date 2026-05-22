@@ -167,6 +167,8 @@ python3 tools/clean_oss_licenses.py
 
 - Flutter SDK: ^3.10.8
 - Dart SDK: ^3.10.8
+- iOS 15.5 이상 (mobile_scanner 7.x 요구 사항)
+- Android API 21 이상
 - Python 3 (OSS 라이선스 정리용)
 
 ## 프로젝트 구조
