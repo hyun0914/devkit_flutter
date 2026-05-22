@@ -19,6 +19,7 @@ import 'screen/basic_widget/text_widget_screen.dart';
 
 // ── 데이터 처리 ──
 import 'screen/data_processing/date_related_screen.dart';
+import 'screen/data_processing/sqflite_screen.dart';
 import 'screen/data_processing/equatable_screen.dart';
 import 'screen/data_processing/list_map_related_screen.dart';
 import 'screen/data_processing/number_related_screen.dart';
@@ -55,10 +56,12 @@ import 'screen/ui_package/packages/package_utility_screen.dart';
 
 // ── 네트워크 ──
 import 'screen/network/address_search_screen.dart';
+import 'screen/network/go_router_screen.dart';
 import 'screen/network/dio_screen.dart';
 import 'screen/network/web_view_screen.dart';
 
 // ── 이미지/파일 ──
+import 'screen/image_file/camera_screen.dart';
 import 'screen/image_file/file_image_picker_screen.dart';
 import 'screen/image_file/image_widget_screen.dart';
 import 'screen/image_file/pdf_screen.dart';
@@ -70,8 +73,15 @@ import 'screen/advanced/dart3_screen.dart';
 import 'screen/advanced/easy_localization_screen.dart';
 import 'screen/advanced/feedback_screen.dart';
 import 'screen/advanced/local_ai_screen.dart';
+import 'screen/advanced/audio_screen.dart';
+import 'screen/advanced/get_it_screen.dart';
+import 'screen/advanced/isolate_screen.dart';
+import 'screen/advanced/local_auth_screen.dart';
+import 'screen/advanced/video_player_screen.dart';
 import 'screen/advanced/logging_screen.dart';
+import 'screen/advanced/mobile_scanner_screen.dart';
 import 'screen/advanced/mqtt_screen.dart';
+import 'screen/advanced/notifications_screen.dart';
 import 'screen/advanced/sensors_screen.dart';
 import 'screen/advanced/wakelock_screen.dart';
 
@@ -226,6 +236,12 @@ class ExampleData {
           category: Categories.dataProcessing,
           icon: Icons.security,
         ),
+        ExampleItem(
+          title: 'sqflite (로컬 DB)',
+          screen: const SqfliteScreen(),
+          category: Categories.dataProcessing,
+          icon: Icons.table_rows_rounded,
+        ),
 
         // UI 패키지
         ExampleItem(
@@ -359,6 +375,7 @@ class ExampleData {
           screen: const HeatmapScreen(),
           category: Categories.uiPackage,
           icon: Icons.grid_on,
+          isPractical: false,
         ),
         ExampleItem(
           title: '애니메이션',
@@ -371,9 +388,16 @@ class ExampleData {
           screen: const CodeViewScreen(),
           category: Categories.uiPackage,
           icon: Icons.code,
+          isPractical: false,
         ),
 
         // 네트워크
+        ExampleItem(
+          title: 'go_router (라우팅)',
+          screen: const GoRouterScreen(),
+          category: Categories.network,
+          icon: Icons.route_rounded,
+        ),
         ExampleItem(
           title: 'Dio (HTTP 통신)',
           screen: const DioScreen(),
@@ -394,6 +418,12 @@ class ExampleData {
         ),
 
         // 이미지/파일
+        ExampleItem(
+          title: '카메라',
+          screen: const CameraScreen(),
+          category: Categories.imageFile,
+          icon: Icons.camera_alt_rounded,
+        ),
         ExampleItem(
           title: '파일 & 이미지 선택',
           screen: const FileImagePickerScreen(),
@@ -449,6 +479,7 @@ class ExampleData {
           screen: const SensorsScreen(),
           category: Categories.advanced,
           icon: Icons.sensors,
+          isPractical: false,
         ),
         ExampleItem(
           title: '화면 켜짐 유지',
@@ -467,12 +498,56 @@ class ExampleData {
           screen: const MqttScreen(),
           category: Categories.advanced,
           icon: Icons.cloud_sync,
+          isPractical: false,
         ),
         ExampleItem(
           title: 'Local AI (On-Device)',
           screen: const LocalAiScreen(),
           category: Categories.advanced,
           icon: Icons.psychology,
+          isPractical: false,
+        ),
+        ExampleItem(
+          title: '로컬 알림',
+          screen: const NotificationsScreen(),
+          category: Categories.advanced,
+          icon: Icons.notifications_rounded,
+        ),
+        ExampleItem(
+          title: '생체 인증 (local_auth)',
+          screen: const LocalAuthScreen(),
+          category: Categories.advanced,
+          icon: Icons.fingerprint_rounded,
+        ),
+        ExampleItem(
+          title: 'QR / 바코드 스캔',
+          screen: const MobileScannerScreen(),
+          category: Categories.advanced,
+          icon: Icons.qr_code_scanner_rounded,
+        ),
+        ExampleItem(
+          title: 'Isolate (백그라운드)',
+          screen: const IsolateScreen(),
+          category: Categories.advanced,
+          icon: Icons.memory_rounded,
+        ),
+        ExampleItem(
+          title: 'get_it (의존성 주입)',
+          screen: const GetItScreen(),
+          category: Categories.advanced,
+          icon: Icons.hub_rounded,
+        ),
+        ExampleItem(
+          title: '오디오 재생 (just_audio)',
+          screen: const AudioScreen(),
+          category: Categories.advanced,
+          icon: Icons.music_note_rounded,
+        ),
+        ExampleItem(
+          title: '비디오 재생 (video_player)',
+          screen: const VideoPlayerScreen(),
+          category: Categories.advanced,
+          icon: Icons.play_circle_rounded,
         ),
 
         // 상태 관리

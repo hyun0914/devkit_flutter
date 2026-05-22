@@ -17,12 +17,14 @@ class ExampleItem {
   final Widget screen;
   final String category;
   final IconData icon;
+  final bool isPractical;
 
   ExampleItem({
     required this.title,
     required this.screen,
     required this.category,
     required this.icon,
+    this.isPractical = true,
   });
 }
 
@@ -33,7 +35,7 @@ class ExampleStats {
     Categories.uiPackage: 24,
     Categories.network: 3,
     Categories.imageFile: 3,
-    Categories.advanced: 10,
+    Categories.advanced: 11,
     Categories.stateManagement: 4,
   };
 

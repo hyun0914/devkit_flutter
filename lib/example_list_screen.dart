@@ -24,21 +24,26 @@ class _ExampleListScreenState extends State<ExampleListScreen>
   @override
   bool get wantKeepAlive => true;
 
+  // 상단 탭: 전체 / 실무 / 재미용
+  late TabController _topController;
+
+  // 하단 탭: 카테고리 (동적)
+  TabController? _catController;
+  List<String> _cats = [];
+
   final TextEditingController searchController = TextEditingController();
-
-  late final TabController _tabController;
-  final Map<String, ScrollController> _scrollControllers = {};
-
-  GlobalKey tutorialKey = GlobalKey();
-  GlobalKey tutorialKey2 = GlobalKey();
-  GlobalKey tutorialKey3 = GlobalKey();
-
   String searchQuery = '';
   Set<String> favoriteItems = {};
 
-  static const List<String> _categories = [
-    Categories.all,
-    Categories.favorites,
+  final GlobalKey tutorialKey = GlobalKey();
+  final GlobalKey tutorialKey2 = GlobalKey();
+  final GlobalKey tutorialKey3 = GlobalKey();
+
+  final Map<String, ScrollController> _scrollControllers = {};
+
+  late final List<ExampleItem> allExamples;
+
+  static const _orderedCats = [
     Categories.basicWidget,
     Categories.dataProcessing,
     Categories.uiPackage,
@@ -48,23 +53,97 @@ class _ExampleListScreenState extends State<ExampleListScreen>
     Categories.stateManagement,
   ];
 
-  late final List<ExampleItem> allExamples;
-
   @override
   void initState() {
     super.initState();
     allExamples = ExampleData.items;
+    _topController = TabController(length: 3, vsync: this);
+    _topController.addListener(_onTopChanged);
+    _rebuildCats();
     _loadFavorites();
-    _tabController = TabController(length: _categories.length, vsync: this);
-    for (final cat in _categories) {
-      _scrollControllers[cat] = ScrollController();
+  }
+
+  void _onTopChanged() {
+    if (_topController.indexIsChanging) return;
+    setState(() => _rebuildCats());
+  }
+
+  void _rebuildCats() {
+    final newCats = _computeCats();
+
+    String? currentCat;
+    if (_catController != null && _cats.isNotEmpty) {
+      final idx = _catController!.index.clamp(0, _cats.length - 1);
+      currentCat = _cats[idx];
     }
+
+    _catController?.dispose();
+    _cats = newCats;
+
+    for (final cat in _cats) {
+      _scrollControllers.putIfAbsent(cat, () => ScrollController());
+    }
+
+    final newIdx = (currentCat != null && newCats.contains(currentCat))
+        ? newCats.indexOf(currentCat)
+        : 0;
+
+    _catController = TabController(
+      length: newCats.length,
+      vsync: this,
+      initialIndex: newIdx,
+    );
+  }
+
+  List<String> _computeCats() {
+    final topFiltered = _applyTopFilter(allExamples);
+    final searchFiltered = searchQuery.isEmpty
+        ? topFiltered
+        : topFiltered
+            .where((e) =>
+                e.title.toLowerCase().contains(searchQuery.toLowerCase()))
+            .toList();
+
+    final usedCats = searchFiltered.map((e) => e.category).toSet();
+    final result = <String>[Categories.all];
+
+    if (favoriteItems.isNotEmpty &&
+        searchFiltered.any((e) => favoriteItems.contains(e.title))) {
+      result.add(Categories.favorites);
+    }
+
+    for (final cat in _orderedCats) {
+      if (usedCats.contains(cat)) result.add(cat);
+    }
+
+    return result;
+  }
+
+  List<ExampleItem> _applyTopFilter(List<ExampleItem> items) {
+    final idx = _topController.index;
+    if (idx == 0) return items;
+    return items.where((e) => idx == 1 ? e.isPractical : !e.isPractical).toList();
+  }
+
+  List<ExampleItem> _getFilteredItems(String category) {
+    final topFiltered = _applyTopFilter(allExamples);
+    return topFiltered.where((e) {
+      final matchesSearch =
+          e.title.toLowerCase().contains(searchQuery.toLowerCase());
+      final matchesCategory = category == Categories.all
+          ? true
+          : category == Categories.favorites
+              ? favoriteItems.contains(e.title)
+              : e.category == category;
+      return matchesSearch && matchesCategory;
+    }).toList();
   }
 
   Future<void> _loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       favoriteItems = prefs.getStringList('favorites')?.toSet() ?? {};
+      _rebuildCats();
     });
   }
 
@@ -76,20 +155,9 @@ class _ExampleListScreenState extends State<ExampleListScreen>
       } else {
         favoriteItems.add(title);
       }
+      _rebuildCats();
     });
     await prefs.setStringList('favorites', favoriteItems.toList());
-  }
-
-  List<ExampleItem> _getFilteredItems(String category) {
-    return allExamples.where((example) {
-      final matchesSearch =
-          example.title.toLowerCase().contains(searchQuery.toLowerCase());
-      final matchesCategory = category == Categories.all ||
-          (category == Categories.favorites
-              ? favoriteItems.contains(example.title)
-              : example.category == category);
-      return matchesSearch && matchesCategory;
-    }).toList();
   }
 
   Future<void> _handleTap(BuildContext context, ExampleItem example) async {
@@ -159,8 +227,8 @@ class _ExampleListScreenState extends State<ExampleListScreen>
           keyTarget: tutorialKey2,
           shape: ShapeLightFocus.RRect,
           paddingFocus: 1,
-          align: ContentAlign.top,
-          padding: const EdgeInsets.fromLTRB(160, 0, 0, 10),
+          align: ContentAlign.bottom,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             Text('검색 기능으로 예제를 빠르게 찾을 수 있습니다',
@@ -172,31 +240,25 @@ class _ExampleListScreenState extends State<ExampleListScreen>
           keyTarget: tutorialKey3,
           shape: ShapeLightFocus.RRect,
           paddingFocus: 1,
-          align: ContentAlign.bottom,
+          align: ContentAlign.top,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text('탭을 눌러 카테고리를 전환할 수 있습니다',
+            Text('카테고리 탭으로 분류별로 볼 수 있습니다',
                 style: TextStyle(fontSize: 16, color: Colors.white)),
           ],
         ),
       ],
       colorShadow: Colors.grey.shade200,
-      onClickTarget: (target) => debugPrint('onClickTarget $target'),
-      onClickTargetWithTapPosition: (target, tapDetails) =>
-          debugPrint('onClickTargetWithTapPosition\n$target\n$tapDetails'),
-      onClickOverlay: (target) => debugPrint('onClickOverlay $target'),
-      onSkip: () {
-        debugPrint('onSkip');
-        return true;
-      },
-      onFinish: () => debugPrint('onFinish'),
+      onSkip: () => true,
     ).show(context: context);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _topController.removeListener(_onTopChanged);
+    _topController.dispose();
+    _catController?.dispose();
     for (final ctrl in _scrollControllers.values) {
       ctrl.dispose();
     }
@@ -237,7 +299,10 @@ class _ExampleListScreenState extends State<ExampleListScreen>
               TextButton.icon(
                 onPressed: () {
                   searchController.clear();
-                  setState(() => searchQuery = '');
+                  setState(() {
+                    searchQuery = '';
+                    _rebuildCats();
+                  });
                 },
                 icon: const Icon(Icons.clear, size: 16),
                 label: const Text('검색어 초기화'),
@@ -254,7 +319,10 @@ class _ExampleListScreenState extends State<ExampleListScreen>
     return CustomMaterialIndicator(
       onRefresh: () async {
         searchController.clear();
-        setState(() => searchQuery = '');
+        setState(() {
+          searchQuery = '';
+          _rebuildCats();
+        });
       },
       indicatorBuilder: (context, controller) => const Icon(
         Icons.refresh,
@@ -290,6 +358,8 @@ class _ExampleListScreenState extends State<ExampleListScreen>
     super.build(context);
     final theme = Theme.of(context);
     final screenSize = MediaQuery.of(context).size;
+    final catController = _catController;
+    if (catController == null) return const SizedBox();
 
     return FloatingDraggableWidget(
       floatingWidgetWidth: 48,
@@ -300,7 +370,8 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         key: tutorialKey,
         backgroundColor: theme.colorScheme.primaryContainer,
         onPressed: () {
-          final cat = _categories[_tabController.index];
+          if (_cats.isEmpty) return;
+          final cat = _cats[catController.index];
           final ctrl = _scrollControllers[cat];
           if (ctrl == null || !ctrl.hasClients) return;
           final pos = ctrl.position;
@@ -324,32 +395,20 @@ class _ExampleListScreenState extends State<ExampleListScreen>
             ),
           ],
           bottom: TabBar(
-            key: tutorialKey3,
-            controller: _tabController,
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            tabs: _categories.map((cat) {
-              if (cat == Categories.favorites) {
-                return const Tab(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.star_rounded, size: 14),
-                      SizedBox(width: 4),
-                      Text('즐겨찾기'),
-                    ],
-                  ),
-                );
-              }
-              return Tab(text: cat);
-            }).toList(),
+            controller: _topController,
+            tabs: const [
+              Tab(text: '전체'),
+              Tab(text: '실무'),
+              Tab(text: '특수'),
+            ],
           ),
         ),
         body: Column(
           children: [
+            // 검색
             Padding(
               key: tutorialKey2,
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
@@ -360,7 +419,10 @@ class _ExampleListScreenState extends State<ExampleListScreen>
                           icon: const Icon(Icons.clear),
                           onPressed: () {
                             searchController.clear();
-                            setState(() => searchQuery = '');
+                            setState(() {
+                              searchQuery = '';
+                              _rebuildCats();
+                            });
                           },
                         )
                       : null,
@@ -371,13 +433,41 @@ class _ExampleListScreenState extends State<ExampleListScreen>
                   fillColor: theme.colorScheme.surfaceContainerHighest
                       .withValues(alpha: 0.3),
                 ),
-                onChanged: (value) => setState(() => searchQuery = value),
+                onChanged: (value) => setState(() {
+                  searchQuery = value;
+                  _rebuildCats();
+                }),
               ),
             ),
+
+            // 하단 카테고리 탭 (동적)
+            TabBar(
+              key: tutorialKey3,
+              controller: catController,
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
+              tabs: _cats.map((cat) {
+                if (cat == Categories.favorites) {
+                  return const Tab(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.star_rounded, size: 14),
+                        SizedBox(width: 4),
+                        Text('즐겨찾기'),
+                      ],
+                    ),
+                  );
+                }
+                return Tab(text: cat);
+              }).toList(),
+            ),
+
+            // 콘텐츠
             Expanded(
               child: TabBarView(
-                controller: _tabController,
-                children: _categories.map((cat) {
+                controller: catController,
+                children: _cats.map((cat) {
                   final items = _getFilteredItems(cat);
                   final ctrl = _scrollControllers[cat]!;
                   return _buildTabContent(context, theme, cat, items, ctrl);
