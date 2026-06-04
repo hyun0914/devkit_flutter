@@ -227,7 +227,7 @@ class SelectHomeView extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          '실무에서 바로 활용 가능한 위젯 & 패키지 예제를 한 곳에서 확인하세요.',
+          'Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 앱입니다.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
             height: 1.5,
