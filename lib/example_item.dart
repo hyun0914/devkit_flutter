@@ -31,16 +31,16 @@ class ExampleItem {
 class ExampleStats {
   static const _categoryCounts = {
     Categories.basicWidget: 15,
-    Categories.dataProcessing: 8,
+    Categories.dataProcessing: 9,
     Categories.uiPackage: 24,
-    Categories.network: 3,
-    Categories.imageFile: 3,
-    Categories.advanced: 11,
+    Categories.network: 5,
+    Categories.imageFile: 4,
+    Categories.advanced: 17,
     Categories.stateManagement: 4,
   };
 
   static int get totalExamples =>
       _categoryCounts.values.reduce((a, b) => a + b);
   static int get totalCategories => _categoryCounts.length;
-  static const int totalPackages = 107;
+  static const int totalPackages = 117;
 }

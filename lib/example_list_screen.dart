@@ -13,7 +13,9 @@ import 'screen/widget/example_list_tile.dart';
 export 'example_item.dart';
 
 class ExampleListScreen extends StatefulWidget {
-  const ExampleListScreen({super.key});
+  const ExampleListScreen({super.key, this.initialCategory});
+
+  final String? initialCategory;
 
   @override
   State<ExampleListScreen> createState() => _ExampleListScreenState();
@@ -84,9 +86,12 @@ class _ExampleListScreenState extends State<ExampleListScreen>
       _scrollControllers.putIfAbsent(cat, () => ScrollController());
     }
 
+    final initialCat = widget.initialCategory;
     final newIdx = (currentCat != null && newCats.contains(currentCat))
         ? newCats.indexOf(currentCat)
-        : 0;
+        : (initialCat != null && newCats.contains(initialCat))
+            ? newCats.indexOf(initialCat)
+            : 0;
 
     _catController = TabController(
       length: newCats.length,

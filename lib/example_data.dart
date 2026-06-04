@@ -56,6 +56,7 @@ import 'screen/ui_package/packages/package_utility_screen.dart';
 
 // ── 네트워크 ──
 import 'screen/network/address_search_screen.dart';
+import 'screen/network/connectivity_screen.dart';
 import 'screen/network/go_router_screen.dart';
 import 'screen/network/dio_screen.dart';
 import 'screen/network/web_view_screen.dart';
@@ -392,6 +393,12 @@ class ExampleData {
         ),
 
         // 네트워크
+        ExampleItem(
+          title: '네트워크 연결 상태',
+          screen: const ConnectivityScreen(),
+          category: Categories.network,
+          icon: Icons.wifi_tethering_rounded,
+        ),
         ExampleItem(
           title: 'go_router (라우팅)',
           screen: const GoRouterScreen(),

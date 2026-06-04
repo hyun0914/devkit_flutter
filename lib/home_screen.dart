@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,6 +73,7 @@ class SelectHomeView extends StatelessWidget {
         body: SafeArea(
           child: Container(
             width: double.infinity,
+            height: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDark
@@ -89,81 +89,32 @@ class SelectHomeView extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 480),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 상단 타이틀 영역
-                        _buildHeader(theme),
-                        const SizedBox(height: 32),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 480),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 48),
 
-                        // 통계 카드
-                        _buildStatsCard(theme),
-                        const SizedBox(height: 24),
+                      // 헤더
+                      _buildHeader(theme),
+                      const SizedBox(height: 32),
 
-                        // 메뉴 섹션 타이틀
-                        Text(
-                          '주요 기능',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onSurface,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
+                      // 통계 카드
+                      _buildStatsCard(theme),
+                      const SizedBox(height: 24),
 
-                        // 메뉴 버튼들
-                        _HomeButton(
-                          icon: Icons.apps_rounded,
-                          label: '예제 앱 화면 열기',
-                          description: '다양한 위젯 & 패키지 샘플',
-                          gradient: LinearGradient(
-                            colors: [
-                              theme.colorScheme.primaryContainer,
-                              theme.colorScheme.primary.withValues(alpha: 0.3),
-                            ],
-                          ),
-                          onPressed: () async {
-                            await Future.delayed(
-                              const Duration(milliseconds: 300),
-                            );
-                            if (context.mounted) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const ExampleListScreen(),
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                        _HomeButton(
-                          icon: Icons.wifi_tethering_rounded,
-                          label: '네트워크 상태 체크',
-                          description: 'WiFi / 모바일 데이터 확인',
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.withValues(alpha: 0.2),
-                              Colors.blue.withValues(alpha: 0.1),
-                            ],
-                          ),
-                          onPressed: cheekConnectivity,
-                        ),
-                        const SizedBox(height: 12),
-                        _HomeButton(
-                          icon: Icons.description_outlined,
-                          label: '오픈소스 라이선스',
-                          description: '사용 중인 패키지 목록',
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.orange.withValues(alpha: 0.2),
-                              Colors.orange.withValues(alpha: 0.1),
-                            ],
-                          ),
+                      // 카테고리 그리드
+                      _buildCategoryGrid(context, theme),
+
+                      const Spacer(),
+
+                      // OSS 링크
+                      Center(
+                        child: TextButton(
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -171,9 +122,16 @@ class SelectHomeView extends StatelessWidget {
                               ),
                             );
                           },
+                          child: Text(
+                            '오픈소스 라이선스',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.outline,
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
                 ),
               ),
@@ -181,6 +139,118 @@ class SelectHomeView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildStatsCard(ThemeData theme) {
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(20),
+      color: theme.colorScheme.surface,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Expanded(
+              child: _StatItem(
+                icon: Icons.widgets_outlined,
+                label: '총 예제',
+                value: '${ExampleStats.totalExamples}',
+                color: theme.colorScheme.primary,
+              ),
+            ),
+            Expanded(
+              child: _StatItem(
+                icon: Icons.category_outlined,
+                label: '카테고리',
+                value: '${ExampleStats.totalCategories}',
+                color: Colors.orange,
+              ),
+            ),
+            Expanded(
+              child: _StatItem(
+                icon: Icons.extension_outlined,
+                label: '패키지',
+                value: '${ExampleStats.totalPackages}+',
+                color: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryGrid(BuildContext context, ThemeData theme) {
+    final categories = [
+      (Icons.apps_rounded, Categories.all, theme.colorScheme.primary),
+      (Icons.widgets_outlined, Categories.basicWidget, theme.colorScheme.primary),
+      (Icons.storage_outlined, Categories.dataProcessing, Colors.teal),
+      (Icons.palette_outlined, Categories.uiPackage, Colors.purple),
+      (Icons.cloud_outlined, Categories.network, Colors.blue),
+      (Icons.image_outlined, Categories.imageFile, Colors.orange),
+      (Icons.bolt_outlined, Categories.advanced, Colors.red),
+      (Icons.layers_outlined, Categories.stateManagement, Colors.indigo),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '카테고리',
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 12),
+        GridView.count(
+          crossAxisCount: 4,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 1.1,
+          children: categories.map((c) {
+            return Material(
+              color: c.$3.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              child: InkWell(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ExampleListScreen(
+                      initialCategory: c.$2 == Categories.all ? null : c.$2,
+                    ),
+                  ),
+                ),
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: c.$3.withValues(alpha: 0.2)),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 6,
+                    children: [
+                      Icon(c.$1, color: c.$3, size: 22),
+                      Text(
+                        c.$2,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurface,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -237,69 +307,8 @@ class SelectHomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsCard(ThemeData theme) {
-    return Material(
-      elevation: 2,
-      borderRadius: BorderRadius.circular(20),
-      color: theme.colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.analytics_outlined,
-                  color: theme.colorScheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '프로젝트 통계',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _StatItem(
-                    icon: Icons.widgets_outlined,
-                    label: '총 예제',
-                    value: '${ExampleStats.totalExamples}',
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-                Expanded(
-                  child: _StatItem(
-                    icon: Icons.category_outlined,
-                    label: '카테고리',
-                    value: '${ExampleStats.totalCategories}',
-                    color: Colors.orange,
-                  ),
-                ),
-                Expanded(
-                  child: _StatItem(
-                    icon: Icons.extension_outlined,
-                    label: '패키지',
-                    value: '${ExampleStats.totalPackages}+',
-                    color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
-// 통계 아이템 위젯
 class _StatItem extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -347,86 +356,6 @@ class _StatItem extends StatelessWidget {
   }
 }
 
-// 홈 화면용 공통 버튼 위젯
-class _HomeButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String description;
-  final Gradient gradient;
-  final VoidCallback onPressed;
-
-  const _HomeButton({
-    required this.icon,
-    required this.label,
-    required this.description,
-    required this.gradient,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradient,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.1),
-        ),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, size: 24),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        description,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 void showToast({
   required String msg,
 }) {
@@ -439,18 +368,6 @@ void showToast({
   );
 }
 
-void cheekConnectivity() async {
-  final List<ConnectivityResult> connectivityResult =
-      await (Connectivity().checkConnectivity());
-
-  if (connectivityResult.contains(ConnectivityResult.wifi)) {
-    showToast(msg: '📶 WiFi 사용 중입니다.');
-  } else if (connectivityResult.contains(ConnectivityResult.mobile)) {
-    showToast(msg: '📱 모바일 데이터 사용 중입니다.');
-  } else if (connectivityResult.contains(ConnectivityResult.none)) {
-    showToast(msg: '❌ 네트워크 연결을 확인하세요.');
-  }
-}
 
 DateTime? backPressTime;
 void onBackTwo() {
