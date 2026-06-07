@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,12 +24,42 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
   
   final FocusNode _emailFocus = FocusNode();
 
+  // 입력 트리거 비교용
+  final _debounceController = TextEditingController();
+  Timer? _debounceTimer;
+  String _debounceResult = '';
+
+  final _submitController = TextEditingController();
+  String _submitResult = '';
+
+  final _blurController = TextEditingController();
+  final FocusNode _blurFocus = FocusNode();
+  String _blurResult = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // 포커스를 잃는 순간을 감지하려면 onEditingComplete가 아닌 FocusNode 리스너가 필요하다
+    _blurFocus.addListener(() {
+      if (!_blurFocus.hasFocus && _blurController.text.isNotEmpty) {
+        setState(() {
+          _blurResult = '포커스 해제 → "${_blurController.text}" 실행';
+        });
+      }
+    });
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _emailFocus.dispose();
+    _debounceTimer?.cancel();
+    _debounceController.dispose();
+    _submitController.dispose();
+    _blurController.dispose();
+    _blurFocus.dispose();
     super.dispose();
   }
 
@@ -364,6 +396,164 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                     fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                     border: InputBorder.none,
                   ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // 입력 트리거 비교
+              _buildSectionHeader(theme, Icons.compare_arrows, '입력 트리거 비교'),
+              const SizedBox(height: 4),
+              Text(
+                '같은 "검색 실행"이라도 언제 트리거하느냐에 따라 사용자 경험과 서버 부하가 달라집니다',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildExampleCard(
+                theme: theme,
+                title: '① 디바운스 (Timer) — 타이핑이 멈추면 실행',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    TextField(
+                      controller: _debounceController,
+                      decoration: InputDecoration(
+                        hintText: '입력 후 500ms 동안 멈추면 자동 실행',
+                        prefixIcon: const Icon(Icons.timer_outlined),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        _debounceTimer?.cancel();
+                        _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+                          setState(() {
+                            _debounceResult = '500ms 대기 후 실행 → "$value"';
+                          });
+                        });
+                      },
+                    ),
+                    if (_debounceResult.isNotEmpty)
+                      Text(
+                        _debounceResult,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildExampleCard(
+                theme: theme,
+                title: '② 완료 버튼 (onSubmitted) — 키보드 완료를 누르면 실행',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    TextField(
+                      controller: _submitController,
+                      textInputAction: TextInputAction.search,
+                      decoration: InputDecoration(
+                        hintText: '입력 후 키보드의 완료(검색) 버튼을 눌러보세요',
+                        prefixIcon: const Icon(Icons.keyboard_return),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onSubmitted: (value) {
+                        setState(() {
+                          _submitResult = '완료 버튼 클릭 → "$value" 실행';
+                        });
+                      },
+                    ),
+                    if (_submitResult.isNotEmpty)
+                      Text(
+                        _submitResult,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildExampleCard(
+                theme: theme,
+                title: '③ 포커스 해제 (FocusNode) — 다른 곳을 탭하면 실행',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    TextField(
+                      controller: _blurController,
+                      focusNode: _blurFocus,
+                      decoration: InputDecoration(
+                        hintText: '입력 후 다른 영역을 탭해 포커스를 해제해보세요',
+                        prefixIcon: const Icon(Icons.center_focus_weak),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    if (_blurResult.isNotEmpty)
+                      Text(
+                        _blurResult,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.compare_arrows,
+                          color: theme.colorScheme.primary,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '비교',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '• 디바운스: 입력마다 호출되는 자동완성/실시간 검색에 적합 (서버 부하 ↓)\n'
+                      '• onSubmitted: 사용자가 명확히 "검색" 의도를 표현했을 때만 실행하고 싶을 때\n'
+                      '• FocusNode(포커스 해제): 입력을 마치고 다른 작업으로 넘어가는 시점에 저장/검증할 때\n'
+                      '   ※ onEditingComplete는 키보드 완료 액션 시 호출되어 onSubmitted와 유사하며,\n'
+                      '     "포커스 손실" 자체를 감지하려면 FocusNode 리스너(hasFocus)가 필요합니다',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
