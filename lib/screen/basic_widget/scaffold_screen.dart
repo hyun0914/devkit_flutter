@@ -11,6 +11,14 @@ class _ScaffoldScreenState extends State<ScaffoldScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
 
+  // BottomNavigationBar 데모
+  int _navIndex = 0;
+  BottomNavigationBarType _navType = BottomNavigationBarType.fixed;
+  bool _showActiveIcon = true;
+  bool _showLabels = true;
+  bool _removeElevation = false;
+  bool _removeAnimation = false;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -20,12 +28,22 @@ class _ScaffoldScreenState extends State<ScaffoldScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Scaffold & Drawer'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-          tooltip: '좌측 Drawer',
+        leadingWidth: 96,
+        leading: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new),
+              onPressed: () => Navigator.of(context).pop(),
+              tooltip: '뒤로가기',
+            ),
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+              tooltip: '좌측 Drawer',
+            ),
+          ],
         ),
         actions: [
           IconButton(
@@ -220,6 +238,63 @@ class _ScaffoldScreenState extends State<ScaffoldScreen> {
                   ],
                 ),
               ),
+
+              // BottomNavigationBar 데모
+              _buildBottomNavDemo(theme),
+
+              // SafeArea 상세
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.phone_android,
+                          color: theme.colorScheme.primary,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'SafeArea 파라미터',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'Notch, 상태바, 홈 인디케이터와 겹치지 않도록 자동 패딩 적용',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    _buildSafeAreaItem(theme, 'top: true (기본)', '상태바·노치 영역 회피'),
+                    _buildSafeAreaItem(theme, 'bottom: true (기본)', '홈 인디케이터 영역 회피'),
+                    _buildSafeAreaItem(theme, 'left / right: true (기본)', '사이드 노치 대응'),
+                    _buildSafeAreaItem(theme, 'top: false', '상단 패딩 제거 — AppBar 아래 배치 시 사용'),
+                    _buildSafeAreaItem(theme, 'minimum: EdgeInsets.all(8)', '최소 패딩 보장'),
+                    const Divider(height: 1),
+                    Text(
+                      '💡 AppBar가 있으면 top: false 권장\n'
+                      '   하단 FAB·BottomBar는 bottom: false 후 직접 패딩',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.6,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -240,7 +315,66 @@ class _ScaffoldScreenState extends State<ScaffoldScreen> {
         icon: const Icon(Icons.add),
         label: const Text('FAB'),
       ),
+      bottomNavigationBar: _buildBottomNav(theme),
     );
+  }
+
+  Widget _buildBottomNav(ThemeData theme) {
+    final isShifting = _navType == BottomNavigationBarType.shifting;
+
+    final items = [
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.home_outlined),
+        activeIcon: _showActiveIcon ? const Icon(Icons.home) : null,
+        label: '홈',
+        backgroundColor:
+            isShifting ? theme.colorScheme.primaryContainer : null,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.search_outlined),
+        activeIcon: _showActiveIcon ? const Icon(Icons.search) : null,
+        label: '검색',
+        backgroundColor:
+            isShifting ? theme.colorScheme.secondaryContainer : null,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.favorite_outline),
+        activeIcon: _showActiveIcon ? const Icon(Icons.favorite) : null,
+        label: '즐겨찾기',
+        backgroundColor:
+            isShifting ? theme.colorScheme.tertiaryContainer : null,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.person_outline),
+        activeIcon: _showActiveIcon ? const Icon(Icons.person) : null,
+        label: '프로필',
+        backgroundColor:
+            isShifting ? theme.colorScheme.surfaceContainerHighest : null,
+      ),
+    ];
+
+    final nav = BottomNavigationBar(
+      currentIndex: _navIndex,
+      onTap: (i) => setState(() => _navIndex = i),
+      type: _navType,
+      elevation: _removeElevation ? 0 : 8,
+      showSelectedLabels: _showLabels,
+      showUnselectedLabels: _showLabels,
+      selectedItemColor: theme.colorScheme.primary,
+      unselectedItemColor: theme.colorScheme.onSurfaceVariant,
+      items: items,
+    );
+
+    if (_removeAnimation) {
+      return Theme(
+        data: theme.copyWith(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: nav,
+      );
+    }
+    return nav;
   }
 
   // 좌측 Drawer
@@ -604,6 +738,248 @@ class _ScaffoldScreenState extends State<ScaffoldScreen> {
           trailing,
         ],
       ),
+    );
+  }
+
+  Widget _buildSafeAreaItem(ThemeData theme, String param, String desc) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 2),
+          width: 6,
+          height: 6,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              children: [
+                TextSpan(
+                  text: '$param  ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: desc),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // BottomNavigationBar 데모 섹션
+  Widget _buildBottomNavDemo(ThemeData theme) {
+    final isShifting = _navType == BottomNavigationBarType.shifting;
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 0,
+        children: [
+          // 헤더
+          Row(
+            children: [
+              Icon(Icons.tab, color: theme.colorScheme.secondary, size: 24),
+              const SizedBox(width: 12),
+              Text(
+                'BottomNavigationBar',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '하단의 실제 바에 즉시 반영됩니다',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Type 토글
+          _buildNavSwitchTile(
+            theme: theme,
+            title: 'Shifting 타입',
+            subtitle: 'fixed: 고정 크기  /  shifting: 선택 탭 올라오는 애니메이션',
+            value: isShifting,
+            onChanged: (v) => setState(() => _navType = v
+                ? BottomNavigationBarType.shifting
+                : BottomNavigationBarType.fixed),
+          ),
+
+          // shifting 경고
+          if (isShifting)
+            Container(
+              margin: const EdgeInsets.only(bottom: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.orange.withValues(alpha: 0.4)),
+              ),
+              child: Row(
+                spacing: 8,
+                children: [
+                  const Icon(Icons.warning_amber_rounded,
+                      color: Colors.orange, size: 16),
+                  Expanded(
+                    child: Text(
+                      'shifting 타입: selectedItemColor 미설정 시 아이콘이 흰색으로 안 보일 수 있음',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.orange.shade800),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          // activeIcon 토글
+          _buildNavSwitchTile(
+            theme: theme,
+            title: 'activeIcon 사용',
+            subtitle: '선택 시 다른 아이콘 표시 (outlined → filled)',
+            value: _showActiveIcon,
+            onChanged: (v) => setState(() => _showActiveIcon = v),
+          ),
+
+          // 레이블 토글
+          _buildNavSwitchTile(
+            theme: theme,
+            title: '레이블 표시',
+            subtitle: 'showSelectedLabels / showUnselectedLabels',
+            value: _showLabels,
+            onChanged: (v) => setState(() => _showLabels = v),
+          ),
+
+          // elevation 토글
+          _buildNavSwitchTile(
+            theme: theme,
+            title: 'elevation 제거',
+            subtitle: '기본값 8  →  0으로 설정 시 그림자 제거',
+            value: _removeElevation,
+            onChanged: (v) => setState(() => _removeElevation = v),
+          ),
+
+          // 애니메이션 제거 토글
+          _buildNavSwitchTile(
+            theme: theme,
+            title: '탭 애니메이션(ripple) 제거',
+            subtitle: 'Theme(splashColor / highlightColor: transparent)',
+            value: _removeAnimation,
+            onChanged: (v) => setState(() => _removeAnimation = v),
+          ),
+
+          const SizedBox(height: 8),
+
+          // 비교표
+          Table(
+            border: TableBorder.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            columnWidths: const {
+              0: FlexColumnWidth(2),
+              1: FlexColumnWidth(1.5),
+              2: FlexColumnWidth(1.5),
+            },
+            children: [
+              _buildTableRow(theme, ['속성', 'fixed', 'shifting'],
+                  isHeader: true),
+              _buildTableRow(
+                  theme, ['backgroundColor', 'Bar 전체', '아이템별 설정']),
+              _buildTableRow(
+                  theme, ['기본 아이템 수', '3개 이하', '4개 이상']),
+              _buildTableRow(
+                  theme, ['탭 크기', '균등 고정', '선택 탭 확대']),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          // 참고 노트
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              '💡 bottomNavigationBar에 TabBar도 사용 가능\n'
+              '   SVG 아이콘: activeIcon에 SvgPicture 위젯 사용\n'
+              '   아이콘 크기 변화 방지: selectedFontSize == unselectedFontSize',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.6,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavSwitchTile({
+    required ThemeData theme,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return SwitchListTile(
+      title: Text(title, style: theme.textTheme.bodyMedium),
+      subtitle: Text(subtitle,
+          style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant)),
+      value: value,
+      onChanged: onChanged,
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+    );
+  }
+
+  TableRow _buildTableRow(ThemeData theme, List<String> cells,
+      {bool isHeader = false}) {
+    return TableRow(
+      decoration: isHeader
+          ? BoxDecoration(
+              color:
+                  theme.colorScheme.secondaryContainer.withValues(alpha: 0.5),
+            )
+          : null,
+      children: cells
+          .map(
+            (c) => Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              child: Text(
+                c,
+                style: isHeader
+                    ? theme.textTheme.labelSmall
+                        ?.copyWith(fontWeight: FontWeight.bold)
+                    : theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ void main() async {
   ImageCacheSetting();
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 7));
 
   runApp(
     ProviderScope(

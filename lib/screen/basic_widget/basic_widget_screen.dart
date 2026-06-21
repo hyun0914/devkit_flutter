@@ -31,7 +31,16 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
   List<String> strList = ['커피', '치킨', '햄버거', '피자', '파스타', '족발', '갈비찜'];
   String dropdownValue = '테스트1';
   String dropdownFormValue = '테스트항목1';
+  String _overlayDropdownValue = '옵션 1';
+  bool _isOverlayDropdownOpen = false;
+  final LayerLink _dropdownLayerLink = LayerLink();
+  OverlayEntry? _dropdownOverlay;
   bool ignorePointerEnabled = false;
+  bool _absorbPointerEnabled = true;
+  String _clipboardRead = '';
+  String _hitBehaviorLog = '';
+  int _chipSingleIndex = 0;
+  final Set<int> _chipMultiSelected = {0, 2};
 
   // Keys
   final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
@@ -302,6 +311,113 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                         ),
                       ),
                     ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'Align (정렬 위치)',
+                      child: SizedBox(
+                        height: 100,
+                        child: Row(
+                          children: [
+                            Expanded(child: _buildAlignBox(theme, Alignment.topLeft, 'topLeft')),
+                            const SizedBox(width: 4),
+                            Expanded(child: _buildAlignBox(theme, Alignment.center, 'center')),
+                            const SizedBox(width: 4),
+                            Expanded(child: _buildAlignBox(theme, Alignment.bottomRight, 'bottomRight')),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'Wrap (자동 줄바꿈 / spacing·runSpacing)',
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: ['Flutter', 'Dart', 'Widget', 'Layout', 'Build', 'Design']
+                            .map((label) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primaryContainer,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(label,
+                                      style: theme.textTheme.labelMedium),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'ConstrainedBox (최소/최대 크기 제약)',
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            minWidth: 180,
+                            minHeight: 56,
+                            maxHeight: 80,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: theme.colorScheme.primary, width: 2),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'minWidth: 180  minHeight: 56',
+                                style: theme.textTheme.bodySmall,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'IntrinsicWidth (가장 넓은 자식 기준 너비 통일)',
+                      child: Center(
+                        child: IntrinsicWidth(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.primaryContainer,
+                                  borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(8)),
+                                ),
+                                child: Text('짧음',
+                                    style: theme.textTheme.bodySmall),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                color: theme.colorScheme.secondaryContainer,
+                                child: Text('조금 더 긴 텍스트',
+                                    style: theme.textTheme.bodySmall),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.tertiaryContainer,
+                                  borderRadius: const BorderRadius.vertical(
+                                      bottom: Radius.circular(8)),
+                                ),
+                                child: Text('가장 긴 텍스트 예시입니다',
+                                    style: theme.textTheme.bodySmall),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
 
@@ -415,6 +531,47 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                     const SizedBox(height: 12),
                     _buildExampleItem(
                       theme: theme,
+                      title: 'ChoiceChip (단일 선택)',
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: List.generate(
+                          strList.length,
+                          (index) => ChoiceChip(
+                            label: Text(strList[index]),
+                            selected: _chipSingleIndex == index,
+                            onSelected: (_) =>
+                                setState(() => _chipSingleIndex = index),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'ChoiceChip (복수 선택)',
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: List.generate(
+                          strList.length,
+                          (index) => ChoiceChip(
+                            label: Text(strList[index]),
+                            selected: _chipMultiSelected.contains(index),
+                            onSelected: (selected) => setState(() {
+                              if (selected) {
+                                _chipMultiSelected.add(index);
+                              } else {
+                                _chipMultiSelected.remove(index);
+                              }
+                            }),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
                       title: 'Tooltip',
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -483,31 +640,80 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                     _buildExampleItem(
                       theme: theme,
                       title: 'ClipRRect & ClipOval (이미지 모양)',
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: Column(
+                        spacing: 12,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              width: 100,
-                              height: 70,
-                              color: theme.colorScheme.primaryContainer,
-                              child: Icon(
-                                Icons.image,
-                                size: 40,
-                                color: theme.colorScheme.primary,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                spacing: 4,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Container(
+                                      width: 80,
+                                      height: 60,
+                                      color: theme.colorScheme.primaryContainer,
+                                      child: Icon(Icons.image,
+                                          size: 32,
+                                          color: theme.colorScheme.primary),
+                                    ),
+                                  ),
+                                  Text('circular(12)',
+                                      style: theme.textTheme.labelSmall),
+                                ],
                               ),
-                            ),
+                              Column(
+                                spacing: 4,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: Container(
+                                      width: 80,
+                                      height: 80,
+                                      color: theme.colorScheme.tertiaryContainer,
+                                      child: Icon(Icons.image,
+                                          size: 32,
+                                          color: theme.colorScheme.tertiary),
+                                    ),
+                                  ),
+                                  Text('원형 (size/2)',
+                                      style: theme.textTheme.labelSmall),
+                                ],
+                              ),
+                              Column(
+                                spacing: 4,
+                                children: [
+                                  ClipOval(
+                                    child: Container(
+                                      width: 80,
+                                      height: 80,
+                                      color:
+                                          theme.colorScheme.secondaryContainer,
+                                      child: Icon(Icons.person,
+                                          size: 32,
+                                          color: theme.colorScheme.secondary),
+                                    ),
+                                  ),
+                                  Text('ClipOval',
+                                      style: theme.textTheme.labelSmall),
+                                ],
+                              ),
+                            ],
                           ),
-                          ClipOval(
-                            child: Container(
-                              width: 70,
-                              height: 70,
-                              color: theme.colorScheme.secondaryContainer,
-                              child: Icon(
-                                Icons.person,
-                                size: 40,
-                                color: theme.colorScheme.secondary,
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '✓ 반드시 클리핑할 위젯 바로 위에 감싸야 함\n'
+                              '⚠ ClipRRect가 child보다 크면 예상치 못한 위치에 클리핑됨',
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ),
@@ -575,26 +781,76 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                     const SizedBox(height: 12),
                     _buildExampleItem(
                       theme: theme,
-                      title: 'ShaderMask (Gradient 텍스트)',
-                      child: Center(
-                        child: ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: [
-                              theme.colorScheme.primary,
-                              theme.colorScheme.secondary,
+                      title: 'Gradient Text — foreground vs ShaderMask',
+                      child: Column(
+                        spacing: 14,
+                        children: [
+                          // 방법 1: TextStyle.foreground (고정 Rect)
+                          Column(
+                            spacing: 4,
+                            children: [
+                              Text(
+                                '방법 1: TextStyle.foreground',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant),
+                              ),
+                              Text(
+                                'Gradient Text',
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  foreground: Paint()
+                                    ..shader = LinearGradient(
+                                      colors: [
+                                        theme.colorScheme.primary,
+                                        theme.colorScheme.tertiary,
+                                      ],
+                                    ).createShader(
+                                        const Rect.fromLTWH(0, 0, 200, 40)),
+                                ),
+                              ),
+                              Text(
+                                '⚠ Rect 고정값 → 위젯 크기 변화 시 그라디언트 위치 어긋남',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.error),
+                              ),
                             ],
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                           ),
-                          child: const Text(
-                            'Gradient Text',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const Divider(),
+                          // 방법 2: ShaderMask (권장)
+                          Column(
+                            spacing: 4,
+                            children: [
+                              Text(
+                                '방법 2: ShaderMask (권장)',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant),
+                              ),
+                              ShaderMask(
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [
+                                    theme.colorScheme.primary,
+                                    theme.colorScheme.secondary,
+                                  ],
+                                ).createShader(Rect.fromLTWH(
+                                    0, 0, bounds.width, bounds.height)),
+                                child: const Text(
+                                  'Gradient Text',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '✓ bounds 자동 대응 / child color는 Colors.white 필수',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.primary),
+                              ),
+                            ],
                           ),
-                        ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -630,6 +886,40 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                         ],
                       ),
                     ),
+                    const SizedBox(height: 12),
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'Material Shape',
+                      child: Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          _buildShapeCard(
+                            theme,
+                            'Rounded',
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          _buildShapeCard(
+                            theme,
+                            'Stadium',
+                            const StadiumBorder(),
+                          ),
+                          _buildShapeCard(
+                            theme,
+                            'Circle',
+                            const CircleBorder(),
+                          ),
+                          _buildShapeCard(
+                            theme,
+                            'Continuous',
+                            ContinuousRectangleBorder(
+                                borderRadius: BorderRadius.circular(24)),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
 
@@ -641,125 +931,398 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                   icon: Icons.touch_app_outlined,
                   title: '인터랙션',
                   children: [
+                    // IgnorePointer vs AbsorbPointer
                     _buildExampleItem(
                       theme: theme,
-                      title: 'IgnorePointer',
+                      title: 'IgnorePointer vs AbsorbPointer',
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         spacing: 12,
                         children: [
-                          Text('Ignoring: $ignorePointerEnabled'),
-                          IgnorePointer(
-                            ignoring: ignorePointerEnabled,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(24.0),
-                              ),
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('버튼 클릭됨!')),
-                                );
-                              },
-                              child: const Text('클릭'),
-                            ),
-                          ),
-                          FilledButton(
-                            onPressed: () {
-                              setState(() {
-                                ignorePointerEnabled = !ignorePointerEnabled;
-                              });
-                            },
-                            child: Text(
-                              ignorePointerEnabled
-                                  ? 'Set ignoring to false'
-                                  : 'Set ignoring to true',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildExampleItem(
-                      theme: theme,
-                      title: 'AbsorbPointer',
-                      child: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          SizedBox(
-                            width: 100.0,
-                            height: 100.0,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.greenAccent,
-                              ),
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('초록 버튼 클릭!')),
-                                );
-                              },
-                              child: const Text('뒤'),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 160.0,
-                            height: 30.0,
-                            child: AbsorbPointer(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                ),
-                                onPressed: () {},
-                                child: const Text('앞 (흡수)'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildExampleItem(
-                      theme: theme,
-                      title: 'Clipboard (복사)',
-                      child: GestureDetector(
-                        onTap: () {
-                          Clipboard.setData(
-                              const ClipboardData(text: '텍스트 복사 완료!'));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text('텍스트가 복사되었습니다'),
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: theme.colorScheme.primary,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: theme.colorScheme.primary,
-                              width: 2,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          // 단순 비활성화 비교
+                          Row(
                             children: [
-                              Icon(Icons.copy,
-                                  color: theme.colorScheme.primary),
+                              Expanded(
+                                child: Column(
+                                  spacing: 6,
+                                  children: [
+                                    Text('IgnorePointer',
+                                        style: theme.textTheme.labelMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                    IgnorePointer(
+                                      ignoring: ignorePointerEnabled,
+                                      child: FilledButton(
+                                        onPressed: () =>
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content:
+                                                        Text('IgnorePointer: 클릭!'))),
+                                        child: const Text('버튼'),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('ignoring:',
+                                            style:
+                                                theme.textTheme.labelSmall),
+                                        Switch(
+                                          value: ignorePointerEnabled,
+                                          onChanged: (v) => setState(
+                                              () => ignorePointerEnabled = v),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                               const SizedBox(width: 8),
-                              Text(
-                                '탭하여 복사하기',
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
+                              Expanded(
+                                child: Column(
+                                  spacing: 6,
+                                  children: [
+                                    Text('AbsorbPointer',
+                                        style: theme.textTheme.labelMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                    AbsorbPointer(
+                                      absorbing: _absorbPointerEnabled,
+                                      child: FilledButton(
+                                        onPressed: () =>
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'AbsorbPointer: 클릭!'))),
+                                        child: const Text('버튼'),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('absorbing:',
+                                            style:
+                                                theme.textTheme.labelSmall),
+                                        Switch(
+                                          value: _absorbPointerEnabled,
+                                          onChanged: (v) => setState(
+                                              () =>
+                                                  _absorbPointerEnabled = v),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                          const Divider(),
+                          // Stack 차이 비교
+                          Text(
+                            'Stack에서 핵심 차이 — 빨간 영역 탭',
+                            style: theme.textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  spacing: 4,
+                                  children: [
+                                    SizedBox(
+                                      height: 72,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Positioned.fill(
+                                            child: ElevatedButton(
+                                              onPressed: () =>
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(
+                                                          content: Text(
+                                                              '하단 버튼 클릭 O'))),
+                                              child: const Text('하단'),
+                                            ),
+                                          ),
+                                          IgnorePointer(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 6),
+                                              color: Colors.red
+                                                  .withValues(alpha: 0.75),
+                                              child: const Text('상단\n(투명)',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text('이벤트 → 하단 전달 O',
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                                color: Colors.green[700])),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  spacing: 4,
+                                  children: [
+                                    SizedBox(
+                                      height: 72,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Positioned.fill(
+                                            child: ElevatedButton(
+                                              onPressed: () =>
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(
+                                                          content: Text(
+                                                              '하단 버튼 클릭 O (AbsorbPointer 꺼짐)'))),
+                                              child: const Text('하단'),
+                                            ),
+                                          ),
+                                          AbsorbPointer(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 6),
+                                              color: Colors.red
+                                                  .withValues(alpha: 0.75),
+                                              child: const Text('상단\n(흡수)',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text('이벤트 → 하단 차단 X',
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                                color: theme
+                                                    .colorScheme.error)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '단순 버튼 비활성화 → 둘 다 OK\n'
+                              'Stack 하단도 클릭 필요 → IgnorePointer\n'
+                              'Stack 하단까지 막아야 → AbsorbPointer',
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Clipboard
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'Clipboard',
+                      child: Column(
+                        spacing: 10,
+                        children: [
+                          Row(
+                            spacing: 8,
+                            children: [
+                              Expanded(
+                                child: FilledButton.icon(
+                                  onPressed: () async {
+                                    await Clipboard.setData(
+                                        const ClipboardData(
+                                            text: 'Flutter Clipboard 예제'));
+                                    if (!context.mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Text('복사 완료!'),
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor:
+                                            theme.colorScheme.primary,
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.copy, size: 16),
+                                  label: const Text('setData'),
+                                ),
+                              ),
+                              Expanded(
+                                child: FilledButton.tonal(
+                                  onPressed: () async {
+                                    final data = await Clipboard.getData(
+                                        Clipboard.kTextPlain);
+                                    setState(() {
+                                      _clipboardRead =
+                                          data?.text ?? '(비어있음)';
+                                    });
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.paste, size: 16),
+                                      SizedBox(width: 6),
+                                      Text('getData'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (_clipboardRead.isNotEmpty)
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.assignment,
+                                      size: 14,
+                                      color: theme.colorScheme.primary),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      '읽기: $_clipboardRead',
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          // SelectableText
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                  color: theme.colorScheme.outline
+                                      .withValues(alpha: 0.3)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 4,
+                              children: [
+                                Text('SelectableText — 길게 눌러 선택 복사',
+                                    style: theme.textTheme.labelSmall
+                                        ?.copyWith(
+                                            color: theme
+                                                .colorScheme.onSurfaceVariant)),
+                                SelectableText(
+                                  'Long press → 드래그 선택 → 복사 가능한 텍스트입니다.',
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '⚠ getData → null 체크 필수 (data?.text)\n'
+                            '⚠ 복사 후 반드시 SnackBar 등 피드백 제공',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // GestureDetector HitTestBehavior
+                    _buildExampleItem(
+                      theme: theme,
+                      title: 'GestureDetector HitTestBehavior',
+                      child: Column(
+                        spacing: 12,
+                        children: [
+                          Text(
+                            '두 박스 사이 빈 공간 탭 — 어떤 behavior가 감지할까?',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant),
+                          ),
+                          Row(
+                            children: [
+                              _buildHitBehaviorDemo(
+                                theme: theme,
+                                label: 'deferToChild\n(기본)',
+                                behavior: HitTestBehavior.deferToChild,
+                                note: '빈 공간 → 미감지',
+                                noteColor: theme.colorScheme.error,
+                                onHit: () => setState(() =>
+                                    _hitBehaviorLog = 'deferToChild 탭됨'),
+                              ),
+                              _buildHitBehaviorDemo(
+                                theme: theme,
+                                label: 'opaque',
+                                behavior: HitTestBehavior.opaque,
+                                note: '전체 감지\n(뒤 차단)',
+                                noteColor: Colors.green[700]!,
+                                onHit: () => setState(
+                                    () => _hitBehaviorLog = 'opaque 탭됨'),
+                              ),
+                              _buildHitBehaviorDemo(
+                                theme: theme,
+                                label: 'translucent',
+                                behavior: HitTestBehavior.translucent,
+                                note: '전체 감지\n(뒤 전달)',
+                                noteColor: Colors.green[700]!,
+                                onHit: () => setState(() =>
+                                    _hitBehaviorLog = 'translucent 탭됨'),
+                              ),
+                            ],
+                          ),
+                          if (_hitBehaviorLog.isNotEmpty)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(_hitBehaviorLog,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              'deferToChild: 자식 영역만 (기본값)\n'
+                              'opaque: 전체 수신, 뒤 차단\n'
+                              'translucent: 전체 수신, 뒤에도 전달\n'
+                              '빈 공간 탭 → Container(color: transparent)로 해결도 가능',
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -776,27 +1339,69 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
                     _buildExampleItem(
                       theme: theme,
                       title: 'ExpansionTile',
-                      child: Theme(
-                        data: theme.copyWith(dividerColor: Colors.transparent),
-                        child: ExpansionTile(
-                          initiallyExpanded: false,
-                          tilePadding: const EdgeInsets.all(16),
-                          childrenPadding:
-                          const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                          collapsedBackgroundColor:
-                          theme.colorScheme.surfaceContainerHighest,
-                          backgroundColor: theme.colorScheme.surface,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      child: Column(
+                        spacing: 8,
+                        children: [
+                          // 기본: divider 제거 + shape 적용
+                          Theme(
+                            data: theme.copyWith(
+                                dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              tilePadding: const EdgeInsets.symmetric(
+                                  horizontal: 16),
+                              childrenPadding:
+                                  const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                              collapsedBackgroundColor:
+                                  theme.colorScheme.surfaceContainerHighest,
+                              backgroundColor: theme.colorScheme.surface,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              collapsedShape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              title: const Text('기본 (shape + divider 제거)'),
+                              children: const [Text('내용')],
+                            ),
                           ),
-                          collapsedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                          // trailing 아이콘 제거
+                          Theme(
+                            data: theme.copyWith(
+                                dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              trailing: const SizedBox.shrink(),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              collapsedShape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              title: const Text('trailing 아이콘 제거'),
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.all(12),
+                                  child: Text('내용'),
+                                ),
+                              ],
+                            ),
                           ),
-                          title: const Text('펼쳐서 내용 보기'),
-                          children: const [
-                            Text('ExpansionTile 내용이 여기에 표시됩니다.'),
-                          ],
-                        ),
+                          // 아이콘 왼쪽 배치
+                          Theme(
+                            data: theme.copyWith(
+                                dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              controlAffinity:
+                                  ListTileControlAffinity.leading,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              collapsedShape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              title: const Text('아이콘 왼쪽 (leading)'),
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.all(12),
+                                  child: Text('내용'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -913,28 +1518,100 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
 
   // Progress Indicator
   Widget _buildProgressIndicator(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        spacing: 10,
-        children: [
-          Text(
-            '${(progressController.value * 100).toInt()}%',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+    return Column(
+      spacing: 16,
+      children: [
+        // 무한 vs 고정 진행률
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              spacing: 8,
+              children: [
+                const CircularProgressIndicator(),
+                Text('무한 (null)', style: theme.textTheme.labelSmall),
+              ],
             ),
-          ),
-          CircularProgressIndicator(
-            strokeWidth: 4,
-            value: progressController.value,
-            valueColor: colorTween,
-          ),
-          LinearProgressIndicator(
-            value: progressController.value,
-            valueColor: colorTween,
-          ),
-        ],
-      ),
+            Column(
+              spacing: 8,
+              children: [
+                CircularProgressIndicator(
+                  value: progressController.value,
+                  valueColor: colorTween,
+                ),
+                Text(
+                  '${(progressController.value * 100).toInt()}%',
+                  style: theme.textTheme.labelSmall,
+                ),
+              ],
+            ),
+            Column(
+              spacing: 8,
+              children: [
+                CircularProgressIndicator(
+                  value: 0.7,
+                  strokeWidth: 4,
+                  backgroundColor:
+                      theme.colorScheme.surfaceContainerHighest,
+                ),
+                Text('backgroundColor', style: theme.textTheme.labelSmall),
+              ],
+            ),
+          ],
+        ),
+        // strokeWidth 비교 (Circular)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              spacing: 8,
+              children: [
+                const CircularProgressIndicator(value: 0.6, strokeWidth: 2),
+                Text('strokeWidth: 2', style: theme.textTheme.labelSmall),
+              ],
+            ),
+            Column(
+              spacing: 8,
+              children: [
+                const CircularProgressIndicator(value: 0.6, strokeWidth: 6),
+                Text('strokeWidth: 6', style: theme.textTheme.labelSmall),
+              ],
+            ),
+            Column(
+              spacing: 8,
+              children: [
+                const CircularProgressIndicator(value: 0.6, strokeWidth: 12),
+                Text('strokeWidth: 12', style: theme.textTheme.labelSmall),
+              ],
+            ),
+          ],
+        ),
+        // Linear: minHeight 비교 (strokeWidth 아님)
+        Column(
+          spacing: 8,
+          children: [
+            const LinearProgressIndicator(),
+            Text('Linear 무한', style: theme.textTheme.labelSmall),
+            LinearProgressIndicator(
+              value: progressController.value,
+              valueColor: colorTween,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            ),
+            Text('고정 진행률 + backgroundColor',
+                style: theme.textTheme.labelSmall),
+            LinearProgressIndicator(
+              value: 0.6,
+              minHeight: 12,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            ),
+            Text('minHeight: 12  ← strokeWidth 아님',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.error,
+                  fontWeight: FontWeight.w600,
+                )),
+          ],
+        ),
+      ],
     );
   }
 
@@ -942,10 +1619,40 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
   Widget _buildDropdownExample(ThemeData theme) {
     final dropdownList = ['테스트1', '테스트2', '테스트3', '테스트4', '테스트5'];
     final dropdownFormList = ['테스트항목1', '테스트항목2', '테스트항목3', '테스트항목4'];
+    const overlayOptions = ['옵션 1', '옵션 2', '옵션 3', '옵션 4'];
 
     return Column(
       spacing: 12,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ── 방법 1 (권장): InputDecorator + DropdownButtonHideUnderline ──
+        Text('방법 1 (권장): InputDecorator',
+            style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant)),
+        InputDecorator(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            isDense: true,
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              isExpanded: true,
+              isDense: true,
+              items: dropdownList
+                  .map((v) => DropdownMenuItem(value: v, child: Text(v)))
+                  .toList(),
+              onChanged: (v) => setState(() => dropdownValue = v!),
+            ),
+          ),
+        ),
+
+        // ── 방법 2: Container + BoxDecoration ──
+        Text('방법 2: Container 래핑',
+            style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant)),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
@@ -958,39 +1665,165 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
             underline: const SizedBox(),
             items: dropdownList
                 .map((value) => DropdownMenuItem(
-              value: value,
-              child: Text(value),
-            ))
+                      value: value,
+                      child: Text(value),
+                    ))
                 .toList(),
-            onChanged: (value) {
-              setState(() {
-                dropdownValue = value!;
-              });
-            },
+            onChanged: (value) => setState(() => dropdownValue = value!),
           ),
         ),
+
+        // ── DropdownButtonFormField ──
+        Text('DropdownButtonFormField',
+            style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant)),
         DropdownButtonFormField<String>(
           initialValue: dropdownFormValue,
           decoration: const InputDecoration(
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                borderRadius: BorderRadius.all(Radius.circular(8))),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           ),
           items: dropdownFormList
-              .map((item) => DropdownMenuItem(
-            value: item,
-            child: Text(item),
-          ))
+              .map((item) =>
+                  DropdownMenuItem(value: item, child: Text(item)))
               .toList(),
-          onChanged: (value) {
-            setState(() {
-              dropdownFormValue = value!;
-            });
-          },
+          onChanged: (value) => setState(() => dropdownFormValue = value!),
+        ),
+
+        // ── OverlayEntry 커스텀 Dropdown ──
+        Text('OverlayEntry 커스텀 Dropdown',
+            style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant)),
+        CompositedTransformTarget(
+          link: _dropdownLayerLink,
+          child: GestureDetector(
+            onTap: () => _isOverlayDropdownOpen
+                ? _closeOverlayDropdown()
+                : _openOverlayDropdown(context, overlayOptions, theme),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _isOverlayDropdownOpen
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.outline,
+                  width: _isOverlayDropdownOpen ? 2 : 1,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(_overlayDropdownValue,
+                        style: theme.textTheme.bodyMedium),
+                  ),
+                  Icon(
+                    _isOverlayDropdownOpen
+                        ? Icons.arrow_drop_up
+                        : Icons.arrow_drop_down,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            '버튼 위치 고정 • LayerLink → CompositedTransformTarget/Follower\n'
+            'Overlay.of(context).insert(entry) → entry.remove()',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontFamily: 'monospace',
+            ),
+          ),
         ),
       ],
     );
+  }
+
+  void _openOverlayDropdown(
+      BuildContext context, List<String> options, ThemeData theme) {
+    _dropdownOverlay = OverlayEntry(
+      builder: (context) {
+        return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: _closeOverlayDropdown,
+          child: Stack(
+            children: [
+              CompositedTransformFollower(
+                link: _dropdownLayerLink,
+                showWhenUnlinked: false,
+                offset: const Offset(0, 44),
+                child: Material(
+                  elevation: 4,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    width: 200,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: options
+                          .map(
+                            (opt) => InkWell(
+                              onTap: () {
+                                setState(() => _overlayDropdownValue = opt);
+                                _closeOverlayDropdown();
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: opt == _overlayDropdownValue
+                                      ? theme.colorScheme.primaryContainer
+                                          .withValues(alpha: 0.5)
+                                      : null,
+                                ),
+                                child: Text(opt,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: opt == _overlayDropdownValue
+                                          ? theme.colorScheme.primary
+                                          : null,
+                                      fontWeight: opt == _overlayDropdownValue
+                                          ? FontWeight.bold
+                                          : null,
+                                    )),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    Overlay.of(context).insert(_dropdownOverlay!);
+    setState(() => _isOverlayDropdownOpen = true);
+  }
+
+  void _closeOverlayDropdown() {
+    _dropdownOverlay?.remove();
+    _dropdownOverlay = null;
+    if (mounted) setState(() => _isOverlayDropdownOpen = false);
   }
 
   // 섹션 빌더
@@ -1068,10 +1901,101 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
     );
   }
 
+  Widget _buildAlignBox(ThemeData theme, Alignment alignment, String label) {
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Align(
+        alignment: alignment,
+        child: Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Center(
+            child: Text(
+              label.replaceAll('Right', 'R').replaceAll('Left', 'L'),
+              style: const TextStyle(color: Colors.white, fontSize: 8),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShapeCard(ThemeData theme, String label, ShapeBorder shape) {
+    return Material(
+      shape: shape,
+      color: theme.colorScheme.primaryContainer,
+      child: SizedBox(
+        width: 80,
+        height: 48,
+        child: Center(
+          child: Text(label, style: theme.textTheme.labelSmall),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHitBehaviorDemo({
+    required ThemeData theme,
+    required String label,
+    required HitTestBehavior behavior,
+    required String note,
+    required Color noteColor,
+    required VoidCallback onHit,
+  }) {
+    return Expanded(
+      child: Column(
+        spacing: 4,
+        children: [
+          Text(label,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.labelSmall
+                  ?.copyWith(fontWeight: FontWeight.bold)),
+          GestureDetector(
+            behavior: behavior,
+            onTap: onHit,
+            child: Container(
+              height: 64,
+              color: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 20,
+                    height: 40,
+                    color: theme.colorScheme.primary,
+                  ),
+                  Container(
+                    width: 20,
+                    height: 40,
+                    color: theme.colorScheme.primary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Text(note,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.labelSmall
+                  ?.copyWith(color: noteColor)),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
     progressController.dispose();
     shakeController.dispose();
+    _dropdownOverlay?.remove();
     super.dispose();
   }
 }

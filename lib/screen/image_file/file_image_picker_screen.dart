@@ -27,6 +27,7 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
 
   // 상태
   XFile? _singleImage;
+  XFile? _video;
   List<XFile> _multiImages = [];
   File? _cacheManagerFile;
   String? _selectedFilePath;
@@ -115,6 +116,13 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+    }
+  }
+
+  Future<void> _pickVideo() async {
+    final picked = await _picker.pickVideo(source: ImageSource.gallery);
+    if (picked != null && mounted) {
+      setState(() => _video = picked);
     }
   }
 
@@ -662,6 +670,227 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
 
             const SizedBox(height: 24),
 
+            // 9. 동영상 선택 (pickVideo)
+            _buildSectionHeader(theme, '9. 동영상 선택 (pickVideo)'),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                spacing: 12,
+                children: [
+                  if (_video != null) ...[
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.videocam,
+                              color: theme.colorScheme.primary, size: 32),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 4,
+                              children: [
+                                Text(
+                                  _video!.name,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  _video!.path,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                    fontFamily: 'monospace',
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  FilledButton.icon(
+                    onPressed: _pickVideo,
+                    icon: const Icon(Icons.video_library),
+                    label: Text(_video == null ? '동영상 선택' : '다른 동영상 선택'),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '• pickVideo(source: ImageSource.gallery) — 갤러리\n'
+                      '• pickVideo(source: ImageSource.camera) — 카메라 녹화\n'
+                      '• 반환값 XFile → path로 파일 경로 접근\n'
+                      '• 재생: video_player 패키지 사용 (VideoPlayerController.file)',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // 10. Image.network 렌더링 최적화 (cacheWidth/cacheHeight)
+            _buildSectionHeader(theme, '10. Image.network 렌더링 최적화'),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest
+                    .withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Column(
+                spacing: 12,
+                children: [
+                  Row(
+                    spacing: 12,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          spacing: 8,
+                          children: [
+                            Text(
+                              '최적화 없음',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                urlImg,
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                                // cacheWidth/cacheHeight 미설정
+                                // → 원본 고해상도 전체 디코딩 (메모리 낭비)
+                              ),
+                            ),
+                            Text(
+                              '원본 해상도로 디코딩',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.error),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          spacing: 8,
+                          children: [
+                            Text(
+                              'cacheWidth 설정',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                urlImg,
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                                // 표시 크기 × devicePixelRatio = 실제 디코딩 픽셀
+                                cacheWidth: (120 *
+                                        MediaQuery.devicePixelRatioOf(context))
+                                    .round(),
+                              ),
+                            ),
+                            Text(
+                              '필요한 크기만 디코딩',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.primary),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '// 한 쪽만 설정해도 비율 유지하며 리사이징\n'
+                      'Image.network(\n'
+                      '  url,\n'
+                      '  width: 120, height: 120,\n'
+                      '  cacheWidth: (120 * MediaQuery.devicePixelRatioOf(context)).round(),\n'
+                      ')\n\n'
+                      '// Extension으로 분리 권장\n'
+                      'extension CacheSizeExt on num {\n'
+                      '  int toCache(BuildContext ctx) =>\n'
+                      '      (this * MediaQuery.devicePixelRatioOf(ctx)).round();\n'
+                      '}\n'
+                      '// 사용: cacheWidth: 120.toCache(context)',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontFamily: 'monospace',
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer
+                          .withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '• 고해상도 이미지를 작은 크기로 표시 시 불필요한 메모리 낭비\n'
+                      '• cacheWidth/cacheHeight: 실제 디코딩 픽셀 크기 지정\n'
+                      '• Image.network는 앱 세션 내에서만 캐싱\n'
+                      '• 영구 캐싱: cached_network_image 패키지 사용',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
             // 패키지 정보
             _buildSectionHeader(theme, '사용된 패키지'),
             const SizedBox(height: 12),
@@ -697,7 +926,7 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
                   ),
                   _buildPackageItem(theme, 'file_picker', '파일 선택'),
                   _buildPackageItem(theme, 'open_file_plus', '파일 열기'),
-                  _buildPackageItem(theme, 'image_picker', '갤러리/카메라 이미지'),
+                  _buildPackageItem(theme, 'image_picker', '갤러리/카메라 이미지·동영상'),
                   _buildPackageItem(theme, 'multi_image_picker_view', '멀티 이미지 UI'),
                   _buildPackageItem(theme, 'cached_network_image', '네트워크 이미지 캐싱'),
                   _buildPackageItem(theme, 'flutter_cache_manager', '파일 캐시 관리'),

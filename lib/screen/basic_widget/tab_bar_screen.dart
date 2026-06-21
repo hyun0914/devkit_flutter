@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'tab_bar/bottom_sheet_tab.dart';
 import 'tab_bar/snapping_sheet_tab.dart';
 import 'tab_bar/sliver_tab.dart';
+import 'tab_bar/tab_tips_tab.dart';
 import '../widget/default_scaffold.dart';
 
 class TabBarScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class TabBarScreen extends StatefulWidget {
 class _TabBarScreenState extends State<TabBarScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _swipeEnabled = true;
+
   final List<TabData> _tabs = [
     TabData(
       title: 'BottomSheet',
@@ -30,6 +33,11 @@ class _TabBarScreenState extends State<TabBarScreen>
       title: 'Sliver',
       icon: Icons.view_list_outlined,
       selectedIcon: Icons.view_list,
+    ),
+    TabData(
+      title: 'Tips',
+      icon: Icons.tips_and_updates_outlined,
+      selectedIcon: Icons.tips_and_updates,
     ),
   ];
 
@@ -53,6 +61,15 @@ class _TabBarScreenState extends State<TabBarScreen>
       appBar: AppBar(
         title: const Text('TabBar 예제'),
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: _swipeEnabled ? '스와이프 끄기' : '스와이프 켜기',
+            icon: Icon(
+              _swipeEnabled ? Icons.swipe : Icons.swipe_right_alt,
+            ),
+            onPressed: () => setState(() => _swipeEnabled = !_swipeEnabled),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Container(
@@ -66,6 +83,7 @@ class _TabBarScreenState extends State<TabBarScreen>
             ),
             child: TabBar(
               controller: _tabController,
+              labelPadding: const EdgeInsets.symmetric(horizontal: 8),
               indicatorSize: TabBarIndicatorSize.tab,
               indicatorWeight: 3,
               indicator: UnderlineTabIndicator(
@@ -95,13 +113,18 @@ class _TabBarScreenState extends State<TabBarScreen>
                       height: 56,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 4,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             isSelected ? tab.selectedIcon : tab.icon,
-                            size: 24,
+                            size: 22,
                           ),
-                          Text(tab.title),
+                          const SizedBox(height: 2),
+                          Text(
+                            tab.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     );
@@ -115,10 +138,14 @@ class _TabBarScreenState extends State<TabBarScreen>
       body: SafeArea(
         child: TabBarView(
           controller: _tabController,
+          physics: _swipeEnabled
+              ? null
+              : const NeverScrollableScrollPhysics(),
           children: const [
             BottomSheetTab(),
             SnappingSheetTab(),
             SliverTab(),
+            TabTipsTab(),
           ],
         ),
       ),

@@ -13,7 +13,6 @@ class OnboardingScreen extends StatelessWidget {
 
     return DefaultScaffold(
       body: IntroductionScreen(
-        // 페이지들
         pages: [
           PageViewModel(
             title: 'DevKit Flutter에 오신 것을 환영합니다',
@@ -23,20 +22,7 @@ class OnboardingScreen extends StatelessWidget {
               icon: Icons.rocket_launch,
               color: theme.colorScheme.primary,
             ),
-            decoration: PageDecoration(
-              titleTextStyle: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
-              ),
-              bodyTextStyle: TextStyle(
-                fontSize: 18,
-                color: theme.colorScheme.onSurface,
-              ),
-              imagePadding: const EdgeInsets.all(24),
-              pageColor: theme.colorScheme.surface,
-              contentMargin: const EdgeInsets.symmetric(horizontal: 24),
-            ),
+            decoration: _buildPageDecoration(theme, theme.colorScheme.primary),
           ),
           PageViewModel(
             title: '45개 이상의 예제',
@@ -46,20 +32,8 @@ class OnboardingScreen extends StatelessWidget {
               icon: Icons.widgets,
               color: theme.colorScheme.secondary,
             ),
-            decoration: PageDecoration(
-              titleTextStyle: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.secondary,
-              ),
-              bodyTextStyle: TextStyle(
-                fontSize: 18,
-                color: theme.colorScheme.onSurface,
-              ),
-              imagePadding: const EdgeInsets.all(24),
-              pageColor: theme.colorScheme.surface,
-              contentMargin: const EdgeInsets.symmetric(horizontal: 24),
-            ),
+            decoration:
+                _buildPageDecoration(theme, theme.colorScheme.secondary),
           ),
           PageViewModel(
             title: '60개 이상의 패키지',
@@ -69,20 +43,8 @@ class OnboardingScreen extends StatelessWidget {
               icon: Icons.extension,
               color: theme.colorScheme.tertiary,
             ),
-            decoration: PageDecoration(
-              titleTextStyle: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.tertiary,
-              ),
-              bodyTextStyle: TextStyle(
-                fontSize: 18,
-                color: theme.colorScheme.onSurface,
-              ),
-              imagePadding: const EdgeInsets.all(24),
-              pageColor: theme.colorScheme.surface,
-              contentMargin: const EdgeInsets.symmetric(horizontal: 24),
-            ),
+            decoration:
+                _buildPageDecoration(theme, theme.colorScheme.tertiary),
           ),
           PageViewModel(
             title: '지금 바로 시작하세요!',
@@ -92,20 +54,7 @@ class OnboardingScreen extends StatelessWidget {
               icon: Icons.touch_app,
               color: Colors.green,
             ),
-            decoration: PageDecoration(
-              titleTextStyle: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-              bodyTextStyle: TextStyle(
-                fontSize: 18,
-                color: theme.colorScheme.onSurface,
-              ),
-              imagePadding: const EdgeInsets.all(24),
-              pageColor: theme.colorScheme.surface,
-              contentMargin: const EdgeInsets.symmetric(horizontal: 24),
-            ),
+            decoration: _buildPageDecoration(theme, Colors.green),
           ),
         ],
 
@@ -118,6 +67,7 @@ class OnboardingScreen extends StatelessWidget {
           ),
         ),
         onDone: () {
+          // pushReplacement → 뒤로가기로 온보딩 재진입 방지
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const ExampleListScreen(),
@@ -143,7 +93,7 @@ class OnboardingScreen extends StatelessWidget {
           );
         },
 
-        // 인디케이터 설정
+        // 인디케이터 커스터마이징
         dotsDecorator: DotsDecorator(
           size: const Size.square(10),
           activeSize: const Size(24, 10),
@@ -154,7 +104,7 @@ class OnboardingScreen extends StatelessWidget {
           activeColor: theme.colorScheme.primary,
         ),
 
-        // 애니메이션
+        // 페이지 전환 애니메이션
         curve: Curves.easeInOut,
         animationDuration: 300,
 
@@ -166,12 +116,29 @@ class OnboardingScreen extends StatelessWidget {
     );
   }
 
-  // Placeholder 이미지 생성
+  // 페이지별 decoration이 동일하면 메서드로 분리 → DRY
+  PageDecoration _buildPageDecoration(ThemeData theme, Color titleColor) {
+    return PageDecoration(
+      titleTextStyle: TextStyle(
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+        color: titleColor,
+      ),
+      bodyTextStyle: TextStyle(
+        fontSize: 18,
+        color: theme.colorScheme.onSurface,
+      ),
+      imagePadding: const EdgeInsets.all(24),
+      pageColor: theme.colorScheme.surface,
+      contentMargin: const EdgeInsets.symmetric(horizontal: 24),
+    );
+  }
+
   Widget _buildImage(
-      BuildContext context, {
-        required IconData icon,
-        required Color color,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required Color color,
+  }) {
     return Center(
       child: Container(
         width: 280,

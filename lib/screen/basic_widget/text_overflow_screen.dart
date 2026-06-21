@@ -95,6 +95,94 @@ class TextOverflowScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
+            // softWrap 비교
+            _buildSectionHeader(theme, 'softWrap'),
+            const SizedBox(height: 12),
+
+            _buildExampleCard(
+              theme: theme,
+              title: 'softWrap: true (기본값)',
+              description: 'ellipsis만 동작 / fade·clip은 softWrap: false 필요',
+              icon: Icons.wrap_text,
+              color: Colors.teal,
+              child: const Text(
+                '12345678910 가나다라마바사아자차카타파하 12345678910 가나다라마바사아자차카타파하',
+                style: TextStyle(fontSize: 16, overflow: TextOverflow.fade),
+                // softWrap 기본값(true) → fade 미적용, 줄바꿈됨
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            _buildExampleCard(
+              theme: theme,
+              title: 'softWrap: false + fade',
+              description: 'softWrap: false여야 fade/clip/visible 제대로 동작',
+              icon: Icons.wrap_text,
+              color: Colors.deepOrange,
+              child: const Text(
+                '12345678910 가나다라마바사아자차카타파하 12345678910 가나다라마바사아자차카타파하',
+                style: TextStyle(fontSize: 16, overflow: TextOverflow.fade),
+                softWrap: false,
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Row 안 Text 처리
+            _buildSectionHeader(theme, 'Row 안 Text overflow'),
+            const SizedBox(height: 12),
+
+            _buildExampleCard(
+              theme: theme,
+              title: '❌ Flexible 없이 → RenderFlex overflow 에러',
+              description: 'Row 안 Text는 Flexible/Expanded 없이는 overflow 발생',
+              icon: Icons.error_outline,
+              color: Colors.red,
+              child: Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 36,
+                    color: Colors.red.withValues(alpha: 0.2),
+                    child: const Center(child: Text('고정')),
+                  ),
+                  const Text(
+                    '매우 긴 텍스트가 overflow 에러를 일으킵니다',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            _buildExampleCard(
+              theme: theme,
+              title: '✅ Flexible로 감싸기 → 정상 처리',
+              description: 'Flexible 또는 Expanded로 감싸야 overflow 처리 가능',
+              icon: Icons.check_circle_outline,
+              color: Colors.green,
+              child: Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 36,
+                    color: Colors.green.withValues(alpha: 0.2),
+                    child: const Center(child: Text('고정')),
+                  ),
+                  const Flexible(
+                    child: Text(
+                      '매우 긴 텍스트가 overflow 에러를 일으킵니다',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
             // maxLines 비교
             _buildSectionHeader(theme, 'maxLines 활용'),
             const SizedBox(height: 12),

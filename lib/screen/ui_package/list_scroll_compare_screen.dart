@@ -29,18 +29,37 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
   final TextEditingController _posJumpController = TextEditingController();
   int? _posCurrentIndex;
 
+  // 스크롤 팁 탭
+  final ScrollController _tipScrollController = ScrollController();
+  double _tipScrollOffset = 0;
+  double _tipMaxExtent = 0;
+  int _physicsIndex = 0; // 0=기본, 1=Clamping, 2=Bouncing
+  bool _removeGlow = false;
+  final List<GlobalKey> _tipItemKeys = List.generate(4, (_) => GlobalKey());
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
 
-    // SuperSliverList 초기 위치
+    // SuperSliverList 초기 위치 — addPostFrameCallback: initState에서 직접 jumpTo 불가
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _jumpToIndex(44);
     });
 
     // SuperSliverList 스크롤 위치 추적
     _scrollController.addListener(_updateCurrentIndex);
+
+    // 스크롤 팁 탭 offset 추적
+    _tipScrollController.addListener(() {
+      if (_tipScrollController.hasClients) {
+        setState(() {
+          _tipScrollOffset = _tipScrollController.offset;
+          _tipMaxExtent =
+              _tipScrollController.position.maxScrollExtent;
+        });
+      }
+    });
 
     // ScrollablePositionedList 위치 추적
     _itemPositionsListener.itemPositions.addListener(() {
@@ -101,6 +120,7 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
     _tabController.dispose();
     _listController.dispose();
     _scrollController.dispose();
+    _tipScrollController.dispose();
     _jumpController.dispose();
     _posJumpController.dispose();
     super.dispose();
@@ -118,6 +138,7 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
           tabs: const [
             Tab(icon: Icon(Icons.flash_on), text: 'SuperSliverList'),
             Tab(icon: Icon(Icons.list_alt), text: 'PositionedList'),
+            Tab(icon: Icon(Icons.tips_and_updates), text: '스크롤 팁'),
           ],
         ),
       ),
@@ -126,6 +147,7 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
         children: [
           _buildSuperSliverListTab(theme),
           _buildScrollablePositionedListTab(theme),
+          _buildScrollTipsTab(theme),
         ],
       ),
     );
@@ -441,6 +463,356 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
     );
   }
 
+  // ── 스크롤 팁 탭 ──
+  Widget _buildScrollTipsTab(ThemeData theme) {
+    final minExtent = _tipScrollController.hasClients
+        ? _tipScrollController.position.minScrollExtent
+        : 0.0;
+
+    ScrollPhysics? physics = switch (_physicsIndex) {
+      1 => const ClampingScrollPhysics(),
+      2 => const BouncingScrollPhysics(),
+      _ => null,
+    };
+
+    final keyColors = [Colors.red, Colors.orange, Colors.green, Colors.blue];
+    final keyLabels = ['앵커 A', '앵커 B', '앵커 C', '앵커 D'];
+
+    return Column(
+      children: [
+        // ScrollController 정보
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+          child: Column(
+            spacing: 8,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildOffsetBadge(theme, 'offset',
+                      _tipScrollOffset.toStringAsFixed(1), theme.colorScheme.primary),
+                  _buildOffsetBadge(theme, 'minExtent',
+                      minExtent.toStringAsFixed(1), Colors.green),
+                  _buildOffsetBadge(theme, 'maxExtent',
+                      _tipMaxExtent.toStringAsFixed(1), Colors.orange),
+                ],
+              ),
+              Row(
+                spacing: 6,
+                children: [
+                  Expanded(
+                    child: FilledButton.tonal(
+                      onPressed: () => _tipScrollController.jumpTo(0),
+                      child: const Text('처음'),
+                    ),
+                  ),
+                  Expanded(
+                    child: FilledButton.tonal(
+                      onPressed: () {
+                        if (_tipScrollController.hasClients) {
+                          _tipScrollController.animateTo(
+                            _tipScrollController.position.maxScrollExtent / 2,
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child: const Text('중간 animateTo'),
+                    ),
+                  ),
+                  Expanded(
+                    child: FilledButton.tonal(
+                      onPressed: () {
+                        if (_tipScrollController.hasClients) {
+                          _tipScrollController
+                              .jumpTo(_tipScrollController.position.maxScrollExtent);
+                        }
+                      },
+                      child: const Text('끝'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        // 설정 패널
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+          child: Column(
+            spacing: 6,
+            children: [
+              Row(
+                children: [
+                  Text('Physics: ', style: theme.textTheme.labelMedium),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: SegmentedButton<int>(
+                      segments: const [
+                        ButtonSegment(value: 0, label: Text('기본')),
+                        ButtonSegment(value: 1, label: Text('Clamping')),
+                        ButtonSegment(value: 2, label: Text('Bouncing')),
+                      ],
+                      selected: {_physicsIndex},
+                      onSelectionChanged: (v) =>
+                          setState(() => _physicsIndex = v.first),
+                      style: const ButtonStyle(
+                          visualDensity: VisualDensity.compact),
+                    ),
+                  ),
+                ],
+              ),
+              SwitchListTile(
+                title: const Text('Overscroll Glow 제거'),
+                subtitle: const Text(
+                    '_NoGlowBehavior extends ScrollBehavior → buildOverscrollIndicator returns child'),
+                value: _removeGlow,
+                onChanged: (v) => setState(() => _removeGlow = v),
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ],
+          ),
+        ),
+
+        // 스크롤 가능한 본문
+        Expanded(
+          child: ScrollConfiguration(
+            behavior: _removeGlow ? _NoGlowBehavior() : const MaterialScrollBehavior(),
+            child: ListView(
+              controller: _tipScrollController,
+              physics: physics,
+              padding: const EdgeInsets.all(16),
+              children: [
+                // ensureVisible 섹션
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 8,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.anchor,
+                              size: 16, color: theme.colorScheme.tertiary),
+                          const SizedBox(width: 6),
+                          Text('Scrollable.ensureVisible',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      Text(
+                        'GlobalKey로 등록된 위젯을 뷰포트 안으로 스크롤합니다.',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant),
+                      ),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 4,
+                        children: List.generate(4, (i) {
+                          return FilledButton(
+                            onPressed: () {
+                              final ctx = _tipItemKeys[i].currentContext;
+                              if (ctx != null) {
+                                Scrollable.ensureVisible(
+                                  ctx,
+                                  duration: const Duration(milliseconds: 400),
+                                  curve: Curves.easeInOut,
+                                  alignment: 0.1,
+                                );
+                              }
+                            },
+                            style: FilledButton.styleFrom(
+                              backgroundColor: keyColors[i],
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              minimumSize: Size.zero,
+                            ),
+                            child: Text('→ ${keyLabels[i]}',
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.white)),
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // 콘텐츠 아이템들 (앵커 포함)
+                ..._buildTipListItems(theme, keyColors, keyLabels),
+
+                const SizedBox(height: 16),
+
+                // PrimaryScrollController 안내
+                _buildInfoCard(
+                  theme: theme,
+                  icon: Icons.account_tree_outlined,
+                  title: 'PrimaryScrollController',
+                  body: 'ListView에 primary: true 설정 시 위젯 트리 상단 컨트롤러에 연결됩니다.\n'
+                      'PrimaryScrollController.of(context).animateTo(0, ...) 로 앱바 탭에서 스크롤 탑 구현.',
+                ),
+                const SizedBox(height: 8),
+
+                // addPostFrameCallback 안내
+                _buildInfoCard(
+                  theme: theme,
+                  icon: Icons.schedule,
+                  title: 'addPostFrameCallback',
+                  body: 'initState에서 jumpTo / animateTo를 직접 호출하면 에러가 발생합니다.\n'
+                      'WidgetsBinding.instance.addPostFrameCallback((_) { ... }) 으로 첫 프레임 이후 실행하세요.',
+                  color: Colors.orange,
+                ),
+                const SizedBox(height: 80),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildTipListItems(
+      ThemeData theme, List<Color> keyColors, List<String> keyLabels) {
+    final items = <Widget>[];
+    const totalItems = 20;
+    const anchorPositions = [0, 6, 12, 18];
+
+    for (int i = 0; i < totalItems; i++) {
+      final anchorIdx = anchorPositions.indexOf(i);
+      final isAnchor = anchorIdx != -1;
+
+      items.add(
+        Container(
+          key: isAnchor ? _tipItemKeys[anchorIdx] : null,
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isAnchor
+                ? keyColors[anchorIdx].withValues(alpha: 0.15)
+                : theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isAnchor
+                  ? keyColors[anchorIdx]
+                  : theme.colorScheme.outline.withValues(alpha: 0.2),
+              width: isAnchor ? 2 : 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: isAnchor
+                      ? keyColors[anchorIdx]
+                      : theme.colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    '$i',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: isAnchor
+                          ? Colors.white
+                          : theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  isAnchor ? '${keyLabels[anchorIdx]} — GlobalKey 앵커' : 'Item $i',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: isAnchor ? FontWeight.bold : null,
+                    color: isAnchor ? keyColors[anchorIdx] : null,
+                  ),
+                ),
+              ),
+              if (isAnchor)
+                Icon(Icons.anchor, color: keyColors[anchorIdx], size: 18),
+            ],
+          ),
+        ),
+      );
+    }
+    return items;
+  }
+
+  Widget _buildOffsetBadge(
+      ThemeData theme, String label, String value, Color color) {
+    return Column(
+      spacing: 2,
+      children: [
+        Text(label,
+            style: theme.textTheme.labelSmall
+                ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: color.withValues(alpha: 0.4)),
+          ),
+          child: Text(
+            value,
+            style: theme.textTheme.labelLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: color,
+              fontFamily: 'monospace',
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoCard({
+    required ThemeData theme,
+    required IconData icon,
+    required String title,
+    required String body,
+    Color? color,
+  }) {
+    final c = color ?? theme.colorScheme.primary;
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: c.withValues(alpha: 0.25)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 6,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 16, color: c),
+              const SizedBox(width: 6),
+              Text(title,
+                  style: theme.textTheme.labelMedium
+                      ?.copyWith(fontWeight: FontWeight.bold, color: c)),
+            ],
+          ),
+          Text(body,
+              style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant, height: 1.5)),
+        ],
+      ),
+    );
+  }
+
   // 특징 카드
   Widget _buildFeatureCard({
     required ThemeData theme,
@@ -600,5 +972,13 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
         isHighlighted ? Icon(Icons.star, color: activeColor) : null,
       ),
     );
+  }
+}
+
+class _NoGlowBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

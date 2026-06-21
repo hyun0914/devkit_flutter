@@ -68,10 +68,28 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             _buildExampleButton(
               theme: theme,
               title: 'showGeneralDialog',
-              subtitle: '커스텀 애니메이션 다이얼로그',
+              subtitle: '커스텀 애니메이션 다이얼로그 (Center)',
               icon: Icons.animation,
               color: theme.colorScheme.secondary,
               onTap: () => _showGeneralDialog(context),
+            ),
+            const SizedBox(height: 8),
+            _buildExampleButton(
+              theme: theme,
+              title: '상단 고정 시트',
+              subtitle: 'showGeneralDialog + Align.topCenter + SlideTransition(Offset(0,-1))',
+              icon: Icons.vertical_align_top,
+              color: Colors.deepPurple,
+              onTap: () => _showTopSheet(context),
+            ),
+            const SizedBox(height: 8),
+            _buildExampleButton(
+              theme: theme,
+              title: 'AlertDialog 너비 변경',
+              subtitle: 'insetPadding 줄이기 vs content SizedBox 비교',
+              icon: Icons.open_in_full,
+              color: Colors.teal,
+              onTap: () => _showWideDialog(context),
             ),
 
             const SizedBox(height: 24),
@@ -328,6 +346,178 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             ),
           ],
           actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        );
+      },
+    );
+  }
+
+  // ── 상단 고정 시트 ──
+  void _showTopSheet(BuildContext context) {
+    final theme = Theme.of(context);
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'TopSheet',
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 350),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, -1),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: Alignment.topCenter,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top + 16,
+                left: 20,
+                right: 20,
+                bottom: 20,
+              ),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(24),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.15),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 12,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.vertical_align_top,
+                          color: Colors.deepPurple, size: 24),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text('상단 고정 시트',
+                            style: theme.textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurple.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      'showGeneralDialog\n'
+                      '  pageBuilder → Align(alignment: Alignment.topCenter)\n'
+                      '  transitionBuilder → SlideTransition\n'
+                      '  Tween<Offset>(begin: Offset(0,-1), end: Offset.zero)',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontFamily: 'monospace',
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                  FilledButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('닫기'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // ── AlertDialog 너비 변경 ──
+  void _showWideDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    bool useInsetPadding = true;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              // insetPadding 줄이면 다이얼로그가 더 넓어짐 (기본: symmetric(horizontal:40))
+              insetPadding: useInsetPadding
+                  ? const EdgeInsets.symmetric(horizontal: 16, vertical: 24)
+                  : const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+              title: const Text('AlertDialog 너비 변경'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12,
+                children: [
+                  // content에 SizedBox(width: double.maxFinite) 감싸는 방법
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.teal.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '방법 1: insetPadding: EdgeInsets.symmetric(horizontal: 16)\n'
+                        '방법 2: content에 SizedBox(width: double.maxFinite) 감싸기',
+                        style: theme.textTheme.bodySmall?.copyWith(height: 1.5),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    spacing: 8,
+                    children: [
+                      Icon(
+                        useInsetPadding ? Icons.check_circle : Icons.radio_button_unchecked,
+                        color: useInsetPadding ? Colors.teal : theme.colorScheme.outline,
+                        size: 18,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'insetPadding: horizontal 16 (현재 ${useInsetPadding ? "적용" : "해제"})',
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                  FilledButton.tonal(
+                    onPressed: () =>
+                        setDialogState(() => useInsetPadding = !useInsetPadding),
+                    child: Text(useInsetPadding ? 'insetPadding 기본값으로' : 'insetPadding 줄이기'),
+                  ),
+                ],
+              ),
+              actions: [
+                FilledButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('확인'),
+                ),
+              ],
+              actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            );
+          },
         );
       },
     );

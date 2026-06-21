@@ -2,14 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../../widget/basic_header_delegate.dart';
 
-class SliverTab extends StatelessWidget {
+class SliverTab extends StatefulWidget {
   const SliverTab({super.key});
 
   @override
+  State<SliverTab> createState() => _SliverTabState();
+}
+
+class _SliverTabState extends State<SliverTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final theme = Theme.of(context);
 
     return CustomScrollView(
+      key: const PageStorageKey('sliver_tab'),
       physics: const AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
       ),

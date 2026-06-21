@@ -440,6 +440,72 @@ class _PdfScreenState extends State<PdfScreen> {
 
             const SizedBox(height: 16),
 
+            // PDF 이미지 삽입 (pw.MemoryImage)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.secondaryContainer
+                    .withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 8,
+                children: [
+                  Row(children: [
+                    Icon(Icons.image_outlined,
+                        color: theme.colorScheme.secondary, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      '💡 PDF에 이미지 삽입 (pw.MemoryImage)',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.secondary),
+                    ),
+                  ]),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '// 1. Asset 이미지\n'
+                      'final data = await rootBundle.load("assets/images/logo.png");\n'
+                      'final image = pw.MemoryImage(data.buffer.asUint8List());\n\n'
+                      '// 2. 파일 이미지 (갤러리 등)\n'
+                      'final bytes = File(path).readAsBytesSync();\n'
+                      'final image = pw.MemoryImage(bytes);\n\n'
+                      '// 3. PDF에 배치\n'
+                      'pdf.addPage(pw.Page(\n'
+                      '  build: (context) => pw.Image(image, width: 200),\n'
+                      '));',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontFamily: 'monospace',
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '• rootBundle.load() → Asset 이미지 바이트 로드\n'
+                    '• pw.MemoryImage(bytes) → PDF용 이미지 객체 생성\n'
+                    '• pw.Image(image, width: 200, height: 100) → 크기 지정\n'
+                    '• 네트워크 이미지: http.get(url) → response.bodyBytes 사용',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      height: 1.6,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
             // 버튼들
             Row(
               children: [

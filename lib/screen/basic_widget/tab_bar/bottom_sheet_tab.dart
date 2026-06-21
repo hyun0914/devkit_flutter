@@ -8,7 +8,9 @@ class BottomSheetTab extends StatefulWidget {
 }
 
 class _BottomSheetTabState extends State<BottomSheetTab>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   late AnimationController animationController;
   final TextEditingController searchController = TextEditingController();
 
@@ -34,9 +36,11 @@ class _BottomSheetTabState extends State<BottomSheetTab>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
+      key: const PageStorageKey('bottom_sheet_tab'),
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -98,9 +102,19 @@ class _BottomSheetTabState extends State<BottomSheetTab>
             onTap: () => _showDraggableSheet(context),
           ),
 
+          // Wrap 시트 (자식 높이만큼)
+          _buildExampleCard(
+            theme: theme,
+            title: 'Wrap 시트 (자식 높이만큼)',
+            description: 'Column 대신 Wrap → 콘텐츠 높이에 맞게 자동 조절',
+            icon: Icons.wrap_text,
+            color: Colors.teal,
+            onTap: () => _showWrapSheet(context),
+          ),
+
           const SizedBox(height: 16),
 
-          // 정보 카드
+          // 높이 제어 비교 카드
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -116,30 +130,22 @@ class _BottomSheetTabState extends State<BottomSheetTab>
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.info_outline,
-                      size: 20,
-                      color: theme.colorScheme.primary,
-                    ),
+                    Icon(Icons.info_outline, size: 20, color: theme.colorScheme.primary),
                     const SizedBox(width: 8),
-                    Text(
-                      'BottomSheet 속성',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('높이 제어 방법 비교',
+                        style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
                   ],
                 ),
-                Text(
-                  '• isDismissible: 외부 클릭으로 닫기\n'
-                  '• enableDrag: 드래그로 닫기\n'
-                  '• isScrollControlled: 전체 높이 사용\n'
-                  '• useSafeArea: SafeArea 적용',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    height: 1.5,
-                  ),
-                ),
+                _buildTipRow(theme, 'Wrap',
+                    '자식 높이만큼만 → mainAxisSize.min 없어도 자동'),
+                _buildTipRow(theme, 'Column (기본)',
+                    '기본 최대 높이(50%)까지 늘어남 → mainAxisSize.min 필요'),
+                _buildTipRow(theme, 'isScrollControlled: true\n+ Container height',
+                    '원하는 픽셀 높이 지정 가능'),
+                _buildTipRow(theme, 'isScrollControlled: true\n+ DraggableScrollableSheet',
+                    'expand: false 필수, initialChildSize/min/max 비율 설정'),
+                _buildTipRow(theme, 'useSafeArea: false',
+                    'isScrollControlled과 조합 시 상태바 영역까지 확장'),
               ],
             ),
           ),
@@ -491,6 +497,73 @@ class _BottomSheetTabState extends State<BottomSheetTab>
     );
   }
 
+  // Wrap 시트 (자식 높이만큼만)
+  void _showWrapSheet(BuildContext context) {
+    final theme = Theme.of(context);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: theme.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        // Wrap으로 감싸면 자식 위젯 높이만큼만 시트가 열림
+        // Column만 쓰면 기본 최대 높이(화면 50%)까지 늘어남
+        return Wrap(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 16,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.symmetric(horizontal: 160),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.onSurfaceVariant
+                          .withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  Text(
+                    'Wrap 시트',
+                    style: theme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.teal.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: Colors.teal.withValues(alpha: 0.4)),
+                    ),
+                    child: Text(
+                      'showModalBottomSheet builder에서\n'
+                      'Column 대신 Wrap으로 감싸면\n'
+                      '콘텐츠 높이만큼만 시트가 열립니다.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.6),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  FilledButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('닫기'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Draggable BottomSheet
   void _showDraggableSheet(BuildContext context) {
     final theme = Theme.of(context);
@@ -571,6 +644,39 @@ class _BottomSheetTabState extends State<BottomSheetTab>
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTipRow(ThemeData theme, String label, String desc) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 4),
+          width: 6,
+          height: 6,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary,
+            shape: BoxShape.circle,
+          ),
+        ),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              children: [
+                TextSpan(
+                  text: '$label  ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: desc),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

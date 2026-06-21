@@ -15,6 +15,7 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
   int _modeIndex = 0; // 0: animated_reorderable_list, 1: ReorderableListView, 2: animated_reorderable
   List<User> _list = [];
   Color? _dragTargetColor;
+  bool _customHandles = false;
 
   final _animatedReorderableKey = GlobalKey<AnimatedReorderableState>();
 
@@ -139,8 +140,9 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Draggable
+                    // Draggable (즉시)
                     Column(
+                      spacing: 6,
                       children: [
                         Draggable<Color>(
                           data: Colors.green,
@@ -154,56 +156,97 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
                                 color: Colors.green.withValues(alpha: 0.8),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: const Icon(
-                                Icons.touch_app,
-                                color: Colors.white,
-                                size: 48,
-                              ),
+                              child: const Icon(Icons.touch_app,
+                                  color: Colors.white, size: 48),
                             ),
                           ),
                           childWhenDragging: Container(
-                            width: 80,
-                            height: 80,
+                            width: 70,
+                            height: 70,
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(14),
                               border: Border.all(
-                                color: theme.colorScheme.outline,
-                                width: 2,
-                              ),
+                                  color: theme.colorScheme.outline, width: 2),
                             ),
-                            child: Icon(
-                              Icons.touch_app,
-                              color: theme.colorScheme.outline,
-                              size: 32,
-                            ),
+                            child: Icon(Icons.touch_app,
+                                color: theme.colorScheme.outline, size: 28),
                           ),
                           child: Container(
-                            width: 80,
-                            height: 80,
+                            width: 70,
+                            height: 70,
                             decoration: BoxDecoration(
                               color: Colors.green,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(14),
                             ),
-                            child: const Icon(
-                              Icons.touch_app,
-                              color: Colors.white,
-                              size: 32,
-                            ),
+                            child: const Icon(Icons.touch_app,
+                                color: Colors.white, size: 28),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text('드래그', style: theme.textTheme.labelMedium),
+                        Text('Draggable\n(즉시 드래그)',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.labelSmall),
+                      ],
+                    ),
+
+                    // LongPressDraggable (길게 누름)
+                    Column(
+                      spacing: 6,
+                      children: [
+                        LongPressDraggable<Color>(
+                          data: Colors.orange,
+                          feedback: Material(
+                            elevation: 8,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withValues(alpha: 0.8),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Icon(Icons.pan_tool,
+                                  color: Colors.white, size: 48),
+                            ),
+                          ),
+                          childWhenDragging: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                  color: theme.colorScheme.outline, width: 2),
+                            ),
+                            child: Icon(Icons.pan_tool,
+                                color: theme.colorScheme.outline, size: 28),
+                          ),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Icon(Icons.pan_tool,
+                                color: Colors.white, size: 28),
+                          ),
+                        ),
+                        Text('LongPressDraggable\n(길게 눌러 드래그)',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.labelSmall),
                       ],
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(top: 32),
-                      child: Icon(Icons.arrow_forward, color: theme.colorScheme.primary),
+                      padding: const EdgeInsets.only(top: 24),
+                      child: Icon(Icons.arrow_forward,
+                          color: theme.colorScheme.primary),
                     ),
 
-                    // DragTarget
+                    // DragTarget (공유)
                     Column(
+                      spacing: 6,
                       children: [
                         DragTarget<Color>(
                           onWillAcceptWithDetails: (details) => true,
@@ -215,12 +258,12 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
                           },
                           builder: (context, candidateData, rejectedData) {
                             return Container(
-                              width: 80,
-                              height: 80,
+                              width: 70,
+                              height: 70,
                               decoration: BoxDecoration(
                                 color: _dragTargetColor ??
                                     theme.colorScheme.surfaceContainerHighest,
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(14),
                                 border: Border.all(
                                   color: candidateData.isNotEmpty
                                       ? theme.colorScheme.primary
@@ -235,13 +278,14 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
                                 color: _dragTargetColor != null
                                     ? Colors.white
                                     : theme.colorScheme.onSurfaceVariant,
-                                size: 32,
+                                size: 28,
                               ),
                             );
                           },
                         ),
-                        const SizedBox(height: 8),
-                        Text('드롭', style: theme.textTheme.labelMedium),
+                        Text('DragTarget\n(공유)',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.labelSmall),
                       ],
                     ),
                   ],
@@ -330,26 +374,52 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
 
   // ── 2. ReorderableListView (내장) ──
   Widget _buildReorderableListView(ThemeData theme) {
-    return ReorderableListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: _list.length,
-      itemBuilder: (context, index) {
-        final user = _list[index];
-        return _ItemTile(
-          key: ValueKey(user.id),
-          id: user.id,
-          color: theme.colorScheme.secondaryContainer,
-          textColor: theme.colorScheme.onSecondaryContainer,
-          icon: Icons.drag_handle,
-        );
-      },
-      onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) newIndex -= 1;
-          final User user = _list.removeAt(oldIndex);
-          _list.insert(newIndex, user);
-        });
-      },
+    return Column(
+      children: [
+        SwitchListTile(
+          title: const Text('buildDefaultDragHandles: false'),
+          subtitle: const Text('기본 핸들 숨김 → ReorderableDragStartListener 사용'),
+          value: _customHandles,
+          onChanged: (v) => setState(() => _customHandles = v),
+          dense: true,
+        ),
+        Expanded(
+          child: ReorderableListView.builder(
+            buildDefaultDragHandles: !_customHandles,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _list.length,
+            itemBuilder: (context, index) {
+              final user = _list[index];
+              if (_customHandles) {
+                return ReorderableDragStartListener(
+                  key: ValueKey(user.id),
+                  index: index,
+                  child: _ItemTile(
+                    id: user.id,
+                    color: theme.colorScheme.secondaryContainer,
+                    textColor: theme.colorScheme.onSecondaryContainer,
+                    icon: Icons.drag_handle,
+                  ),
+                );
+              }
+              return _ItemTile(
+                key: ValueKey(user.id),
+                id: user.id,
+                color: theme.colorScheme.secondaryContainer,
+                textColor: theme.colorScheme.onSecondaryContainer,
+                icon: Icons.drag_handle,
+              );
+            },
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) newIndex -= 1;
+                final User user = _list.removeAt(oldIndex);
+                _list.insert(newIndex, user);
+              });
+            },
+          ),
+        ),
+      ],
     );
   }
 

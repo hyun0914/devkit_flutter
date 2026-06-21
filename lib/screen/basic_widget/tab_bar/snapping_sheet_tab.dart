@@ -19,7 +19,7 @@ class _SnappingSheetTabState extends State<SnappingSheetTab> {
 
     return SnappingSheet(
       controller: _snappingController,
-      lockOverflowDrag: false,
+      lockOverflowDrag: true, // 범위 초과 드래그 방지 (권장)
       grabbingHeight: 60,
       grabbing: _buildGrabbingHeader(theme),
       onSnapCompleted: (positionData, snappingPosition) {
@@ -56,7 +56,7 @@ class _SnappingSheetTabState extends State<SnappingSheetTab> {
         ),
       ),
       child: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +157,22 @@ class _SnappingSheetTabState extends State<SnappingSheetTab> {
                     _buildInfoItem(
                       theme: theme,
                       icon: Icons.swap_vert,
-                      text: '3단계 스냅 포지션',
+                      text: '3단계 스냅 포지션 (factor 비율 기반)',
+                    ),
+                    _buildInfoItem(
+                      theme: theme,
+                      icon: Icons.straighten,
+                      text: 'pixels 방식: SnappingPosition.pixels(positionPixels: 300)',
+                    ),
+                    _buildInfoItem(
+                      theme: theme,
+                      icon: Icons.lock_outline,
+                      text: 'lockOverflowDrag: true → 범위 초과 드래그 방지 (권장)',
+                    ),
+                    _buildInfoItem(
+                      theme: theme,
+                      icon: Icons.vertical_align_top,
+                      text: 'sheetAbove: 상단에서 내려오는 시트',
                     ),
                     _buildInfoItem(
                       theme: theme,
@@ -168,7 +183,7 @@ class _SnappingSheetTabState extends State<SnappingSheetTab> {
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 24),
 
               // 상태 표시
               Center(

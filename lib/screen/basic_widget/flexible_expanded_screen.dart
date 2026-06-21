@@ -228,6 +228,37 @@ class FlexibleExpandedScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
+            // Spacer
+            _buildSectionHeader(theme, 'Spacer'),
+            const SizedBox(height: 12),
+            _buildExampleCard(
+              theme: theme,
+              title: 'Spacer (양 끝 배치)',
+              child: Row(
+                children: [
+                  _buildBox(theme, '시작', 60, Colors.blue),
+                  const Spacer(),
+                  _buildBox(theme, '끝', 60, Colors.orange),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildExampleCard(
+              theme: theme,
+              title: 'Spacer flex 비율 (1:2)',
+              child: Row(
+                children: [
+                  _buildBox(theme, 'A', 50, Colors.blue),
+                  const Spacer(flex: 1),
+                  _buildBox(theme, 'B', 50, Colors.green),
+                  const Spacer(flex: 2),
+                  _buildBox(theme, 'C', 50, Colors.orange),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
             // 비교표
             _buildComparisonTable(theme),
 

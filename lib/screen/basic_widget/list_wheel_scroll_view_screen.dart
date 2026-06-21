@@ -15,6 +15,29 @@ class _ListWheelScrollViewScreenState
   double _magnification = 1.2;
   double _diameterRatio = 2.0;
   int _selectedIndex = 0;
+  bool _syncMode = false;
+
+  late FixedExtentScrollController _controller1;
+  late FixedExtentScrollController _controller2;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller1 = FixedExtentScrollController();
+    _controller2 = FixedExtentScrollController();
+    _controller1.addListener(() {
+      if (_controller2.hasClients) {
+        _controller2.jumpToItem(_controller1.selectedItem);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller1.dispose();
+    _controller2.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,71 +76,72 @@ class _ListWheelScrollViewScreenState
 
           // ListWheelScrollView
           Expanded(
-            child: ListWheelScrollView(
-              itemExtent: 100,
-              useMagnifier: _useMagnifier,
-              magnification: _magnification,
-              diameterRatio: _diameterRatio,
-              physics: const FixedExtentScrollPhysics(),
-              onSelectedItemChanged: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              children: List.generate(
-                30,
-                    (index) {
-                  final isSelected = index == _selectedIndex;
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: isSelected
-                            ? [
-                          theme.colorScheme.primary,
-                          theme.colorScheme.primaryContainer,
-                        ]
-                            : [
-                          theme.colorScheme.surfaceContainerHighest,
-                          theme.colorScheme.surfaceContainerHighest,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isSelected
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.outline.withValues(alpha: 0.2),
-                        width: isSelected ? 2 : 1,
-                      ),
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 8,
-                        children: [
-                          Icon(
-                            isSelected ? Icons.check_circle : Icons.circle_outlined,
+            child: _syncMode
+                ? _buildSyncDemo(theme)
+                : ListWheelScrollView(
+                    controller: _controller1,
+                    itemExtent: 100,
+                    useMagnifier: _useMagnifier,
+                    magnification: _magnification,
+                    diameterRatio: _diameterRatio,
+                    physics: const FixedExtentScrollPhysics(),
+                    onSelectedItemChanged: (index) {
+                      setState(() => _selectedIndex = index);
+                    },
+                    children: List.generate(30, (index) {
+                      final isSelected = index == _selectedIndex;
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: isSelected
+                                ? [
+                                    theme.colorScheme.primary,
+                                    theme.colorScheme.primaryContainer,
+                                  ]
+                                : [
+                                    theme.colorScheme.surfaceContainerHighest,
+                                    theme.colorScheme.surfaceContainerHighest,
+                                  ],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
                             color: isSelected
-                                ? theme.colorScheme.onPrimary
-                                : theme.colorScheme.onSurfaceVariant,
-                            size: 32,
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.outline
+                                    .withValues(alpha: 0.2),
+                            width: isSelected ? 2 : 1,
                           ),
-                          Text(
-                            '아이템 $index',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: isSelected
-                                  ? theme.colorScheme.onPrimary
-                                  : theme.colorScheme.onSurface,
-                            ),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Icon(
+                                isSelected
+                                    ? Icons.check_circle
+                                    : Icons.circle_outlined,
+                                color: isSelected
+                                    ? theme.colorScheme.onPrimary
+                                    : theme.colorScheme.onSurfaceVariant,
+                                size: 32,
+                              ),
+                              Text(
+                                '아이템 $index',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isSelected
+                                      ? theme.colorScheme.onPrimary
+                                      : theme.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                        ),
+                      );
+                    }),
+                  ),
           ),
 
           // 컨트롤 패널
@@ -163,6 +187,24 @@ class _ListWheelScrollViewScreenState
                         ),
                       ],
                     ),
+                  ),
+
+                  // 동기화 모드 토글
+                  SwitchListTile(
+                    title: const Text('FixedExtentScrollController 동기화'),
+                    subtitle: const Text(
+                        'controller1 → addListener → controller2.jumpToItem (hasClients 체크)'),
+                    value: _syncMode,
+                    onChanged: (value) {
+                      setState(() {
+                        _syncMode = value;
+                        _selectedIndex = 0;
+                        if (!value && _controller1.hasClients) {
+                          _controller1.jumpToItem(0);
+                        }
+                      });
+                    },
+                    contentPadding: EdgeInsets.zero,
                   ),
 
                   // 확대 효과 토글
@@ -265,6 +307,84 @@ class _ListWheelScrollViewScreenState
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSyncDemo(ThemeData theme) {
+    Widget wheelItem(int index, bool isPrimary) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          color: isPrimary
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isPrimary
+                ? theme.colorScheme.primary.withValues(alpha: 0.3)
+                : theme.colorScheme.secondary.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            '$index',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isPrimary
+                  ? theme.colorScheme.onPrimaryContainer
+                  : theme.colorScheme.onSecondaryContainer,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('controller1 (드래그)',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.primary)),
+              Icon(Icons.sync, size: 16, color: theme.colorScheme.outline),
+              Text('controller2 (자동 동기화)',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.secondary)),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: ListWheelScrollView(
+                  controller: _controller1,
+                  itemExtent: 80,
+                  diameterRatio: 2.0,
+                  physics: const FixedExtentScrollPhysics(),
+                  onSelectedItemChanged: (i) =>
+                      setState(() => _selectedIndex = i),
+                  children:
+                      List.generate(30, (i) => wheelItem(i, true)),
+                ),
+              ),
+              Expanded(
+                child: ListWheelScrollView(
+                  controller: _controller2,
+                  itemExtent: 80,
+                  diameterRatio: 2.0,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children:
+                      List.generate(30, (i) => wheelItem(i, false)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

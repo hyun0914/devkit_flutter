@@ -138,6 +138,10 @@ class _PageTweenAnimationScreenState extends State<PageTweenAnimationScreen> {
                   setState(() {
                     _currentPage = index;
                   });
+                  // 이미지 깜빡임 방지: 다음 이미지 미리 캐싱 (실제 이미지 사용 시)
+                  // final nextIdx = (index + 1) % _cards.length;
+                  // 마지막이면 첫 번째, 그 외엔 다음 인덱스 캐싱
+                  // precacheImage(NetworkImage(imageUrls[nextIdx]), context);
                 },
                 itemBuilder: (context, index) {
                   final actualIndex = index % _cards.length;
@@ -387,6 +391,14 @@ class _PageTweenAnimationScreenState extends State<PageTweenAnimationScreen> {
                     _buildInfoItem(
                       theme: theme,
                       text: '실무 배너/광고에서 많이 사용',
+                    ),
+                    _buildInfoItem(
+                      theme: theme,
+                      text: 'onPageChanged → precacheImage()로 깜빡임 방지',
+                    ),
+                    _buildInfoItem(
+                      theme: theme,
+                      text: '방법 2: carousel_slider — autoPlay / interval / curve 간단 설정',
                     ),
                   ] else ...[
                     _buildInfoItem(

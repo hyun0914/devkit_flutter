@@ -11,15 +11,16 @@ class HideWidgetsScreen extends StatefulWidget {
 
 class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
   bool _isVisible = true;
+  bool _fadeVisible = true;
+  String _measuredSize = '';
+  final GlobalKey _offstageKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return DefaultScaffold(
-      appBar: AppBar(
-        title: const Text('위젯 숨기기'),
-      ),
+      appBar: AppBar(title: const Text('위젯 숨기기')),
       body: SafeArea(
         child: Column(
           children: [
@@ -27,23 +28,55 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  // 헤더
                   Text(
                     '위젯 숨기기 방법',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: theme.textTheme.headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '3가지 방법의 차이점을 확인해보세요',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                    '5가지 방법의 차이점을 확인해보세요',
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
 
                   const SizedBox(height: 24),
 
-                  // 방법 1: Visibility
+                  // 0. if 조건문
+                  _buildMethodCard(
+                    theme: theme,
+                    title: '0. if 조건문',
+                    description: '가장 단순하고 성능 최적',
+                    icon: Icons.code,
+                    color: Colors.indigo,
+                    child: Column(
+                      spacing: 12,
+                      children: [
+                        _buildDemoBox(
+                          theme: theme,
+                          label: 'if (_isVisible) Widget() → 완전 제거',
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildSmallBox(theme, '이전'),
+                              if (_isVisible)
+                                _buildTargetWidget(theme, 'if 조건문'),
+                              _buildSmallBox(theme, '이후'),
+                            ],
+                          ),
+                        ),
+                        _buildInfoText(
+                          theme: theme,
+                          text: '✓ 위젯 트리에서 완전 제거 → 공간·State 소멸\n'
+                              '✓ Visibility보다 간결하며 가장 성능 유리\n'
+                              '✓ State 유지가 불필요한 경우 1순위 선택',
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // 1. Visibility
                   _buildMethodCard(
                     theme: theme,
                     title: '1. Visibility',
@@ -55,7 +88,7 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                       children: [
                         _buildDemoBox(
                           theme: theme,
-                          label: 'visible: ${_isVisible ? 'true' : 'false'}',
+                          label: 'visible: $_isVisible',
                           child: Visibility(
                             visible: _isVisible,
                             child: _buildTargetWidget(theme, 'Visibility'),
@@ -74,9 +107,12 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                         ),
                         _buildInfoText(
                           theme: theme,
-                          text: '✓ 위젯 트리에서 제거\n'
-                              '✓ 공간 유지 가능 (maintainSize)\n'
-                              '✓ 상태 유지 가능 (maintainState)',
+                          text: '✓ visible: false → SizedBox.shrink() 교체, 공간·State 소멸\n'
+                              '✓ maintainSize → 공간 유지 (maintainAnimation + maintainState 필수)\n'
+                              '✓ maintainState → State 유지\n'
+                              '✓ maintainAnimation → 애니메이션 유지\n'
+                              '✓ maintainInteractivity → 터치 유지\n'
+                              '내부: maintainSize+State → Opacity(0) / 그 외 → Offstage 사용',
                         ),
                       ],
                     ),
@@ -84,11 +120,11 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
 
                   const SizedBox(height: 16),
 
-                  // 방법 2: Offstage
+                  // 2. Offstage
                   _buildMethodCard(
                     theme: theme,
                     title: '2. Offstage',
-                    description: '공간 차지 안함',
+                    description: '공간 없이 State 유지, 크기 측정 가능',
                     icon: Icons.layers_clear,
                     color: theme.colorScheme.secondary,
                     child: Column(
@@ -96,18 +132,59 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                       children: [
                         _buildDemoBox(
                           theme: theme,
-                          label: 'offstage: ${!_isVisible ? 'true' : 'false'}',
+                          label: 'offstage: ${!_isVisible}',
                           child: Offstage(
                             offstage: !_isVisible,
                             child: _buildTargetWidget(theme, 'Offstage'),
                           ),
                         ),
+                        _buildDemoBox(
+                          theme: theme,
+                          label: 'offstage: true → GlobalKey로 크기 사전 측정',
+                          child: Column(
+                            spacing: 8,
+                            children: [
+                              Offstage(
+                                offstage: true,
+                                child: Container(
+                                  key: _offstageKey,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 12),
+                                  color: theme.colorScheme.primaryContainer,
+                                  child: const Text('화면에 없지만 측정 가능한 위젯'),
+                                ),
+                              ),
+                              FilledButton.tonal(
+                                onPressed: () {
+                                  final ctx = _offstageKey.currentContext;
+                                  if (ctx != null) {
+                                    final box =
+                                        ctx.findRenderObject() as RenderBox;
+                                    setState(() {
+                                      _measuredSize =
+                                          '${box.size.width.toStringAsFixed(1)} × ${box.size.height.toStringAsFixed(1)} px';
+                                    });
+                                  }
+                                },
+                                child: const Text('크기 측정'),
+                              ),
+                              if (_measuredSize.isNotEmpty)
+                                Text(
+                                  '측정값: $_measuredSize',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                         _buildInfoText(
                           theme: theme,
-                          text: '✓ 위젯 트리에 유지\n'
-                              '✓ 렌더링 안됨\n'
-                              '✓ 공간 차지 안함\n'
-                              '✓ 상태 유지됨',
+                          text: '✓ paint만 스킵, 레이아웃 수행 → 크기 측정 가능\n'
+                              '✓ 공간 차지 안 함, State·애니메이션 유지, 터치 불가\n'
+                              '핵심: offstage: true + GlobalKey → RenderBox로 크기 사전 측정\n'
+                              '⚠ 스크린 리더(접근성)에서 인식 안 됨',
                         ),
                       ],
                     ),
@@ -115,11 +192,11 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
 
                   const SizedBox(height: 16),
 
-                  // 방법 3: Opacity
+                  // 3. Opacity
                   _buildMethodCard(
                     theme: theme,
                     title: '3. Opacity',
-                    description: '공간 차지하며 투명화',
+                    description: '공간 차지하며 투명화, 터치 이벤트 유지',
                     icon: Icons.opacity,
                     color: theme.colorScheme.tertiary,
                     child: Column(
@@ -143,10 +220,53 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                         ),
                         _buildInfoText(
                           theme: theme,
-                          text: '✓ 위젯 트리에 유지\n'
-                              '✓ 렌더링됨 (성능 영향)\n'
-                              '✓ 공간 차지함\n'
-                              '✓ 클릭 불가 (opacity: 0일 때)',
+                          text: '✓ 렌더링 모두 수행, 공간 차지\n'
+                              '✓ opacity: 0이어도 터치 이벤트 그대로 발생\n'
+                              '⚠ 복잡한 위젯에 opacity: 0 사용 시 렌더링 낭비\n'
+                              '→ 페이드 효과는 AnimatedOpacity 권장',
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // 4. AnimatedOpacity
+                  _buildMethodCard(
+                    theme: theme,
+                    title: '4. AnimatedOpacity',
+                    description: '페이드 인/아웃 애니메이션',
+                    icon: Icons.animation,
+                    color: Colors.deepPurple,
+                    child: Column(
+                      spacing: 12,
+                      children: [
+                        _buildDemoBox(
+                          theme: theme,
+                          label: '부드러운 페이드 (별도 토글)',
+                          child: Column(
+                            spacing: 8,
+                            children: [
+                              AnimatedOpacity(
+                                opacity: _fadeVisible ? 1.0 : 0.0,
+                                duration: const Duration(milliseconds: 400),
+                                child:
+                                    _buildTargetWidget(theme, 'AnimatedOpacity'),
+                              ),
+                              TextButton(
+                                onPressed: () => setState(
+                                    () => _fadeVisible = !_fadeVisible),
+                                child: Text(
+                                    _fadeVisible ? '페이드 아웃' : '페이드 인'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        _buildInfoText(
+                          theme: theme,
+                          text: '✓ Opacity의 애니메이션 버전 — duration / curve 지원\n'
+                              '✓ opacity: 0이어도 공간 유지, 터치 이벤트 발생\n'
+                              '→ 사라질 때 공간까지 없애려면 AnimatedOpacity + AnimatedSize 조합',
                         ),
                       ],
                     ),
@@ -159,15 +279,16 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
 
                   const SizedBox(height: 24),
 
-                  // 사용 권장 사항
+                  // 권장 사항
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                      color: theme.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                      ),
+                          color: theme.colorScheme.outline
+                              .withValues(alpha: 0.2)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,19 +296,20 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.recommend,
-                              color: theme.colorScheme.primary,
-                              size: 20,
-                            ),
+                            Icon(Icons.recommend,
+                                color: theme.colorScheme.primary, size: 20),
                             const SizedBox(width: 8),
                             Text(
-                              '💡 권장 사항',
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              '💡 언제 뭘 쓸까',
+                              style: theme.textTheme.titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],
+                        ),
+                        _buildRecommendation(
+                          theme: theme,
+                          method: 'if 조건문',
+                          useCase: '완전 제거 (공간·State 불필요) — 가장 성능 유리',
                         ),
                         _buildRecommendation(
                           theme: theme,
@@ -196,13 +318,23 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                         ),
                         _buildRecommendation(
                           theme: theme,
+                          method: 'Visibility(maintain)',
+                          useCase: '공간 유지 + State 유지',
+                        ),
+                        _buildRecommendation(
+                          theme: theme,
                           method: 'Offstage',
-                          useCase: '위젯 상태 유지 필요',
+                          useCase: '공간 없이 State 유지 + 크기 사전 측정',
+                        ),
+                        _buildRecommendation(
+                          theme: theme,
+                          method: 'AnimatedOpacity',
+                          useCase: '투명도 애니메이션 (페이드 인/아웃)',
                         ),
                         _buildRecommendation(
                           theme: theme,
                           method: 'Opacity',
-                          useCase: '페이드 애니메이션',
+                          useCase: '공간 유지 + 터치 이벤트 살려야 할 때',
                         ),
                       ],
                     ),
@@ -229,16 +361,14 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                 child: SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _isVisible = !_isVisible;
-                      });
-                    },
-                    icon: Icon(_isVisible ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () =>
+                        setState(() => _isVisible = !_isVisible),
+                    icon: Icon(
+                        _isVisible ? Icons.visibility_off : Icons.visibility),
                     label: Text(_isVisible ? '위젯 숨기기' : '위젯 보이기'),
                     style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 16)),
                   ),
                 ),
               ),
@@ -249,7 +379,18 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 방법 카드
+  Widget _buildSmallBox(ThemeData theme, String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(label, style: theme.textTheme.labelSmall),
+    );
+  }
+
   Widget _buildMethodCard({
     required ThemeData theme,
     required String title,
@@ -264,8 +405,7 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,18 +426,12 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      description,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
+                    Text(title,
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                    Text(description,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant)),
                   ],
                 ),
               ),
@@ -309,7 +443,6 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 데모 박스
   Widget _buildDemoBox({
     required ThemeData theme,
     required String label,
@@ -319,11 +452,11 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        color: theme.colorScheme.surfaceContainerHighest
+            .withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,7 +480,6 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 타겟 위젯
   Widget _buildTargetWidget(ThemeData theme, String label) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -370,11 +502,7 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 정보 텍스트
-  Widget _buildInfoText({
-    required ThemeData theme,
-    required String text,
-  }) {
+  Widget _buildInfoText({required ThemeData theme, required String text}) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -391,15 +519,13 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 비교표
   Widget _buildComparisonTable(ThemeData theme) {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,9 +534,8 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
             padding: const EdgeInsets.all(16),
             child: Text(
               '📊 비교표',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: theme.textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           ClipRRect(
@@ -419,43 +544,45 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
             child: Table(
               border: TableBorder.symmetric(
                 inside: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
+                    color: theme.colorScheme.outline.withValues(alpha: 0.2)),
               ),
               columnWidths: const {
-                0: FlexColumnWidth(2),
-                1: FlexColumnWidth(1.5),
-                2: FlexColumnWidth(1.5),
-                3: FlexColumnWidth(1.5),
+                0: FlexColumnWidth(2.2),
+                1: FlexColumnWidth(1.4),
+                2: FlexColumnWidth(1.6),
+                3: FlexColumnWidth(1.6),
+                4: FlexColumnWidth(1.6),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: [
-                // 헤더
                 TableRow(
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest,
-                  ),
+                      color: theme.colorScheme.surfaceContainerHighest),
                   children: [
-                    _buildTableCell(theme, '', isHeader: true),
-                    _buildTableCell(theme, 'Visibility', isHeader: true),
-                    _buildTableCell(theme, 'Offstage', isHeader: true),
-                    _buildTableCell(theme, 'Opacity', isHeader: true),
+                    _buildCell(theme, '', isHeader: true),
+                    _buildCell(theme, 'Vis\n기본', isHeader: true),
+                    _buildCell(theme, 'Vis\nsize', isHeader: true),
+                    _buildCell(theme, 'Off\nstage', isHeader: true),
+                    _buildCell(theme, 'Opacity\n(0)', isHeader: true),
                   ],
                 ),
-                // 데이터
                 ...[
-                  ('공간 차지', '✗', '✗', '✓'),
-                  ('상태 유지', '옵션', '✓', '✓'),
-                  ('렌더링', '✗', '✗', '✓'),
-                  ('성능', '⭐⭐⭐', '⭐⭐⭐', '⭐⭐'),
-                ].map((row) => TableRow(
-                      children: [
-                        _buildTableCell(theme, row.$1),
-                        _buildTableCell(theme, row.$2),
-                        _buildTableCell(theme, row.$3),
-                        _buildTableCell(theme, row.$4),
-                      ],
-                    )),
+                  ('공간 차지', '❌', '✅', '❌', '✅'),
+                  ('State 유지', '❌', '✅', '✅', '✅'),
+                  ('렌더링', '❌', '✅', '레이아웃', '✅'),
+                  ('터치 가능', '❌', '❌', '❌', '✅'),
+                  ('크기 측정', '❌', '✅', '✅', '✅'),
+                ].map(
+                  (row) => TableRow(
+                    children: [
+                      _buildCell(theme, row.$1),
+                      _buildCell(theme, row.$2),
+                      _buildCell(theme, row.$3),
+                      _buildCell(theme, row.$4),
+                      _buildCell(theme, row.$5),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -464,15 +591,10 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 테이블 셀
-  Widget _buildTableCell(
-    ThemeData theme,
-    String text, {
-    bool isHeader = false,
-  }) {
+  Widget _buildCell(ThemeData theme, String text, {bool isHeader = false}) {
     return Container(
-      height: isHeader ? 44 : 40,
-      padding: const EdgeInsets.all(8),
+      height: isHeader ? 48 : 40,
+      padding: const EdgeInsets.all(6),
       child: Center(
         child: Text(
           text,
@@ -486,7 +608,6 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     );
   }
 
-  // 권장 사항
   Widget _buildRecommendation({
     required ThemeData theme,
     required String method,
@@ -495,18 +616,13 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          Icons.arrow_right,
-          size: 18,
-          color: theme.colorScheme.primary,
-        ),
+        Icon(Icons.arrow_right, size: 18, color: theme.colorScheme.primary),
         const SizedBox(width: 8),
         Expanded(
           child: RichText(
             text: TextSpan(
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               children: [
                 TextSpan(
                   text: '$method: ',

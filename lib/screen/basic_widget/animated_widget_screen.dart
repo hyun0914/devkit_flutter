@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../widget/default_scaffold.dart';
 
@@ -9,12 +12,32 @@ class AnimatedWidgetScreen extends StatefulWidget {
   State<AnimatedWidgetScreen> createState() => _AnimatedWidgetScreenState();
 }
 
-class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen> {
+class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
+    with TickerProviderStateMixin {
   bool _selected = false;
   int _count = 0;
   double _opacity = 1.0;
   double _padding = 0.0;
   double _iconSize = 24.0;
+  bool _slideSelected = false;
+  bool _flipY = false;
+  bool _flipX = false;
+  late AnimationController _waveController;
+
+  @override
+  void initState() {
+    super.initState();
+    _waveController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _waveController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -381,6 +404,243 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen> {
 
             const SizedBox(height: 24),
 
+            // 슬라이드 & 변형
+            _buildSectionHeader(theme, '슬라이드 & 변형'),
+            const SizedBox(height: 12),
+            _buildExampleCard(
+              theme: theme,
+              title: 'AnimatedContainer + Matrix4 슬라이드',
+              description: 'transform: Matrix4.translationValues(x, 0, 0)',
+              child: Column(
+                spacing: 12,
+                children: [
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeInOut,
+                    transform: Matrix4.translationValues(
+                      _slideSelected ? 80.0 : 0.0,
+                      0,
+                      0,
+                    ),
+                    child: Container(
+                      width: 80,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.arrow_forward, color: Colors.white),
+                    ),
+                  ),
+                  FilledButton.tonal(
+                    onPressed: () =>
+                        setState(() => _slideSelected = !_slideSelected),
+                    child: Text(_slideSelected ? '← 원위치' : '슬라이드 →'),
+                  ),
+                  Text(
+                    '⚠ null인 속성은 애니메이션 안 됨 / child 위젯은 애니메이션 대상 아님',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            _buildExampleCard(
+              theme: theme,
+              title: 'Transform — 위젯 반전',
+              description:
+                  'Matrix4.rotationY/X(math.pi) + alignment: Alignment.center',
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    spacing: 8,
+                    children: [
+                      Transform(
+                        alignment: Alignment.center,
+                        transform:
+                            Matrix4.rotationY(_flipY ? math.pi : 0),
+                        child: Container(
+                          width: 80,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.thumb_up,
+                              color: theme.colorScheme.primary, size: 32),
+                        ),
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () =>
+                            setState(() => _flipY = !_flipY),
+                        child: const Text('좌우 반전'),
+                      ),
+                      Text('rotationY(pi)',
+                          style: theme.textTheme.labelSmall),
+                    ],
+                  ),
+                  Column(
+                    spacing: 8,
+                    children: [
+                      Transform(
+                        alignment: Alignment.center,
+                        transform:
+                            Matrix4.rotationX(_flipX ? math.pi : 0),
+                        child: Container(
+                          width: 80,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.secondaryContainer,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.thumb_up,
+                              color: theme.colorScheme.secondary, size: 32),
+                        ),
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () =>
+                            setState(() => _flipX = !_flipX),
+                        child: const Text('상하 반전'),
+                      ),
+                      Text('rotationX(pi)',
+                          style: theme.textTheme.labelSmall),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Shimmer
+            _buildSectionHeader(theme, '로딩 효과'),
+            const SizedBox(height: 12),
+            _buildExampleCard(
+              theme: theme,
+              title: 'Shimmer (스켈레톤 로딩)',
+              description: 'shimmer: ^3.0.0 — 데이터 로드 전 플레이스홀더 UI',
+              child: Shimmer.fromColors(
+                baseColor: theme.colorScheme.surfaceContainerHighest,
+                highlightColor: theme.colorScheme.surface,
+                child: Column(
+                  spacing: 12,
+                  children: List.generate(
+                    3,
+                    (i) => Row(
+                      spacing: 12,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 6,
+                            children: [
+                              Container(
+                                height: 14,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              Container(
+                                height: 12,
+                                width: 140,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Wave Indicator
+            _buildSectionHeader(theme, '커스텀 그리기'),
+            const SizedBox(height: 12),
+            _buildExampleCard(
+              theme: theme,
+              title: 'Wave Indicator (CustomPainter + sin)',
+              description:
+                  'AnimationController.repeat() → AnimatedBuilder → CustomPaint',
+              child: Column(
+                spacing: 16,
+                children: [
+                  AnimatedBuilder(
+                    animation: _waveController,
+                    builder: (context, _) => Column(
+                      spacing: 8,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: CustomPaint(
+                            painter: _WavePainter(
+                              progress: _waveController.value,
+                              color: theme.colorScheme.primary,
+                              amplitude: 12,
+                              frequency: 2,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: CustomPaint(
+                            painter: _WavePainter(
+                              progress: _waveController.value,
+                              color: theme.colorScheme.secondary,
+                              amplitude: 20,
+                              frequency: 3,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'amplitude(높이) · frequency(주기) 조절로 다양한 파동\n'
+                      'shouldRepaint → true 반환 필수',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
             // 정보 카드
             Container(
               padding: const EdgeInsets.all(16),
@@ -449,6 +709,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen> {
                   _opacity = 1.0;
                   _padding = 0.0;
                   _iconSize = 24.0;
+                  _slideSelected = false;
+                  _flipY = false;
+                  _flipX = false;
                 });
               },
               icon: const Icon(Icons.refresh),
@@ -547,4 +810,44 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen> {
       ],
     );
   }
+}
+
+class _WavePainter extends CustomPainter {
+  final double progress;
+  final Color color;
+  final double amplitude;
+  final double frequency;
+
+  const _WavePainter({
+    required this.progress,
+    required this.color,
+    required this.amplitude,
+    required this.frequency,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..strokeCap = StrokeCap.round;
+
+    final path = Path();
+    path.moveTo(0, size.height / 2);
+    for (double x = 0; x <= size.width; x++) {
+      final y = size.height / 2 +
+          amplitude *
+              math.sin(
+                (x / size.width * 2 * math.pi * frequency) +
+                    (progress * 2 * math.pi),
+              );
+      path.lineTo(x, y);
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(_WavePainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }

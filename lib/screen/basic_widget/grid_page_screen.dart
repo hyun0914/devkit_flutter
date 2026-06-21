@@ -221,6 +221,70 @@ class _GridPageScreenState extends State<GridPageScreen> {
                     ],
                   ),
 
+                  // GridView 높이 설정 비교 카드
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 6,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.height,
+                                size: 16, color: theme.colorScheme.primary),
+                            const SizedBox(width: 6),
+                            Text(
+                              'GridView 아이템 높이 설정',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          spacing: 8,
+                          children: [
+                            Icon(Icons.check_circle,
+                                size: 14, color: Colors.green),
+                            Expanded(
+                              child: Text(
+                                'mainAxisExtent: 120  →  고정 픽셀 높이 (Flutter 2.3+, 권장)',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                    fontFamily: 'monospace'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          spacing: 8,
+                          children: [
+                            Icon(Icons.info_outline,
+                                size: 14,
+                                color: theme.colorScheme.onSurfaceVariant),
+                            Expanded(
+                              child: Text(
+                                'childAspectRatio: 1.0  →  비율 기반, 화면 너비에 따라 변동',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                    fontFamily: 'monospace'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '// 반응형: childAspectRatio = MediaQuery.sizeOf(context).width / (crossAxisCount * itemHeight)',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontFamily: 'monospace',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   // 재생성 버튼
                   FilledButton.icon(
                     onPressed: () {

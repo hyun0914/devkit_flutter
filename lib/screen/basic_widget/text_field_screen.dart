@@ -24,6 +24,20 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
   
   final FocusNode _emailFocus = FocusNode();
 
+  // 멀티라인 + Scrollbar
+  final ScrollController _multilineScroll = ScrollController();
+
+  // Form 여러 필드 + save()
+  final GlobalKey<FormState> _multiFormKey = GlobalKey<FormState>();
+  String? _savedName;
+  String? _savedEmail2;
+  String? _savedPassword;
+
+  // 다음 필드 포커스 이동
+  final FocusNode _nextFocus1 = FocusNode();
+  final FocusNode _nextFocus2 = FocusNode();
+  final FocusNode _nextFocus3 = FocusNode();
+
   // 입력 트리거 비교용
   final _debounceController = TextEditingController();
   Timer? _debounceTimer;
@@ -55,6 +69,10 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
     _emailController.dispose();
     _phoneController.dispose();
     _emailFocus.dispose();
+    _multilineScroll.dispose();
+    _nextFocus1.dispose();
+    _nextFocus2.dispose();
+    _nextFocus3.dispose();
     _debounceTimer?.cancel();
     _debounceController.dispose();
     _submitController.dispose();
@@ -182,20 +200,35 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
-                title: '한글만 입력',
-                child: TextField(
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]'),
+                title: '한글만 입력 (천지인/10키 대응)',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 6,
+                  children: [
+                    TextField(
+                      inputFormatters: [
+                        // 자모 전체(ᄀ-ᇿ) + 호환자모(㄰-㆏, 아래아ㆍ포함)
+                        // + 완성형 음절(가-힯)
+                        // ⚠️ 단순 가-힣 범위만으로는 천지인/10키 조합 중 문자 사라지는 버그 발생
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[ᄀ-ᇿ㄰-㆏가-힯]'),
+                        ),
+                      ],
+                      decoration: InputDecoration(
+                        hintText: '한글만 입력 가능 (iOS/Android 아래아 포함)',
+                        prefixIcon: const Icon(Icons.language),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '⚠️ iOS 아래아(ᆞ U+11A2) · Android 아래아(ㆍ U+318D) → 둘 다 범위에 포함됨',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Colors.orange.shade700,
+                          ),
                     ),
                   ],
-                  decoration: InputDecoration(
-                    hintText: '한글만 입력 가능',
-                    prefixIcon: const Icon(Icons.language),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -277,6 +310,184 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
 
               const SizedBox(height: 24),
 
+              // Form 여러 필드 + save()
+              _buildSectionHeader(theme, Icons.list_alt_outlined, 'Form 여러 필드 + save()'),
+              const SizedBox(height: 12),
+              _buildExampleCard(
+                theme: theme,
+                title: 'validate() → save() → onSaved 콜백',
+                child: Form(
+                  key: _multiFormKey,
+                  child: Column(
+                    spacing: 12,
+                    children: [
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          labelText: '이름 *',
+                          prefixIcon: const Icon(Icons.person_outline),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                        validator: (v) =>
+                            (v == null || v.trim().isEmpty) ? '이름을 입력해주세요' : null,
+                        onSaved: (v) => _savedName = v?.trim(),
+                      ),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: '이메일 *',
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                        validator: (v) {
+                          if (v == null || v.isEmpty) return '이메일을 입력해주세요';
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
+                            return '올바른 이메일 형식이 아닙니다';
+                          }
+                          return null;
+                        },
+                        onSaved: (v) => _savedEmail2 = v,
+                      ),
+                      TextFormField(
+                        textInputAction: TextInputAction.done,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: '비밀번호 *',
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                        validator: (v) =>
+                            (v == null || v.length < 6) ? '6자 이상 입력해주세요' : null,
+                        onSaved: (v) => _savedPassword = v,
+                      ),
+                      FilledButton(
+                        onPressed: () {
+                          // validate(): 모든 validator 실행, false면 save 호출 안 함
+                          if (_multiFormKey.currentState!.validate()) {
+                            // save(): 모든 onSaved 콜백 실행
+                            _multiFormKey.currentState!.save();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    '저장됨: $_savedName / $_savedEmail2 / ${'*' * (_savedPassword?.length ?? 0)}'),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('validate() → save() 실행'),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                              .withValues(alpha: 0.5),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '• validator: null 반환 = 정상, String = 에러 메시지\n'
+                          '• validate() 통과 후에만 save() 호출\n'
+                          '⚠️ TextFormField는 반드시 Form 내부에 있어야 함',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
+                                height: 1.6,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // 다음 필드 포커스 이동
+              _buildSectionHeader(
+                  theme, Icons.keyboard_tab, '다음 필드 포커스 이동'),
+              const SizedBox(height: 12),
+              _buildExampleCard(
+                theme: theme,
+                title: 'textInputAction.next + nextFocus()',
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    TextField(
+                      focusNode: _nextFocus1,
+                      textInputAction: TextInputAction.next,
+                      // 방법 1: onEditingComplete에서 nextFocus() 호출
+                      onEditingComplete: () =>
+                          FocusScope.of(context).nextFocus(),
+                      decoration: InputDecoration(
+                        labelText: '필드 1',
+                        hintText: 'Next 탭 → 필드 2로 이동',
+                        prefixIcon: const Icon(Icons.looks_one_outlined),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    TextField(
+                      focusNode: _nextFocus2,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () =>
+                          FocusScope.of(context).nextFocus(),
+                      decoration: InputDecoration(
+                        labelText: '필드 2',
+                        hintText: 'Next 탭 → 필드 3으로 이동',
+                        prefixIcon: const Icon(Icons.looks_two_outlined),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    TextField(
+                      focusNode: _nextFocus3,
+                      // 마지막 필드: done + unfocus()
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: () =>
+                          FocusScope.of(context).unfocus(),
+                      decoration: InputDecoration(
+                        labelText: '필드 3 (마지막)',
+                        hintText: 'Done 탭 → 키보드 닫힘',
+                        prefixIcon: const Icon(Icons.looks_3_outlined),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest
+                            .withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '방법 1: onEditingComplete → FocusScope.of(context).nextFocus()\n'
+                        '방법 2: FocusScopeNode 생성 → FocusScope(node: _node)로 감싸기\n'
+                        '마지막 필드: textInputAction.done + unfocus()\n'
+                        '💡 iOS 숫자 키보드 Done 없음 → GestureDetector 전체 감싸기\n'
+                        '   onTap: () => FocusScope.of(context).unfocus()',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                              height: 1.6,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               // 특수 기능
               _buildSectionHeader(theme, Icons.tune, '특수 기능'),
               const SizedBox(height: 12),
@@ -293,6 +504,43 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildExampleCard(
+                theme: theme,
+                title: '멀티라인 + Scrollbar (ScrollController 공유)',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 6,
+                  children: [
+                    // ⚠️ Scrollbar와 TextField에 동일한 ScrollController를 연결해야 작동
+                    Scrollbar(
+                      controller: _multilineScroll,
+                      thumbVisibility: true,
+                      child: TextField(
+                        scrollController: _multilineScroll,
+                        maxLines: 4,
+                        minLines: 4,
+                        textInputAction: TextInputAction.newline,
+                        decoration: InputDecoration(
+                          hintText: '스크롤바가 항상 표시됩니다\n내용을 많이 입력하면 스크롤 가능',
+                          alignLabelWithHint: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Scrollbar(controller: _scroll) + TextField(scrollController: _scroll)\n'
+                      '→ dispose()에서 scrollController.dispose() 필수',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontFamily: 'monospace',
+                          ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 12),

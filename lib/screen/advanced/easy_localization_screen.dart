@@ -16,6 +16,17 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
   bool _isMale = true;
   final String _userName = 'Flutter';
 
+  // 언어 전환 중 Localization.instance 미초기화 구간에서 plural() 호출 시
+  // LateInitializationError 방어용 래퍼
+  String _safePlural(String key, num value,
+      {Map<String, String>? namedArgs}) {
+    try {
+      return key.plural(value, namedArgs: namedArgs);
+    } catch (_) {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -140,7 +151,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        'plural.apple'.plural(_appleCount,
+                        _safePlural('plural.apple', _appleCount,
                             namedArgs: {'count': '$_appleCount'}),
                         style: theme.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -163,7 +174,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        'plural.message'.plural(_messageCount),
+                        _safePlural('plural.message', _messageCount),
                         style: theme.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
