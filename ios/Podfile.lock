@@ -11,13 +11,7 @@ PODS:
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - fluttertoast (0.0.2):
-    - Flutter
-  - open_file_ios (1.0.3):
-    - Flutter
   - OrderedSet (6.0.3)
-  - permission_handler_apple (9.3.0):
-    - Flutter
   - printing (1.0.0):
     - Flutter
   - scroll_screenshot (0.0.1):
@@ -28,9 +22,6 @@ DEPENDENCIES:
   - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - open_file_ios (from `.symlinks/plugins/open_file_ios/ios`)
-  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - printing (from `.symlinks/plugins/printing/ios`)
   - scroll_screenshot (from `.symlinks/plugins/scroll_screenshot/ios`)
 
@@ -47,12 +38,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  fluttertoast:
-    :path: ".symlinks/plugins/fluttertoast/ios"
-  open_file_ios:
-    :path: ".symlinks/plugins/open_file_ios/ios"
-  permission_handler_apple:
-    :path: ".symlinks/plugins/permission_handler_apple/ios"
   printing:
     :path: ".symlinks/plugins/printing/ios"
   scroll_screenshot:
@@ -63,10 +48,7 @@ SPEC CHECKSUMS:
   flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_local_notifications: df98d66e515e1ca797af436137b4459b160ad8c9
-  fluttertoast: 21eecd6935e7064cc1fcb733a4c5a428f3f24f0f
-  open_file_ios: ece9c5358aec7b7ed7dc12fcb0f926ef6d6650f1
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
-  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   printing: 233e1b73bd1f4a05615548e9b5a324c98588640b
   scroll_screenshot: 0cd01b85365d369d0432861ad7e2e1c01b9c97f8
 
