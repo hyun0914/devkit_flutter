@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class FlexibleExpandedScreen extends StatelessWidget {
   const FlexibleExpandedScreen({super.key});
@@ -9,7 +9,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Flexible & Expanded'),
       ),
@@ -34,7 +34,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Expanded vs Flexible
-            _buildSectionHeader(theme, 'Expanded vs Flexible'),
+            const SectionHeader('Expanded vs Flexible'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -67,7 +67,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // FlexFit.tight vs loose
-            _buildSectionHeader(theme, 'FlexFit.tight vs loose'),
+            const SectionHeader('FlexFit.tight vs loose'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -100,7 +100,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // flex 비율
-            _buildSectionHeader(theme, 'flex 비율로 공간 분배'),
+            const SectionHeader('flex 비율로 공간 분배'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -138,7 +138,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 복잡한 레이아웃
-            _buildSectionHeader(theme, '복잡한 레이아웃'),
+            const SectionHeader('복잡한 레이아웃'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -177,7 +177,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 텍스트 오버플로우 처리
-            _buildSectionHeader(theme, '텍스트 오버플로우 처리'),
+            const SectionHeader('텍스트 오버플로우 처리'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -229,7 +229,7 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Spacer
-            _buildSectionHeader(theme, 'Spacer'),
+            const SectionHeader('Spacer'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -294,10 +294,10 @@ class FlexibleExpandedScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(theme, 'Expanded = Flexible(fit: FlexFit.tight)'),
-                  _buildInfoItem(theme, 'flex: 공간 비율 (기본값 1)'),
-                  _buildInfoItem(theme, 'FlexFit.tight: 공간 채움'),
-                  _buildInfoItem(theme, 'FlexFit.loose: 내용 크기만큼'),
+                  const InfoItem('Expanded = Flexible(fit: FlexFit.tight)'),
+                  const InfoItem('flex: 공간 비율 (기본값 1)'),
+                  const InfoItem('FlexFit.tight: 공간 채움'),
+                  const InfoItem('FlexFit.loose: 내용 크기만큼'),
                 ],
               ),
             ),
@@ -307,29 +307,6 @@ class FlexibleExpandedScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({
@@ -484,25 +461,4 @@ class FlexibleExpandedScreen extends StatelessWidget {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem(ThemeData theme, String text) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

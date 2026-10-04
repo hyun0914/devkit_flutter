@@ -6,8 +6,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../widget/default_scaffold.dart';
 import '../widget/syncfusion_license_info.dart';
+import '../widget/example_widgets.dart';
 
 class PdfScreen extends StatefulWidget {
   const PdfScreen({super.key});
@@ -220,7 +220,7 @@ class _PdfScreenState extends State<PdfScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('PDF 뷰어 & 생성'),
         actions: [
@@ -252,7 +252,7 @@ class _PdfScreenState extends State<PdfScreen> {
             const SizedBox(height: 24),
 
             // 1. PDF 뷰어
-            _buildSectionHeader(theme, '1. PDF 뷰어 (Syncfusion)'),
+            const SectionHeader('1. PDF 뷰어 (Syncfusion)'),
             const SizedBox(height: 12),
             Container(
               height: 400,
@@ -304,7 +304,7 @@ class _PdfScreenState extends State<PdfScreen> {
             const SizedBox(height: 24),
 
             // 2. PDF 생성 미리보기
-            _buildSectionHeader(theme, '2. PDF 생성 (Printing)'),
+            const SectionHeader('2. PDF 생성 (Printing)'),
             const SizedBox(height: 12),
             Container(
               height: 400,
@@ -536,7 +536,7 @@ class _PdfScreenState extends State<PdfScreen> {
             const SizedBox(height: 24),
 
             // 기능 설명
-            _buildSectionHeader(theme, '주요 기능'),
+            const SectionHeader('주요 기능'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -599,7 +599,7 @@ class _PdfScreenState extends State<PdfScreen> {
             const SizedBox(height: 24),
 
             // 패키지 정보
-            _buildSectionHeader(theme, '사용된 패키지'),
+            const SectionHeader('사용된 패키지'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -639,29 +639,6 @@ class _PdfScreenState extends State<PdfScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 기능 아이템
   Widget _buildFeatureItem({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:feedback/feedback.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class FeedbackScreen extends StatelessWidget {
   const FeedbackScreen({super.key});
@@ -10,7 +10,7 @@ class FeedbackScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Feedback'),
       ),
@@ -40,7 +40,7 @@ class FeedbackScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // ── 기본 사용 ──
-          _buildSectionHeader(theme, '기본 사용'),
+          const SectionHeader('기본 사용'),
           const SizedBox(height: 12),
 
           _buildExampleCard(
@@ -61,7 +61,7 @@ class FeedbackScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // ── 커스텀 폼 ──
-          _buildSectionHeader(theme, '커스텀 폼'),
+          const SectionHeader('커스텀 폼'),
           const SizedBox(height: 12),
 
           _buildExampleCard(
@@ -82,7 +82,7 @@ class FeedbackScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // ── 활용 방법 ──
-          _buildSectionHeader(theme, '활용 방법'),
+          const SectionHeader('활용 방법'),
           const SizedBox(height: 12),
 
           _buildUseCaseCard(theme),
@@ -321,29 +321,6 @@ class FeedbackScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({

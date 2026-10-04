@@ -2,7 +2,6 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../example_list_screen.dart';
-import '../widget/default_scaffold.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -11,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       body: AnimatedSplashScreen(
         duration: 3000,
         splash: Column(

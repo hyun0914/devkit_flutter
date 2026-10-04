@@ -5,7 +5,6 @@ import 'package:contribution_heatmap/contribution_heatmap.dart';
 import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 class HeatmapScreen extends StatefulWidget {
   const HeatmapScreen({super.key});
@@ -151,7 +150,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('히트맵 시각화'),
       ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../widget/default_scaffold.dart';
 
 class MobileScannerScreen extends StatefulWidget {
   const MobileScannerScreen({super.key});
@@ -88,7 +87,7 @@ class _MobileScannerScreenState extends State<MobileScannerScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('QR / 바코드 스캔'),
         actions: [

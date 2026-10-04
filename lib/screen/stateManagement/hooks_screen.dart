@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class HooksScreen extends HookWidget {
   const HooksScreen({super.key});
@@ -62,7 +62,7 @@ class HooksScreen extends HookWidget {
       duration: const Duration(seconds: 2),
     );
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Hooks'),
       ),
@@ -87,7 +87,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // 1. useState
-            _buildSectionHeader(theme, '1. useState (상태 관리)'),
+            const SectionHeader('1. useState (상태 관리)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -147,7 +147,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // 2. useEffect
-            _buildSectionHeader(theme, '2. useEffect (생명주기)'),
+            const SectionHeader('2. useEffect (생명주기)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -229,7 +229,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // 3. useMemoized
-            _buildSectionHeader(theme, '3. useMemoized (메모이제이션)'),
+            const SectionHeader('3. useMemoized (메모이제이션)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -324,7 +324,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // 4. useTextEditingController
-            _buildSectionHeader(theme, '4. useTextEditingController'),
+            const SectionHeader('4. useTextEditingController'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -387,7 +387,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // 5. useAnimationController
-            _buildSectionHeader(theme, '5. useAnimationController'),
+            const SectionHeader('5. useAnimationController'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -455,7 +455,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // 사용된 패키지
-            _buildSectionHeader(theme, '사용된 패키지'),
+            const SectionHeader('사용된 패키지'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -509,7 +509,7 @@ class HooksScreen extends HookWidget {
             const SizedBox(height: 24),
 
             // Hooks 장점
-            _buildSectionHeader(theme, 'Hooks 장점'),
+            const SectionHeader('Hooks 장점'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -555,29 +555,6 @@ class HooksScreen extends HookWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 정보 박스
   Widget _buildInfoBox({

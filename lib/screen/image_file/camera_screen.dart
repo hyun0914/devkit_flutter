@@ -4,7 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../widget/default_scaffold.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -126,7 +125,7 @@ class _CameraScreenState extends State<CameraScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('카메라')),
       body: SafeArea(
         child: Column(

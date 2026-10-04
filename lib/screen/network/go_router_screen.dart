@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 // ── GoRouter 설정 ──────────────────────────────────────────────
 final _router = GoRouter(
@@ -39,7 +39,7 @@ class GoRouterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('go_router')),
       body: SafeArea(
         child: ListView(
@@ -59,7 +59,7 @@ class GoRouterScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 핵심 개념
-            _buildSectionHeader(theme, '핵심 개념'),
+            const SectionHeader('핵심 개념'),
             const SizedBox(height: 12),
             _buildConceptCard(theme, Icons.map_rounded, '선언적 라우트 정의',
                 'GoRoute로 경로와 화면을 매핑. 중첩 라우트 지원.'),
@@ -76,9 +76,9 @@ class GoRouterScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 코드 예시
-            _buildSectionHeader(theme, '라우트 정의'),
+            const SectionHeader('라우트 정의'),
             const SizedBox(height: 12),
-            _buildCodeBlock(theme, '''GoRouter(
+            CodeBlock('''GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
@@ -106,9 +106,9 @@ class GoRouterScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 네비게이션 방식
-            _buildSectionHeader(theme, '네비게이션'),
+            const SectionHeader('네비게이션'),
             const SizedBox(height: 12),
-            _buildCodeBlock(theme, '''// push — 스택에 쌓기
+            CodeBlock('''// push — 스택에 쌓기
 context.push('/detail/42');
 
 // go — 스택 교체
@@ -123,7 +123,7 @@ context.goNamed('profile');'''),
             const SizedBox(height: 24),
 
             // 데모 실행
-            _buildSectionHeader(theme, '데모'),
+            const SectionHeader('데모'),
             const SizedBox(height: 12),
             FilledButton.icon(
               onPressed: () {
@@ -185,48 +185,7 @@ context.goNamed('profile');'''),
     );
   }
 
-  Widget _buildCodeBlock(ThemeData theme, String code) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border:
-            Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Text(
-        code,
-        style: theme.textTheme.bodySmall?.copyWith(
-          fontFamily: 'monospace',
-          height: 1.6,
-        ),
-      ),
-    );
-  }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 // ── 데모 앱 (GoRouter 기반 MaterialApp) ───────────────────────

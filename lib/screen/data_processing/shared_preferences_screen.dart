@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class SharedPreferencesScreen extends StatefulWidget {
   const SharedPreferencesScreen({super.key});
@@ -146,7 +146,7 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
     final theme = Theme.of(context);
 
     if (!_isLoaded) {
-      return DefaultScaffold(
+      return Scaffold(
         appBar: AppBar(
           title: const Text('SharedPreferences'),
         ),
@@ -156,7 +156,7 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
       );
     }
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('SharedPreferences'),
       ),
@@ -204,7 +204,7 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
             const SizedBox(height: 24),
 
             // 섹션 헤더
-            _buildSectionHeader(theme, '저장된 데이터'),
+            const SectionHeader('저장된 데이터'),
             const SizedBox(height: 12),
 
             // 1. Int
@@ -271,7 +271,7 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
             const SizedBox(height: 24),
 
             // 기능 설명
-            _buildSectionHeader(theme, '주요 기능'),
+            const SectionHeader('주요 기능'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -329,7 +329,7 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
             const SizedBox(height: 24),
 
             // 패키지 정보
-            _buildSectionHeader(theme, '사용된 패키지'),
+            const SectionHeader('사용된 패키지'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -380,29 +380,6 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 데이터 카드
   Widget _buildDataCard({

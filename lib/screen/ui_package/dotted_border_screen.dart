@@ -4,7 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class DottedBorderScreen extends StatelessWidget {
   const DottedBorderScreen({super.key});
@@ -13,7 +13,7 @@ class DottedBorderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Dotted Border & Line'),
       ),
@@ -43,7 +43,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // ── 1. 기본 위젯 (CustomPaint) ──
-          _buildSectionHeader(theme, '1. 기본 위젯 (CustomPaint)'),
+          const SectionHeader('1. 기본 위젯 (CustomPaint)'),
           const SizedBox(height: 4),
           Text(
             '패키지 없이 직접 구현 - 코드가 복잡하지만 의존성 없음',
@@ -119,7 +119,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // ── 2. dotted_border 패키지 ──
-          _buildSectionHeader(theme, '2. dotted_border 패키지'),
+          const SectionHeader('2. dotted_border 패키지'),
           const SizedBox(height: 4),
           Text(
             '위젯 테두리에 특화 - 간단한 코드로 다양한 형태 구현',
@@ -238,7 +238,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // ── 3. dotted_line 패키지 ──
-          _buildSectionHeader(theme, '3. dotted_line 패키지'),
+          const SectionHeader('3. dotted_line 패키지'),
           const SizedBox(height: 4),
           Text(
             '선(Line) 그리기에 특화 - 수평/수직 점선을 쉽게 구현',
@@ -373,31 +373,6 @@ class DottedBorderScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드 래퍼
   Widget _buildExampleCard({

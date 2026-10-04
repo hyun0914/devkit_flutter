@@ -4,7 +4,6 @@ import 'tab_bar/bottom_sheet_tab.dart';
 import 'tab_bar/snapping_sheet_tab.dart';
 import 'tab_bar/sliver_tab.dart';
 import 'tab_bar/tab_tips_tab.dart';
-import '../widget/default_scaffold.dart';
 
 class TabBarScreen extends StatefulWidget {
   const TabBarScreen({super.key});
@@ -57,7 +56,7 @@ class _TabBarScreenState extends State<TabBarScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('TabBar 예제'),
         elevation: 0,

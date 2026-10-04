@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class WakelockScreen extends StatefulWidget {
   const WakelockScreen({super.key});
@@ -100,7 +100,7 @@ class _WakelockScreenState extends State<WakelockScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('화면 켜짐 유지'),
       ),
@@ -289,7 +289,7 @@ class _WakelockScreenState extends State<WakelockScreen> {
             const SizedBox(height: 24),
 
             // 활용 예시
-            _buildSectionHeader(theme, Icons.apps, '실무 활용 예시'),
+            const SectionHeader('실무 활용 예시', icon: Icons.apps),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -414,21 +414,6 @@ class _WakelockScreenState extends State<WakelockScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, IconData icon, String title) {
-    return Row(
-      children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 24),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildUseCaseItem(ThemeData theme, IconData icon, String text) {
     return Row(

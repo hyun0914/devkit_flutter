@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class PageTweenAnimationScreen extends StatefulWidget {
   const PageTweenAnimationScreen({super.key});
@@ -70,7 +70,7 @@ class _PageTweenAnimationScreenState extends State<PageTweenAnimationScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('PageView + TweenAnimation'),
         actions: [
@@ -376,47 +376,17 @@ class _PageTweenAnimationScreenState extends State<PageTweenAnimationScreen> {
                     ],
                   ),
                   if (_isInfiniteMode) ...[
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'initialPage: 1000 - 중간부터 시작',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'index % 3 - 실제 카드 인덱스 계산',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'itemCount: null - 무한 스크롤',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: '실무 배너/광고에서 많이 사용',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'onPageChanged → precacheImage()로 깜빡임 방지',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: '방법 2: carousel_slider — autoPlay / interval / curve 간단 설정',
-                    ),
+                    const InfoItem('initialPage: 1000 - 중간부터 시작'),
+                    const InfoItem('index % 3 - 실제 카드 인덱스 계산'),
+                    const InfoItem('itemCount: null - 무한 스크롤'),
+                    const InfoItem('실무 배너/광고에서 많이 사용'),
+                    const InfoItem('onPageChanged → precacheImage()로 깜빡임 방지'),
+                    const InfoItem('방법 2: carousel_slider — autoPlay / interval / curve 간단 설정'),
                   ] else ...[
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'viewportFraction: 0.7 - 양옆 카드 보임',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'Transform.scale - 선택 시 확대',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'Opacity - 미선택 카드 투명도',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'Duration: 300ms - 부드러운 전환',
-                    ),
+                    const InfoItem('viewportFraction: 0.7 - 양옆 카드 보임'),
+                    const InfoItem('Transform.scale - 선택 시 확대'),
+                    const InfoItem('Opacity - 미선택 카드 투명도'),
+                    const InfoItem('Duration: 300ms - 부드러운 전환'),
                   ],
                 ],
               ),
@@ -611,30 +581,6 @@ class _PageTweenAnimationScreenState extends State<PageTweenAnimationScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 // 카드 데이터 모델

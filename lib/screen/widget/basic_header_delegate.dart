@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 // 스크롤 시 헤더의 최소/최대 크기를 제어
 
 class BasicHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final Widget child;
+  // shrinkRatio(0.0 = 펼침, 1.0 = 완전 축소)를 받아 헤더를 그리는 함수
+  final Widget Function(BuildContext context, double shrinkRatio) builder;
   final double maxHeight;
   final double minHeight;
 
   BasicHeaderDelegate({
-    required this.child,
+    required this.builder,
     required this.maxHeight,
     required this.minHeight,
   });
@@ -24,17 +25,11 @@ class BasicHeaderDelegate extends SliverPersistentHeaderDelegate {
     // overlapsContent: 헤더가 다른 콘텐츠와 겹치는지 여부
 
     // 헤더가 축소되는 비율 계산 (0.0 ~ 1.0)
+    // 이 값으로 투명도·크기 등을 조절하면 스크롤에 반응하는 헤더를 만들 수 있음
     final shrinkRatio = (shrinkOffset / (maxExtent - minExtent)).clamp(0.0, 1.0);
 
-    // 최소 크기일 때 추가 처리가 필요하다면 여기에 구현
-    // 예: 투명도 조절, 아이콘 변경 등
-    if (shrinkOffset >= maxExtent - minExtent) {
-      // 완전히 축소된 상태
-      debugPrint('헤더 완전 축소: shrinkRatio = $shrinkRatio');
-    }
-
     return SizedBox.expand(
-      child: child,
+      child: builder(context, shrinkRatio),
     );
   }
 
@@ -52,6 +47,6 @@ class BasicHeaderDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(BasicHeaderDelegate oldDelegate) {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
+        builder != oldDelegate.builder;
   }
 }

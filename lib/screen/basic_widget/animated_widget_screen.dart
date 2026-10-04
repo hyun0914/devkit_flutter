@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class AnimatedWidgetScreen extends StatefulWidget {
   const AnimatedWidgetScreen({super.key});
@@ -43,7 +43,7 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Animated 위젯'),
       ),
@@ -68,10 +68,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // AnimatedContainer
-            _buildSectionHeader(theme, '크기 & 색상'),
+            const SectionHeader('크기 & 색상'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedContainer',
               description: '크기, 색상, 정렬이 부드럽게 변화',
               child: GestureDetector(
@@ -107,8 +106,7 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 16),
 
             // AnimatedSize
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedSize',
               description: '크기 변화에 자동으로 애니메이션 적용',
               child: GestureDetector(
@@ -135,10 +133,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // 투명도 & 간격
-            _buildSectionHeader(theme, '투명도 & 간격'),
+            const SectionHeader('투명도 & 간격'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedOpacity',
               description: '투명도가 부드럽게 변화',
               child: Column(
@@ -177,8 +174,7 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
 
             const SizedBox(height: 16),
 
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedPadding',
               description: '패딩이 부드럽게 변화',
               child: Column(
@@ -224,10 +220,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // 전환 효과
-            _buildSectionHeader(theme, '전환 효과'),
+            const SectionHeader('전환 효과'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedSwitcher',
               description: '위젯 전환 시 페이드 효과',
               child: Column(
@@ -270,8 +265,7 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
 
             const SizedBox(height: 16),
 
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedCrossFade',
               description: '두 위젯 간 크로스페이드 전환',
               child: Column(
@@ -326,10 +320,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // 고급 효과
-            _buildSectionHeader(theme, '고급 효과'),
+            const SectionHeader('고급 효과'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedPhysicalModel',
               description: '그림자와 elevation 애니메이션',
               child: Column(
@@ -369,8 +362,7 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
 
             const SizedBox(height: 16),
 
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'TweenAnimationBuilder',
               description: '사용자 정의 애니메이션',
               child: Column(
@@ -405,10 +397,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // 슬라이드 & 변형
-            _buildSectionHeader(theme, '슬라이드 & 변형'),
+            const SectionHeader('슬라이드 & 변형'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'AnimatedContainer + Matrix4 슬라이드',
               description: 'transform: Matrix4.translationValues(x, 0, 0)',
               child: Column(
@@ -450,8 +441,7 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
 
             const SizedBox(height: 16),
 
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Transform — 위젯 반전',
               description:
                   'Matrix4.rotationY/X(math.pi) + alignment: Alignment.center',
@@ -519,10 +509,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // Shimmer
-            _buildSectionHeader(theme, '로딩 효과'),
+            const SectionHeader('로딩 효과'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Shimmer (스켈레톤 로딩)',
               description: 'shimmer: ^3.0.0 — 데이터 로드 전 플레이스홀더 UI',
               child: Shimmer.fromColors(
@@ -577,10 +566,9 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // Wave Indicator
-            _buildSectionHeader(theme, '커스텀 그리기'),
+            const SectionHeader('커스텀 그리기'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Wave Indicator (CustomPainter + sin)',
               description:
                   'AnimationController.repeat() → AnimatedBuilder → CustomPaint',
@@ -671,22 +659,10 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'AnimatedContainer: 가장 범용적',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'AnimatedOpacity: 페이드 효과',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'AnimatedSwitcher: 위젯 교체',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'TweenAnimationBuilder: 커스텀 애니메이션',
-                  ),
+                  const InfoItem('AnimatedContainer: 가장 범용적'),
+                  const InfoItem('AnimatedOpacity: 페이드 효과'),
+                  const InfoItem('AnimatedSwitcher: 위젯 교체'),
+                  const InfoItem('TweenAnimationBuilder: 커스텀 애니메이션'),
                   const Divider(),
                   Text(
                     '모든 Animated 위젯은 duration과 curve를 지정할 수 있습니다.',
@@ -723,93 +699,8 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class _WavePainter extends CustomPainter {

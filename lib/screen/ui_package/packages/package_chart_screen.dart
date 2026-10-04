@@ -5,7 +5,7 @@ import 'package:d_chart/d_chart.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart' as geekyants;
 
-import '../../widget/default_scaffold.dart';
+import '../../widget/example_widgets.dart';
 
 class PackageChartScreen extends StatefulWidget {
   const PackageChartScreen({super.key});
@@ -21,7 +21,7 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('차트 & 게이지'),
       ),
@@ -46,10 +46,9 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
             const SizedBox(height: 24),
 
             // DChart - Pie Chart
-            _buildSectionHeader(theme, 'DChart - Pie Chart'),
+            const SectionHeader('DChart - Pie Chart'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '파이 차트',
               description: '원형 차트',
               child: AspectRatio(
@@ -81,8 +80,7 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '도넛 차트',
               description: '중앙이 빈 파이 차트',
               child: AspectRatio(
@@ -120,10 +118,9 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
             const SizedBox(height: 24),
 
             // DChart - Bar Chart
-            _buildSectionHeader(theme, 'DChart - Single Bar'),
+            const SectionHeader('DChart - Single Bar'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '단일 바 차트',
               description: '프로그레스 바',
               child: Column(
@@ -191,8 +188,7 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '양방향 바 차트',
               description: '좌우 반전 효과',
               child: Row(
@@ -237,10 +233,9 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
             const SizedBox(height: 24),
 
             // Gauge Indicator
-            _buildSectionHeader(theme, 'Gauge Indicator'),
+            const SectionHeader('Gauge Indicator'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '애니메이션 게이지',
               description: '값 조절 가능',
               child: Column(
@@ -301,8 +296,7 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '원형 게이지',
               description: '360도 게이지',
               child: Center(
@@ -348,10 +342,9 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
             const SizedBox(height: 24),
 
             // Geekyants Gauges
-            _buildSectionHeader(theme, 'Geekyants Gauges'),
+            const SectionHeader('Geekyants Gauges'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '다양한 게이지',
               description: 'Linear & Radial Gauge',
               child: Column(
@@ -394,10 +387,9 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
             const SizedBox(height: 24),
 
             // Transform 예제
-            _buildSectionHeader(theme, 'Transform (회전/반전)'),
+            const SectionHeader('Transform (회전/반전)'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '좌우 반전',
               description: 'Matrix4.rotationY(π)',
               child: Transform(
@@ -427,8 +419,7 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '상하 반전',
               description: 'Matrix4.rotationX(π)',
               child: Center(
@@ -483,26 +474,11 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'DChart: 카테고리 비율(Pie) · 항목 비교(Bar) — 통계 대시보드, 리포트',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Gauge Indicator: 목표 달성률, 배터리 잔량, 속도계 — 수치 시각화',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Geekyants Gauges: Linear(진행 바) · Radial(원형 계기판) — 헬스·IoT 대시보드',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Transform: 차트 방향 전환, 미러 효과 — 좌우 대칭 비교 차트',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'import "dart:math" as math 필요',
-                  ),
+                  const InfoItem('DChart: 카테고리 비율(Pie) · 항목 비교(Bar) — 통계 대시보드, 리포트'),
+                  const InfoItem('Gauge Indicator: 목표 달성률, 배터리 잔량, 속도계 — 수치 시각화'),
+                  const InfoItem('Geekyants Gauges: Linear(진행 바) · Radial(원형 계기판) — 헬스·IoT 대시보드'),
+                  const InfoItem('Transform: 차트 방향 전환, 미러 효과 — 좌우 대칭 비교 차트'),
+                  const InfoItem('import "dart:math" as math 필요'),
                 ],
               ),
             ),
@@ -512,91 +488,6 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

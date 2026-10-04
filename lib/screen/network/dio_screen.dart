@@ -8,7 +8,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class DioScreen extends StatelessWidget {
   const DioScreen({super.key});
@@ -17,7 +17,7 @@ class DioScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Dio (HTTP 통신)'),
       ),
@@ -42,7 +42,7 @@ class DioScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 다운로드 버튼
-            _buildSectionHeader(theme, '파일 다운로드'),
+            const SectionHeader('파일 다운로드'),
             const SizedBox(height: 12),
             FilledButton.icon(
               onPressed: () => _dioDown(context),
@@ -87,7 +87,7 @@ class DioScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // HTTP 메서드 (Dio)
-            _buildSectionHeader(theme, 'HTTP 메서드 (Dio)'),
+            const SectionHeader('HTTP 메서드 (Dio)'),
             const SizedBox(height: 12),
             _buildMethodCard(
               theme: theme,
@@ -124,7 +124,7 @@ class DioScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // HTTP 메서드 (http 패키지)
-            _buildSectionHeader(theme, 'HTTP 메서드 (http 패키지)'),
+            const SectionHeader('HTTP 메서드 (http 패키지)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -166,7 +166,7 @@ class DioScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // HTTP vs Dio 비교
-            _buildSectionHeader(theme, 'HTTP vs Dio 비교'),
+            const SectionHeader('HTTP vs Dio 비교'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -298,7 +298,7 @@ class DioScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Interceptor 예제
-            _buildSectionHeader(theme, 'Interceptor (요청/응답 가로채기)'),
+            const SectionHeader('Interceptor (요청/응답 가로채기)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -377,22 +377,10 @@ class DioScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Android 13+ 권한 자동 허용',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '중복 파일명 자동 처리 (1), (2)...',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '시뮬레이터: 앱 폴더에 저장 (경로 표시)',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '실기기: Download 폴더 + 알림',
-                  ),
+                  const InfoItem('Android 13+ 권한 자동 허용'),
+                  const InfoItem('중복 파일명 자동 처리 (1), (2)...'),
+                  const InfoItem('시뮬레이터: 앱 폴더에 저장 (경로 표시)'),
+                  const InfoItem('실기기: Download 폴더 + 알림'),
                 ],
               ),
             ),
@@ -545,29 +533,6 @@ class DioScreen extends StatelessWidget {
     return false;
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // HTTP 메서드 카드
   Widget _buildMethodCard({
@@ -679,30 +644,6 @@ class DioScreen extends StatelessWidget {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   // 비교 아이템
   Widget _buildComparisonItem(ThemeData theme, String text) {

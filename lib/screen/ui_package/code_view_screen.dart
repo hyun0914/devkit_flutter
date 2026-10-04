@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_code_view/flutter_code_view.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class CodeViewScreen extends StatefulWidget {
   const CodeViewScreen({super.key});
@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Code View'),
       ),
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 24),
 
           // ── 1. 기본 Text 위젯 ──
-          _buildSectionHeader(theme, '1. 기본 Text 위젯 (monospace)'),
+          const SectionHeader('1. 기본 Text 위젯 (monospace)'),
           const SizedBox(height: 12),
 
           Container(
@@ -223,7 +223,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 24),
 
           // ── 2. flutter_code_view ──
-          _buildSectionHeader(theme, '2. flutter_code_view'),
+          const SectionHeader('2. flutter_code_view'),
           const SizedBox(height: 12),
 
           Container(
@@ -336,7 +336,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 24),
 
           // ── 3. syntax_highlight ──
-          _buildSectionHeader(theme, '3. syntax_highlight (Google 공식)'),
+          const SectionHeader('3. syntax_highlight (Google 공식)'),
           const SizedBox(height: 12),
 
           Container(
@@ -475,7 +475,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 24),
 
           // ── 비교표 ──
-          _buildSectionHeader(theme, '패키지 비교'),
+          const SectionHeader('패키지 비교'),
           const SizedBox(height: 12),
 
           Container(
@@ -633,29 +633,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 비교 행
   Widget _buildComparisonRow({

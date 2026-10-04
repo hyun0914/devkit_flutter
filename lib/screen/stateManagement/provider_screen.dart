@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/default_scaffold.dart';
 
 // Counter Provider
 class CounterProvider extends ChangeNotifier {
@@ -44,7 +43,7 @@ class _ProviderContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Provider'),
       ),

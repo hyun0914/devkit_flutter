@@ -1,7 +1,6 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 class TextWidgetScreen extends StatelessWidget {
   const TextWidgetScreen({super.key});
@@ -10,7 +9,7 @@ class TextWidgetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Text 위젯'),
       ),

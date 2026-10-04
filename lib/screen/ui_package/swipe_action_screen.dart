@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class SwipeActionScreen extends StatefulWidget {
   const SwipeActionScreen({super.key});
@@ -34,7 +34,7 @@ class _SwipeActionScreenState extends State<SwipeActionScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Slidable'),
       ),
@@ -174,22 +174,10 @@ class _SwipeActionScreenState extends State<SwipeActionScreen> {
                           ),
                         ],
                       ),
-                      _buildInfoItem(
-                        theme: theme,
-                        text: 'startActionPane: 좌측에서 스와이프',
-                      ),
-                      _buildInfoItem(
-                        theme: theme,
-                        text: 'endActionPane: 우측에서 스와이프',
-                      ),
-                      _buildInfoItem(
-                        theme: theme,
-                        text: 'motion: 애니메이션 스타일',
-                      ),
-                      _buildInfoItem(
-                        theme: theme,
-                        text: 'dismissible: 끝까지 밀면 삭제',
-                      ),
+                      const InfoItem('startActionPane: 좌측에서 스와이프'),
+                      const InfoItem('endActionPane: 우측에서 스와이프'),
+                      const InfoItem('motion: 애니메이션 스타일'),
+                      const InfoItem('dismissible: 끝까지 밀면 삭제'),
                     ],
                   ),
                 ),
@@ -408,28 +396,4 @@ class _SwipeActionScreenState extends State<SwipeActionScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class AnimationsScreen extends StatefulWidget {
   const AnimationsScreen({super.key});
@@ -18,7 +18,7 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('애니메이션'),
       ),
@@ -43,7 +43,7 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
             const SizedBox(height: 24),
 
             // 1. Hero Animation
-            _buildSectionHeader(theme, '1. Hero (이미지 확대 전환)'),
+            const SectionHeader('1. Hero (이미지 확대 전환)'),
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () => Navigator.push(
@@ -88,7 +88,7 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
             const SizedBox(height: 24),
 
             // 2. OpenContainer
-            _buildSectionHeader(theme, '2. OpenContainer (카드 → 상세)'),
+            const SectionHeader('2. OpenContainer (카드 → 상세)'),
             const SizedBox(height: 12),
             OpenContainer(
               closedElevation: 2,
@@ -161,7 +161,7 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
             const SizedBox(height: 24),
 
             // 3. SharedAxisTransition
-            _buildSectionHeader(theme, '3. SharedAxisTransition (페이지 전환)'),
+            const SectionHeader('3. SharedAxisTransition (페이지 전환)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -266,7 +266,7 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
             const SizedBox(height: 24),
 
             // 4. FadeThroughTransition
-            _buildSectionHeader(theme, '4. FadeThroughTransition (컨텐츠 교체)'),
+            const SectionHeader('4. FadeThroughTransition (컨텐츠 교체)'),
             const SizedBox(height: 12),
             ElevatedButton.icon(
               onPressed: () {
@@ -294,7 +294,7 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
             const SizedBox(height: 24),
 
             // 비교표
-            _buildSectionHeader(theme, '애니메이션 비교표'),
+            const SectionHeader('애니메이션 비교표'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -383,30 +383,6 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Flexible(
-          child: Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildInfoCard({
     required ThemeData theme,

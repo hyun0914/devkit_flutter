@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class LocalAuthScreen extends StatefulWidget {
   const LocalAuthScreen({super.key});
@@ -108,7 +108,7 @@ class _LocalAuthScreenState extends State<LocalAuthScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('생체 인증 (local_auth)')),
       body: SafeArea(
         child: ListView(
@@ -128,7 +128,7 @@ class _LocalAuthScreenState extends State<LocalAuthScreen> {
             const SizedBox(height: 24),
 
             // 기기 지원 현황
-            _buildSectionHeader(theme, '기기 지원 현황'),
+            const SectionHeader('기기 지원 현황'),
             const SizedBox(height: 12),
             _buildSupportCard(theme),
 
@@ -136,7 +136,7 @@ class _LocalAuthScreenState extends State<LocalAuthScreen> {
 
             // 사용 가능한 생체 인식
             if (_availableBiometrics.isNotEmpty) ...[
-              _buildSectionHeader(theme, '사용 가능한 인증 방식'),
+              const SectionHeader('사용 가능한 인증 방식'),
               const SizedBox(height: 12),
               ..._availableBiometrics.map(
                 (type) => Padding(
@@ -170,7 +170,7 @@ class _LocalAuthScreenState extends State<LocalAuthScreen> {
             ],
 
             // 인증 버튼
-            _buildSectionHeader(theme, '인증 테스트'),
+            const SectionHeader('인증 테스트'),
             const SizedBox(height: 12),
 
             if (_isAuthenticating)
@@ -234,7 +234,7 @@ class _LocalAuthScreenState extends State<LocalAuthScreen> {
             const SizedBox(height: 24),
 
             // 플랫폼 설정 안내
-            _buildSectionHeader(theme, '플랫폼 설정'),
+            const SectionHeader('플랫폼 설정'),
             const SizedBox(height: 12),
             _buildPlatformGuide(theme),
           ],
@@ -337,26 +337,4 @@ class _LocalAuthScreenState extends State<LocalAuthScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }

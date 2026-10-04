@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class KeyboardActionsScreen extends StatefulWidget {
   const KeyboardActionsScreen({super.key});
@@ -85,7 +85,7 @@ class _KeyboardActionsScreenState extends State<KeyboardActionsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('KeyboardActions'),
       ),
@@ -118,7 +118,7 @@ class _KeyboardActionsScreenState extends State<KeyboardActionsScreen> {
             const SizedBox(height: 24),
 
             // 입력 폼
-            _buildSectionHeader(theme, '기본 사용'),
+            const SectionHeader('기본 사용'),
             const SizedBox(height: 12),
 
             _buildTextField(
@@ -170,7 +170,7 @@ class _KeyboardActionsScreenState extends State<KeyboardActionsScreen> {
             const SizedBox(height: 24),
 
             // 사용 방법
-            _buildSectionHeader(theme, '사용 방법'),
+            const SectionHeader('사용 방법'),
             const SizedBox(height: 12),
             _buildCodeCard(theme),
 
@@ -201,29 +201,6 @@ class _KeyboardActionsScreenState extends State<KeyboardActionsScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 텍스트 필드
   Widget _buildTextField({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class TextOverflowScreen extends StatelessWidget {
   const TextOverflowScreen({super.key});
@@ -9,7 +9,7 @@ class TextOverflowScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('텍스트 Overflow'),
       ),
@@ -96,7 +96,7 @@ class TextOverflowScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // softWrap 비교
-            _buildSectionHeader(theme, 'softWrap'),
+            const SectionHeader('softWrap'),
             const SizedBox(height: 12),
 
             _buildExampleCard(
@@ -130,7 +130,7 @@ class TextOverflowScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Row 안 Text 처리
-            _buildSectionHeader(theme, 'Row 안 Text overflow'),
+            const SectionHeader('Row 안 Text overflow'),
             const SizedBox(height: 12),
 
             _buildExampleCard(
@@ -184,7 +184,7 @@ class TextOverflowScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // maxLines 비교
-            _buildSectionHeader(theme, 'maxLines 활용'),
+            const SectionHeader('maxLines 활용'),
             const SizedBox(height: 12),
 
             _buildExampleCard(
@@ -236,7 +236,7 @@ class TextOverflowScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 비교 표
-            _buildSectionHeader(theme, '비교표'),
+            const SectionHeader('비교표'),
             const SizedBox(height: 12),
 
             Container(
@@ -321,22 +321,10 @@ class TextOverflowScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'ellipsis가 가장 많이 사용됨',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'fade는 softWrap: false와 함께 사용',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'maxLines로 줄 수 제한 가능',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'visible은 디버깅 용도로 유용',
-                  ),
+                  const InfoItem('ellipsis가 가장 많이 사용됨'),
+                  const InfoItem('fade는 softWrap: false와 함께 사용'),
+                  const InfoItem('maxLines로 줄 수 제한 가능'),
+                  const InfoItem('visible은 디버깅 용도로 유용'),
                 ],
               ),
             ),
@@ -346,28 +334,6 @@ class TextOverflowScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildExampleCard({
     required ThemeData theme,
@@ -477,27 +443,4 @@ class TextOverflowScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

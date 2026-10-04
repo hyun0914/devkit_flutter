@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class LoggingScreen extends StatelessWidget {
   const LoggingScreen({super.key});
@@ -26,7 +26,7 @@ class LoggingScreen extends StatelessWidget {
       ),
     );
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('로깅 (Logging)'),
         actions: [
@@ -65,7 +65,7 @@ class LoggingScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── 1. 기본 방법 ──
-            _buildSectionHeader(theme, '기본 로깅 방법'),
+            const SectionHeader('기본 로깅 방법'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -116,7 +116,7 @@ class LoggingScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── 2. Logger 패키지 ──
-            _buildSectionHeader(theme, 'Logger 패키지'),
+            const SectionHeader('Logger 패키지'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(12),
@@ -156,7 +156,7 @@ class LoggingScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── 3. Talker 패키지 ──
-            _buildSectionHeader(theme, 'Talker 패키지'),
+            const SectionHeader('Talker 패키지'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(12),
@@ -238,7 +238,7 @@ class LoggingScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── 비교표 ──
-            _buildSectionHeader(theme, '비교표'),
+            const SectionHeader('비교표'),
             const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
@@ -297,11 +297,11 @@ class LoggingScreen extends StatelessWidget {
                       Text('💡 권장 사항', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  _buildInfoItem(theme: theme, text: 'print() 대신 debugPrint() 사용'),
-                  _buildInfoItem(theme: theme, text: 'log()는 상세 정보 필요할 때'),
-                  _buildInfoItem(theme: theme, text: 'Logger는 레벨 관리가 필요한 중규모 프로젝트에'),
-                  _buildInfoItem(theme: theme, text: 'Talker는 UI 로그 뷰어가 필요한 대규모 프로젝트에'),
-                  _buildInfoItem(theme: theme, text: 'Release 빌드에서는 자동으로 제거됨'),
+                  const InfoItem('print() 대신 debugPrint() 사용'),
+                  const InfoItem('log()는 상세 정보 필요할 때'),
+                  const InfoItem('Logger는 레벨 관리가 필요한 중규모 프로젝트에'),
+                  const InfoItem('Talker는 UI 로그 뷰어가 필요한 대규모 프로젝트에'),
+                  const InfoItem('Release 빌드에서는 자동으로 제거됨'),
                 ],
               ),
             ),
@@ -313,28 +313,6 @@ class LoggingScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildExampleCard({
     required ThemeData theme,
@@ -515,15 +493,4 @@ class LoggingScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem({required ThemeData theme, required String text}) {
-    return Row(
-      children: [
-        Icon(Icons.check_circle, size: 16, color: theme.colorScheme.primary),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(text, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-        ),
-      ],
-    );
-  }
 }

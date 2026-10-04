@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:sizer/sizer.dart';
 
-import '../widget/default_scaffold.dart';
 
 class ResponsiveScreen extends StatelessWidget {
   const ResponsiveScreen({super.key});
@@ -23,7 +22,7 @@ class _ResponsiveScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('반응형 레이아웃'),
       ),

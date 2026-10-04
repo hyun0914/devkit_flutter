@@ -9,7 +9,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 
 ## 구성 현황
 
-- **77개**의 예제 화면
+- **78개**의 예제 화면
 - **117개**의 패키지 통합
 - **7개 카테고리** + **실무 / 특수** 필터 탭
 - **즐겨찾기** 기능으로 자주 쓰는 레퍼런스 바로 접근
@@ -35,12 +35,12 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 - 탭바, Scaffold, Dialog / Sheet
 - 텍스트 필드, 테이블 위젯
 - 버튼 트리거 / 스타일, 위젯 숨기기
-- Flexible / Expanded, Animated 위젯
+- Flexible / Expanded, Animated 위젯, 텍스트 Overflow
 - ListWheelScrollView, GridView + PageView
 
 **주요 예제:**
 - `Scaffold` — BottomNavigationBar (fixed / shifting 타입, 애니메이션 제거)
-- `TextField / Form` — 한국어 입력 정규식, Multiline + Scrollbar 공유, Form 다중 필드 validate() → save(), 다음 필드 포커스 이동 체인
+- `TextField / Form` — 입력 트리거 비교 (디바운스 / onSubmitted / FocusNode), 한국어 입력 정규식, Multiline + Scrollbar 공유, Form 다중 필드 validate() → save(), 다음 필드 포커스 이동 체인
 - `Dialog / Sheet` — showGeneralDialog 상단 고정 시트, AlertDialog 너비 조정, Wrap 높이 제어, SnappingSheet (`lockOverflowDrag`, `sheetAbove`)
 - `BottomSheet` — DraggableScrollableSheet, Wrap 자동 높이, 높이 제어 5가지 방법 비교
 - `Dropdown` — OverlayEntry 커스텀 드롭다운 (LayerLink + CompositedTransformFollower), InputDecorator 데코레이션
@@ -67,7 +67,8 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 - 드래그 & 리오더, 복잡한 드래그 & 드롭
 - Swipe Action, ReadMore, KeyboardActions
 - 히트맵 시각화, Dotted Border, 코드 뷰어
-- 반응형 레이아웃
+- 반응형 레이아웃, 리스트 스크롤 비교
+- PageView + TweenAnimation, 터치 차단 로딩
 
 **주요 예제:**
 - `스크롤 팁` — 스크롤 오프셋 추적, animateTo / jumpTo, Scrollable.ensureVisible, ClampingScrollPhysics / BouncingScrollPhysics, ScrollBehavior 글로우 제거, PrimaryScrollController
@@ -76,6 +77,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 - `GridView` — `mainAxisExtent` (고정 픽셀) vs `childAspectRatio` (비율) 반응형 공식 비교
 
 ### 4. 네트워크
+- 네트워크 연결 상태 (connectivity_plus)
 - **go_router** (선언적 라우팅, Path Parameter, Redirect)
 - HTTP 통신 (Dio, HTTP)
 - WebView
@@ -110,6 +112,12 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 - Provider, Riverpod, BLoC, Flutter Hooks
 
 ## 최근 업데이트
+
+### 코드 정리 & 빌드 수정
+- 예제 화면 공통 위젯 추출 — `SectionHeader`, `ExampleCard`, `InfoItem`, `CodeBlock`, `MethodCard` (`lib/screen/widget/example_widgets.dart`)
+- 인자만 넘기던 `DefaultScaffold` 래퍼 제거 → 기본 `Scaffold` 사용
+- `Sliver 탭` — `SliverPersistentHeaderDelegate`의 `shrinkOffset`으로 축소 비율 계산, 아이콘 페이드 + 축소 % 표시
+- Flutter 3.47 빌드 오류 수정 — `page_transition` 2.2.2 업데이트, `CupertinoPageTransitionsBuilder` cupertino import
 
 ### 스크롤 & 드래그
 - `ListWheelScrollView` — `FixedExtentScrollController` 두 휠 동기화
@@ -147,7 +155,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 ## 시작하기
 
 ```bash
-git clone https://github.com/yourusername/devkit_flutter.git
+git clone https://github.com/hyun0914/devkit_flutter.git
 cd devkit_flutter
 flutter pub get
 flutter run
@@ -226,10 +234,9 @@ python3 tools/clean_oss_licenses.py
 
 ## 요구 사항
 
-- Flutter SDK: ^3.10.8
-- Dart SDK: ^3.10.8
+- Dart SDK: ^3.10.8 (Flutter 3.47.5에서 빌드 확인)
 - iOS 15.5 이상 (mobile_scanner 7.x 요구 사항)
-- Android API 21 이상
+- Android API 26 이상
 - Python 3 (OSS 라이선스 정리용)
 
 ## 프로젝트 구조
@@ -257,6 +264,13 @@ devkit_flutter/
 │   └── clean_oss_licenses.py
 └── pubspec.yaml
 ```
+
+## 공통 UI 규칙
+
+- **예제 화면 공통 위젯**: 섹션 헤더·예제 카드·안내 문구·코드 블록은 `lib/screen/widget/example_widgets.dart`의 `SectionHeader`, `ExampleCard`, `InfoItem`, `CodeBlock`, `MethodCard`를 사용합니다.
+- **Scaffold**: 별도 래퍼 없이 Flutter 기본 `Scaffold`를 그대로 사용합니다.
+  - 배경색·AppBar 등 **스타일**을 공통으로 바꾸려면 `lib/home_screen.dart`의 `ThemeData`(`scaffoldBackgroundColor`, `appBarTheme` 등)를 수정합니다. `theme`와 `darkTheme` 양쪽에 함께 지정해야 합니다.
+  - `SafeArea`, 키보드 닫기 등 **공통 동작**이 필요해지면 그때 래퍼 위젯을 추가합니다.
 
 ## 라이선스
 

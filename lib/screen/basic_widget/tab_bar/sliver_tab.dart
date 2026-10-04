@@ -29,7 +29,7 @@ class _SliverTabState extends State<SliverTab>
         SliverPersistentHeader(
           pinned: true,
           delegate: BasicHeaderDelegate(
-            child: Container(
+            builder: (context, shrinkRatio) => Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -43,13 +43,17 @@ class _SliverTabState extends State<SliverTab>
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 4,
                   children: [
-                    Icon(
-                      Icons.push_pin,
-                      color: theme.colorScheme.onPrimary,
-                      size: 24,
+                    // 축소될수록 아이콘이 흐려짐
+                    Opacity(
+                      opacity: 1 - shrinkRatio,
+                      child: Icon(
+                        Icons.push_pin,
+                        color: theme.colorScheme.onPrimary,
+                        size: 24,
+                      ),
                     ),
                     Text(
-                      'Sliver 고정 헤더',
+                      'Sliver 고정 헤더 · 축소 ${(shrinkRatio * 100).round()}%',
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: theme.colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,

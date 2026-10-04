@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widget/default_scaffold.dart';
 
 // Counter Provider
 final counterProvider = NotifierProvider<CounterNotifier, int>(CounterNotifier.new);
@@ -23,7 +22,7 @@ class RiverPodScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final count = ref.watch(counterProvider);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('RiverPod'),
       ),

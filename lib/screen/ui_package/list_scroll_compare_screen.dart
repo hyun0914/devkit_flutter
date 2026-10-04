@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
-import '../widget/default_scaffold.dart';
 
 class ListScrollCompareScreen extends StatefulWidget {
   const ListScrollCompareScreen({super.key});
@@ -130,7 +129,7 @@ class _ListScrollCompareScreenState extends State<ListScrollCompareScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('리스트 스크롤 비교'),
         bottom: TabBar(

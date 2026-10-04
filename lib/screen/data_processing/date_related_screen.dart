@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class DateRelatedScreen extends StatefulWidget {
   const DateRelatedScreen({super.key});
@@ -61,7 +61,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('날짜 처리'),
       ),
@@ -126,10 +126,9 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
             const SizedBox(height: 24),
 
             // 기본 날짜 연산
-            _buildSectionHeader(theme, '기본 날짜 연산'),
+            const SectionHeader('기본 날짜 연산'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '날짜 더하기/빼기',
               description: 'add() / subtract() 사용',
               code: 'today.add(Duration(days: 7))',
@@ -152,8 +151,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '날짜 차이 계산',
               description: 'difference() 사용',
               code: 'date1.difference(date2)',
@@ -176,8 +174,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '날짜 비교',
               description: 'compareTo() 사용 (-1, 0, 1)',
               code: 'date1.compareTo(date2)',
@@ -207,10 +204,9 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
             const SizedBox(height: 24),
 
             // 날짜 포맷팅
-            _buildSectionHeader(theme, '날짜 포맷팅'),
+            const SectionHeader('날짜 포맷팅'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'DateFormat 사용',
               description: 'intl 패키지 사용',
               code: "DateFormat('yyyy-MM-dd').format(date)",
@@ -232,8 +228,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '시간 제외하고 날짜만',
               description: '3가지 방법',
               code: 'DateTime(year, month, day)',
@@ -258,10 +253,9 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
             const SizedBox(height: 24),
 
             // 특수 날짜 계산
-            _buildSectionHeader(theme, '특수 날짜 계산'),
+            const SectionHeader('특수 날짜 계산'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '이번 주 월~일 날짜',
               description: 'weekday 속성 활용',
               code: 'today.weekday (1=월 ~ 7=일)',
@@ -289,8 +283,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '이번 달 첫날/마지막날',
               description: 'DateTime 생성자 활용',
               code: 'DateTime(year, month + 1, 0)',
@@ -311,8 +304,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'D-Day 계산',
               description: '목표 날짜까지 남은 일수',
               code: 'target.difference(today).inDays',
@@ -346,10 +338,9 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
             const SizedBox(height: 24),
 
             // 문자열 변환
-            _buildSectionHeader(theme, '문자열 ↔ DateTime 변환'),
+            const SectionHeader('문자열 ↔ DateTime 변환'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'String → DateTime',
               description: 'DateTime.parse() 사용',
               code: "DateTime.parse('2024-12-25')",
@@ -380,7 +371,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
             const SizedBox(height: 24),
 
             // 유용한 속성
-            _buildSectionHeader(theme, '유용한 DateTime 속성'),
+            const SectionHeader('유용한 DateTime 속성'),
             const SizedBox(height: 12),
             _buildMethodCard(
               theme: theme,
@@ -449,18 +440,9 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'intl: 날짜 포맷팅 (DateFormat)',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'DateTime: Dart 기본 클래스',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Duration: 시간 간격 표현',
-                  ),
+                  const InfoItem('intl: 날짜 포맷팅 (DateFormat)'),
+                  const InfoItem('DateTime: Dart 기본 클래스'),
+                  const InfoItem('Duration: 시간 간격 표현'),
                 ],
               ),
             ),
@@ -470,84 +452,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required String code,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              code,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: 'monospace',
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 메서드 카드
   Widget _buildMethodCard({
@@ -609,28 +514,4 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

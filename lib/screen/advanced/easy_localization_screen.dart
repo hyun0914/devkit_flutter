@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class EasyLocalizationScreen extends StatefulWidget {
   const EasyLocalizationScreen({super.key});
@@ -33,7 +33,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
     final currentLocale = context.locale;
     final isKorean = currentLocale.languageCode == 'ko';
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('EasyLocalization'),
         actions: [
@@ -80,7 +80,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           const SizedBox(height: 24),
 
           // ── 1. 기본 번역 ──
-          _buildSectionHeader(theme, 'basic.title'.tr()),
+          SectionHeader('basic.title'.tr()),
           const SizedBox(height: 12),
 
           _buildExampleCard(
@@ -136,7 +136,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           const SizedBox(height: 24),
 
           // ── 2. 복수형 ──
-          _buildSectionHeader(theme, 'plural.title'.tr()),
+          SectionHeader('plural.title'.tr()),
           const SizedBox(height: 12),
 
           _buildExampleCard(
@@ -197,7 +197,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           const SizedBox(height: 24),
 
           // ── 3. 성별 처리 ──
-          _buildSectionHeader(theme, 'gender.title'.tr()),
+          SectionHeader('gender.title'.tr()),
           const SizedBox(height: 12),
 
           _buildExampleCard(
@@ -237,7 +237,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           const SizedBox(height: 24),
 
           // ── 4. 패키지 정보 ──
-          _buildSectionHeader(theme, 'info.title'.tr()),
+          SectionHeader('info.title'.tr()),
           const SizedBox(height: 12),
           _buildInfoCard(theme),
 
@@ -376,29 +376,6 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({

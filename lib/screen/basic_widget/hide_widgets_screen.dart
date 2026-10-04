@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 class HideWidgetsScreen extends StatefulWidget {
   const HideWidgetsScreen({super.key});
@@ -19,7 +18,7 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('위젯 숨기기')),
       body: SafeArea(
         child: Column(

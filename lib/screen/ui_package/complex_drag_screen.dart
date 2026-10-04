@@ -1,7 +1,6 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 class ComplexDragScreen extends StatefulWidget {
   const ComplexDragScreen({super.key});
@@ -134,7 +133,7 @@ class _ComplexDragScreenState extends State<ComplexDragScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('복잡한 드래그 & 드롭'),
         actions: [

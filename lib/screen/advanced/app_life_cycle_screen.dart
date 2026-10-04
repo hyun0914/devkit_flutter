@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class AppLifeCycleScreen extends StatefulWidget {
   const AppLifeCycleScreen({super.key});
@@ -111,7 +111,7 @@ class _AppLifeCycleScreenState extends State<AppLifeCycleScreen> with WidgetsBin
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('앱 라이프사이클'),
       ),
@@ -136,7 +136,7 @@ class _AppLifeCycleScreenState extends State<AppLifeCycleScreen> with WidgetsBin
             const SizedBox(height: 24),
 
             // 현재 상태
-            _buildSectionHeader(theme, '현재 상태'),
+            const SectionHeader('현재 상태'),
             const SizedBox(height: 12),
             if (_currentState != null)
               _buildCurrentStateCard(theme, _currentState!)
@@ -160,14 +160,14 @@ class _AppLifeCycleScreenState extends State<AppLifeCycleScreen> with WidgetsBin
             const SizedBox(height: 24),
 
             // 상태 설명
-            _buildSectionHeader(theme, '상태 설명'),
+            const SectionHeader('상태 설명'),
             const SizedBox(height: 12),
             _buildStateDescriptions(theme),
 
             const SizedBox(height: 24),
 
             // 상태 변경 히스토리
-            _buildSectionHeader(theme, '상태 변경 히스토리'),
+            const SectionHeader('상태 변경 히스토리'),
             const SizedBox(height: 12),
             if (_stateHistory.isEmpty)
               Container(
@@ -256,7 +256,7 @@ class _AppLifeCycleScreenState extends State<AppLifeCycleScreen> with WidgetsBin
             const SizedBox(height: 24),
 
             // 사용된 개념
-            _buildSectionHeader(theme, '사용된 개념'),
+            const SectionHeader('사용된 개념'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -297,29 +297,6 @@ class _AppLifeCycleScreenState extends State<AppLifeCycleScreen> with WidgetsBin
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 현재 상태 카드
   Widget _buildCurrentStateCard(ThemeData theme, AppLifecycleState state) {

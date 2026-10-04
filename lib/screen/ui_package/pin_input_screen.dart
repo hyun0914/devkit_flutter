@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class PinInputScreen extends StatefulWidget {
   const PinInputScreen({super.key});
@@ -45,7 +45,7 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('PIN 입력 (PinPut)'),
       ),
@@ -70,7 +70,7 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
             const SizedBox(height: 24),
 
             // 기본 스타일
-            _buildSectionHeader(theme, 'Material 3 스타일'),
+            const SectionHeader('Material 3 스타일'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -324,7 +324,7 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
             const SizedBox(height: 24),
 
             // 비교표
-            _buildSectionHeader(theme, '스타일 비교'),
+            const SectionHeader('스타일 비교'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -382,26 +382,11 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'defaultPinTheme: 기본 상태',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'focusedPinTheme: 포커스된 상태',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'submittedPinTheme: 입력 완료 상태',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'onCompleted: 입력 완료 시 호출',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'obscureText: 비밀번호 모드',
-                  ),
+                  const InfoItem('defaultPinTheme: 기본 상태'),
+                  const InfoItem('focusedPinTheme: 포커스된 상태'),
+                  const InfoItem('submittedPinTheme: 입력 완료 상태'),
+                  const InfoItem('onCompleted: 입력 완료 시 호출'),
+                  const InfoItem('obscureText: 비밀번호 모드'),
                 ],
               ),
             ),
@@ -427,29 +412,6 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({
@@ -532,28 +494,4 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:tab_container/tab_container.dart';
 
-import '../../widget/default_scaffold.dart';
+import '../../widget/example_widgets.dart';
 
 class PackageCarouselScreen extends StatelessWidget {
   const PackageCarouselScreen({super.key});
@@ -18,7 +18,7 @@ class PackageCarouselScreen extends StatelessWidget {
       const Color(0xFF04BF68),
     ];
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('캐러셀 & 탭'),
       ),
@@ -43,10 +43,9 @@ class PackageCarouselScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // FlutterCarousel
-            _buildSectionHeader(theme, 'FlutterCarousel'),
+            const SectionHeader('FlutterCarousel'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '기본 캐러셀',
               description: '자동 재생 + 인디케이터',
               child: FlutterCarousel(
@@ -100,8 +99,7 @@ class PackageCarouselScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '확대 효과',
               description: 'enlargeCenterPage: true',
               child: FlutterCarousel(
@@ -146,8 +144,7 @@ class PackageCarouselScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '전체 너비',
               description: 'viewportFraction: 1.0',
               child: FlutterCarousel(
@@ -185,10 +182,9 @@ class PackageCarouselScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // TabContainer
-            _buildSectionHeader(theme, 'TabContainer'),
+            const SectionHeader('TabContainer'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '왼쪽 탭',
               description: 'tabEdge: TabEdge.left',
               child: SizedBox(
@@ -232,8 +228,7 @@ class PackageCarouselScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '오른쪽 탭',
               description: 'tabEdge: TabEdge.right',
               child: SizedBox(
@@ -265,8 +260,7 @@ class PackageCarouselScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '상단 탭',
               description: 'tabEdge: TabEdge.top',
               child: SizedBox(
@@ -314,7 +308,7 @@ class PackageCarouselScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 옵션 비교
-            _buildSectionHeader(theme, 'FlutterCarousel 옵션'),
+            const SectionHeader('FlutterCarousel 옵션'),
             const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
@@ -398,22 +392,10 @@ class PackageCarouselScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'FlutterCarousel: 이미지 갤러리, 광고 배너',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'TabContainer: 카테고리 분류',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'viewportFraction: 0.9 권장 (좌우 미리보기)',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'TabEdge: left, right, top, bottom',
-                  ),
+                  const InfoItem('FlutterCarousel: 이미지 갤러리, 광고 배너'),
+                  const InfoItem('TabContainer: 카테고리 분류'),
+                  const InfoItem('viewportFraction: 0.9 권장 (좌우 미리보기)'),
+                  const InfoItem('TabEdge: left, right, top, bottom'),
                 ],
               ),
             ),
@@ -454,68 +436,7 @@ class PackageCarouselScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 옵션 행
   Widget _buildOptionRow(ThemeData theme, String option, String description) {
@@ -552,28 +473,4 @@ class PackageCarouselScreen extends StatelessWidget {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

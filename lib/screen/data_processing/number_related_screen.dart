@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class NumberRelatedScreen extends StatefulWidget {
   const NumberRelatedScreen({super.key});
@@ -65,7 +65,7 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('숫자 처리'),
       ),
@@ -90,10 +90,9 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
             const SizedBox(height: 24),
 
             // 랜덤 생성
-            _buildSectionHeader(theme, '랜덤 생성'),
+            const SectionHeader('랜덤 생성'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '랜덤 문자열 생성',
               description: '영문 대소문자 + 숫자 조합',
               code: 'Random().nextInt()',
@@ -132,8 +131,7 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '랜덤 숫자 생성',
               description: '1 ~ 100 범위의 랜덤 정수',
               code: 'Random().nextInt(100)',
@@ -173,10 +171,9 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
             const SizedBox(height: 24),
 
             // 절댓값
-            _buildSectionHeader(theme, '절댓값 변환'),
+            const SectionHeader('절댓값 변환'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'abs() - 절댓값',
               description: '음수를 양수로 변환',
               code: 'number.abs()',
@@ -197,10 +194,9 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
             const SizedBox(height: 24),
 
             // 소수점 처리
-            _buildSectionHeader(theme, '소수점 처리'),
+            const SectionHeader('소수점 처리'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'ceil() - 올림',
               description: '소수점 이하를 올림',
               code: 'number.ceil()',
@@ -213,8 +209,7 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'floor() - 내림',
               description: '소수점 이하를 버림',
               code: 'number.floor()',
@@ -227,8 +222,7 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'round() - 반올림',
               description: '0.5 기준으로 반올림',
               code: 'number.round()',
@@ -241,8 +235,7 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'toStringAsFixed() - 소수점 고정',
               description: '소수점 자릿수 지정',
               code: 'number.toStringAsFixed(2)',
@@ -260,38 +253,33 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
             const SizedBox(height: 24),
 
             // 기타 메서드
-            _buildSectionHeader(theme, '기타 유용한 메서드'),
+            const SectionHeader('기타 유용한 메서드'),
             const SizedBox(height: 12),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'clamp()',
               description: '범위 제한',
               example: '10.clamp(0, 5) → 5',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'toInt()',
               description: 'double → int 변환',
               example: '4.9.toInt() → 4',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'toDouble()',
               description: 'int → double 변환',
               example: '5.toDouble() → 5.0',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'isNaN / isInfinite',
               description: 'NaN / 무한대 체크',
               example: '(0/0).isNaN → true',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'isEven / isOdd',
               description: '짝수 / 홀수 확인',
               example: '4.isEven → true, 5.isOdd → true',
@@ -329,18 +317,9 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'ceil, floor, round는 정수(int) 반환',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'toStringAsFixed는 문자열(String) 반환',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Random은 import "dart:math" 필요',
-                  ),
+                  const InfoItem('ceil, floor, round는 정수(int) 반환'),
+                  const InfoItem('toStringAsFixed는 문자열(String) 반환'),
+                  const InfoItem('Random은 import "dart:math" 필요'),
                 ],
               ),
             ),
@@ -350,84 +329,7 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required String code,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              code,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: 'monospace',
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 소수점 예제
   Widget _buildDecimalExample(
@@ -504,88 +406,5 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
     );
   }
 
-  // 메서드 카드
-  Widget _buildMethodCard({
-    required ThemeData theme,
-    required String method,
-    required String description,
-    required String example,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              method,
-              style: theme.textTheme.labelMedium?.copyWith(
-                fontFamily: 'monospace',
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 2,
-              children: [
-                Text(
-                  description,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  example,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontFamily: 'monospace',
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

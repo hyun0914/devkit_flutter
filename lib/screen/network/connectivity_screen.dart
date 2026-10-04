@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class ConnectivityScreen extends StatefulWidget {
   const ConnectivityScreen({super.key});
@@ -59,7 +59,7 @@ class _ConnectivityScreenState extends State<ConnectivityScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('네트워크 연결 상태'),
       ),
@@ -82,13 +82,13 @@ class _ConnectivityScreenState extends State<ConnectivityScreen> {
 
             const SizedBox(height: 24),
 
-            _buildSectionHeader(theme, '현재 상태'),
+            const SectionHeader('현재 상태'),
             const SizedBox(height: 12),
             _buildStatusCard(theme),
 
             const SizedBox(height: 24),
 
-            _buildSectionHeader(theme, '실시간 감지 로그'),
+            const SectionHeader('실시간 감지 로그'),
             const SizedBox(height: 4),
             Text(
               '연결 상태가 변경될 때마다 기록됩니다',
@@ -220,28 +220,6 @@ class _ConnectivityScreenState extends State<ConnectivityScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildInfoCard(ThemeData theme) {
     return Container(

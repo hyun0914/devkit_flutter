@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:postal_ko/postal_ko.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class AddressSearchScreen extends StatefulWidget {
   const AddressSearchScreen({super.key});
@@ -44,7 +44,7 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('주소 검색 (카카오)'),
       ),
@@ -82,7 +82,7 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
 
             // 검색 결과
             if (_searchResult != null) ...[
-              _buildSectionHeader(theme, '검색 결과'),
+              const SectionHeader('검색 결과'),
               const SizedBox(height: 12),
 
               // 주소 카드
@@ -194,7 +194,7 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
             const SizedBox(height: 24),
 
             // 설정 안내
-            _buildSectionHeader(theme, '설정 안내'),
+            const SectionHeader('설정 안내'),
             const SizedBox(height: 12),
 
             // Android 설정
@@ -391,22 +391,10 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '카카오 우편번호 서비스',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '도로명, 지번, 건물명 검색',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '좌표(위도/경도) 정보 제공',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '결과 복사 기능',
-                  ),
+                  const InfoItem('카카오 우편번호 서비스'),
+                  const InfoItem('도로명, 지번, 건물명 검색'),
+                  const InfoItem('좌표(위도/경도) 정보 제공'),
+                  const InfoItem('결과 복사 기능'),
                 ],
               ),
             ),
@@ -416,29 +404,6 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 결과 카드
   Widget _buildResultCard({
@@ -641,28 +606,4 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

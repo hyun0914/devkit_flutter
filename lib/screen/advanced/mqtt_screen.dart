@@ -7,7 +7,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import '../widget/default_scaffold.dart';
 
 class MqttScreen extends StatefulWidget {
   const MqttScreen({super.key});
@@ -245,7 +244,7 @@ class _MqttScreenState extends State<MqttScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('MQTT Client'),
         actions: [

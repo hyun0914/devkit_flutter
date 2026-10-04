@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import '../../example_list_screen.dart';
-import '../widget/default_scaffold.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -11,7 +10,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       body: IntroductionScreen(
         pages: [
           PageViewModel(

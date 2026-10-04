@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   const VideoPlayerScreen({super.key});
@@ -75,7 +75,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     final theme = Theme.of(context);
     final controller = _controller;
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('비디오 재생 (video_player)')),
       body: SafeArea(
         child: ListView(
@@ -245,9 +245,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             const SizedBox(height: 24),
 
             // 주요 기능
-            _buildSectionHeader(theme, '주요 기능'),
+            const SectionHeader('주요 기능'),
             const SizedBox(height: 12),
-            _buildCodeBlock(theme, '''// 네트워크 영상
+            CodeBlock('''// 네트워크 영상
 final controller = VideoPlayerController.networkUrl(
   Uri.parse('https://example.com/video.mp4'),
 );
@@ -280,45 +280,5 @@ controller.setVolume(0.5);'''),
     );
   }
 
-  Widget _buildCodeBlock(ThemeData theme, String code) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color:
-            theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Text(
-        code,
-        style: theme.textTheme.bodySmall
-            ?.copyWith(fontFamily: 'monospace', height: 1.6),
-      ),
-    );
-  }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }

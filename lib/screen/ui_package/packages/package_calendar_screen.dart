@@ -3,7 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:intl/intl.dart';
 
-import '../../widget/default_scaffold.dart';
+import '../../widget/example_widgets.dart';
 
 class PackageCalendarScreen extends StatefulWidget {
   const PackageCalendarScreen({super.key});
@@ -22,7 +22,7 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('캘린더 & 시간'),
       ),
@@ -47,10 +47,9 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
             const SizedBox(height: 24),
 
             // TableCalendar
-            _buildSectionHeader(theme, 'TableCalendar'),
+            const SectionHeader('TableCalendar'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '기본 캘린더',
               description: '월간 캘린더',
               child: Container(
@@ -123,8 +122,7 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
               ),
             ],
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '주간 캘린더',
               description: 'CalendarFormat.week',
               child: Container(
@@ -154,10 +152,9 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
             const SizedBox(height: 24),
 
             // TimePickerSpinner
-            _buildSectionHeader(theme, 'TimePickerSpinner'),
+            const SectionHeader('TimePickerSpinner'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '시간 선택 스피너',
               description: '12시간 형식',
               child: Column(
@@ -224,8 +221,7 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '24시간 형식',
               description: 'is24HourMode: true',
               child: Container(
@@ -263,7 +259,7 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
             const SizedBox(height: 24),
 
             // 기능 비교
-            _buildSectionHeader(theme, 'TableCalendar 기능'),
+            const SectionHeader('TableCalendar 기능'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -344,22 +340,10 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'TableCalendar: 다양한 포맷 지원',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'TimePickerSpinner: 12/24시간 선택',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'intl 패키지로 날짜 포맷팅',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'calendarStyle로 커스터마이징',
-                  ),
+                  const InfoItem('TableCalendar: 다양한 포맷 지원'),
+                  const InfoItem('TimePickerSpinner: 12/24시간 선택'),
+                  const InfoItem('intl 패키지로 날짜 포맷팅'),
+                  const InfoItem('calendarStyle로 커스터마이징'),
                 ],
               ),
             ),
@@ -369,68 +353,7 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 기능 아이템
   Widget _buildFeatureItem({
@@ -485,28 +408,4 @@ class _PackageCalendarScreenState extends State<PackageCalendarScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

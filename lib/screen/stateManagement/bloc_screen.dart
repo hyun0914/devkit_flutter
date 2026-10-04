@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../widget/default_scaffold.dart';
 
 // Counter Cubit
 class CounterCubit extends Cubit<int> {
@@ -31,7 +30,7 @@ class _BlocContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('BLoC'),
       ),

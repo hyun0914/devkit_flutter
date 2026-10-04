@@ -4,7 +4,7 @@ import 'package:number_paginator/number_paginator.dart';
 import 'package:pager/pager.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../widget/default_scaffold.dart';
+import '../../widget/example_widgets.dart';
 
 class PackageIndicatorScreen extends StatefulWidget {
   const PackageIndicatorScreen({super.key});
@@ -35,7 +35,7 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('인디케이터 & 페이지네이션'),
       ),
@@ -60,10 +60,9 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
             const SizedBox(height: 24),
 
             // SmoothPageIndicator
-            _buildSectionHeader(theme, 'SmoothPageIndicator'),
+            const SectionHeader('SmoothPageIndicator'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Slide Effect',
               description: '슬라이드 애니메이션',
               child: Column(
@@ -117,8 +116,7 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '다양한 Effect',
               description: 'Worm, Expanding, Jumping',
               child: Column(
@@ -179,10 +177,9 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
             const SizedBox(height: 24),
 
             // CardSlider
-            _buildSectionHeader(theme, 'CardSlider'),
+            const SectionHeader('CardSlider'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '카드 슬라이더',
               description: '3D 효과의 카드 슬라이더',
               child: SizedBox(
@@ -261,10 +258,9 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
             const SizedBox(height: 24),
 
             // NumberPaginator
-            _buildSectionHeader(theme, 'NumberPaginator'),
+            const SectionHeader('NumberPaginator'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '숫자 페이지네이션',
               description: '페이지 번호 선택',
               child: Column(
@@ -310,10 +306,9 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
             const SizedBox(height: 24),
 
             // Pager
-            _buildSectionHeader(theme, 'Pager'),
+            const SectionHeader('Pager'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '심플 페이저',
               description: '< 1 2 3 4 5 >',
               child: Column(
@@ -362,7 +357,7 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
             const SizedBox(height: 24),
 
             // 비교표
-            _buildSectionHeader(theme, '비교표'),
+            const SectionHeader('비교표'),
             const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
@@ -461,22 +456,10 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'SmoothPageIndicator: PageView와 함께 사용',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'CardSlider: 자체 슬라이더 내장',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'NumberPaginator: 많은 페이지에 적합',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Pager: 심플한 UI',
-                  ),
+                  const InfoItem('SmoothPageIndicator: PageView와 함께 사용'),
+                  const InfoItem('CardSlider: 자체 슬라이더 내장'),
+                  const InfoItem('NumberPaginator: 많은 페이지에 적합'),
+                  const InfoItem('Pager: 심플한 UI'),
                 ],
               ),
             ),
@@ -486,68 +469,7 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 비교표 행
   Widget _buildComparisonRow(ThemeData theme, String package, String feature) {
@@ -584,28 +506,4 @@ class _PackageIndicatorScreenState extends State<PackageIndicatorScreen> {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class ValueListenableBuilderScreen extends StatefulWidget {
   const ValueListenableBuilderScreen({super.key});
@@ -35,7 +35,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('ValueListenableBuilder'),
       ),
@@ -105,7 +105,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 예제 1: 카운터
-            _buildSectionHeader(theme, '예제 1: 카운터'),
+            const SectionHeader('예제 1: 카운터'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -192,7 +192,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 예제 2: 텍스트 변경
-            _buildSectionHeader(theme, '예제 2: 텍스트 변경'),
+            const SectionHeader('예제 2: 텍스트 변경'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -256,7 +256,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 예제 3: 색상 변경
-            _buildSectionHeader(theme, '예제 3: 색상 변경'),
+            const SectionHeader('예제 3: 색상 변경'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -324,7 +324,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 예제 4: 좋아요 버튼
-            _buildSectionHeader(theme, '예제 4: 좋아요 버튼'),
+            const SectionHeader('예제 4: 좋아요 버튼'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -355,7 +355,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 예제 5: child 파라미터 최적화
-            _buildSectionHeader(theme, '예제 5: child 파라미터 최적화'),
+            const SectionHeader('예제 5: child 파라미터 최적화'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -443,7 +443,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 예제 6: 동일 값 재할당 → 리스너 미호출
-            _buildSectionHeader(theme, '예제 6: 동일 값 재할당 → 리스너 미호출'),
+            const SectionHeader('예제 6: 동일 값 재할당 → 리스너 미호출'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -523,7 +523,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 참조형 타입 주의 카드
-            _buildSectionHeader(theme, '⚠️ 참조형 타입 주의 (List / Map)'),
+            const SectionHeader('⚠️ 참조형 타입 주의 (List / Map)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -591,7 +591,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 코드 예제
-            _buildSectionHeader(theme, '코드 예제'),
+            const SectionHeader('코드 예제'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -650,7 +650,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 비교: setState vs ValueNotifier
-            _buildSectionHeader(theme, 'setState vs ValueNotifier 비교'),
+            const SectionHeader('setState vs ValueNotifier 비교'),
             const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
@@ -689,7 +689,7 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
             const SizedBox(height: 24),
 
             // 언제 쓸까
-            _buildSectionHeader(theme, '언제 쓸까?'),
+            const SectionHeader('언제 쓸까?'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -748,22 +748,10 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
                               ?.copyWith(fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  _buildInfoItem(
-                      theme: theme,
-                      text: 'dispose()에서 ValueNotifier 해제 필수',
-                      icon: Icons.check_circle),
-                  _buildInfoItem(
-                      theme: theme,
-                      text: '동일 값 재할당 시 리스너 미호출 (== 비교)',
-                      icon: Icons.check_circle),
-                  _buildInfoItem(
-                      theme: theme,
-                      text: 'child 파라미터로 정적 위젯 rebuild 방지',
-                      icon: Icons.check_circle),
-                  _buildInfoItem(
-                      theme: theme,
-                      text: 'ChangeNotifier를 상속한 구현체',
-                      icon: Icons.check_circle),
+                  const InfoItem('dispose()에서 ValueNotifier 해제 필수', icon: Icons.check_circle),
+                  const InfoItem('동일 값 재할당 시 리스너 미호출 (== 비교)', icon: Icons.check_circle),
+                  const InfoItem('child 파라미터로 정적 위젯 rebuild 방지', icon: Icons.check_circle),
+                  const InfoItem('ChangeNotifier를 상속한 구현체', icon: Icons.check_circle),
                 ],
               ),
             ),
@@ -773,29 +761,6 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   TableRow _buildTableRow(ThemeData theme, List<String> cells,
       {bool isHeader = false}) {
@@ -851,31 +816,6 @@ class _ValueListenableBuilderScreenState extends State<ValueListenableBuilderScr
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-    IconData icon = Icons.check_circle,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 // 색상 버튼 위젯

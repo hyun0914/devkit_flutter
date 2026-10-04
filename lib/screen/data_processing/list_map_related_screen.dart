@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class ListMapRelatedScreen extends StatelessWidget {
   const ListMapRelatedScreen({super.key});
@@ -47,7 +47,7 @@ class ListMapRelatedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('List & Map'),
       ),
@@ -72,10 +72,9 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // List 기본
-            _buildSectionHeader(theme, 'List 기본'),
+            const SectionHeader('List 기본'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List 기본 속성',
               description: 'length, isEmpty, contains 등',
               code: 'list.length / list.contains()',
@@ -101,8 +100,7 @@ class ListMapRelatedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List 최대/최소값',
               description: 'reduce() 또는 sort() 사용',
               code: 'list.reduce((a, b) => a > b ? a : b)',
@@ -135,10 +133,9 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // List 연산
-            _buildSectionHeader(theme, 'List 연산'),
+            const SectionHeader('List 연산'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List 합치기',
               description: 'Spread 연산자 (...) 사용',
               code: '[...list1, ...list2]',
@@ -162,8 +159,7 @@ class ListMapRelatedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List 복사',
               description: 'List.from() 또는 [...list] 사용',
               code: 'List.from(original)',
@@ -188,8 +184,7 @@ class ListMapRelatedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List 비교',
               description: 'listEquals() 사용 (foundation)',
               code: 'listEquals(list1, list2)',
@@ -217,10 +212,9 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // List 고급
-            _buildSectionHeader(theme, 'List 고급'),
+            const SectionHeader('List 고급'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List<Map> 처리',
               description: 'map(), where(), toList() 조합',
               code: 'list.map((e) => e["key"]).toList()',
@@ -247,8 +241,7 @@ class ListMapRelatedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'List<Map> 정렬',
               description: 'sort() + compareTo() 사용',
               code: 'list.sort((a, b) => a["key"].compareTo(b["key"]))',
@@ -277,10 +270,9 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Map 기본
-            _buildSectionHeader(theme, 'Map 기본'),
+            const SectionHeader('Map 기본'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Map 기본 속성',
               description: 'keys, values, entries 등',
               code: 'map.keys / map.values',
@@ -305,8 +297,7 @@ class ListMapRelatedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Map 추가/삭제',
               description: 'addAll(), remove(), clear()',
               code: 'map.addAll({key: value})',
@@ -335,10 +326,9 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Map 고급
-            _buildSectionHeader(theme, 'Map 고급'),
+            const SectionHeader('Map 고급'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Map 정렬',
               description: 'entries를 정렬 후 다시 Map으로',
               code: 'Map.fromEntries(entries..sort())',
@@ -366,8 +356,7 @@ class ListMapRelatedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'Map<int, List> 생성',
               description: 'Map에 빈 List 초기화',
               code: 'map.addAll({i: []})',
@@ -399,38 +388,33 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 유용한 메서드
-            _buildSectionHeader(theme, '유용한 메서드'),
+            const SectionHeader('유용한 메서드'),
             const SizedBox(height: 12),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'map()',
               description: 'List 요소 변환',
               example: '[1,2,3].map((e) => e*2) → [2,4,6]',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'where()',
               description: 'List 필터링',
               example: '[1,2,3,4].where((e) => e>2) → [3,4]',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'reduce()',
               description: 'List 하나로 합치기',
               example: '[1,2,3].reduce((a,b) => a+b) → 6',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'any() / every()',
               description: '조건 만족 여부',
               example: '[1,2,3].any((e) => e>2) → true',
             ),
             const SizedBox(height: 8),
-            _buildMethodCard(
-              theme: theme,
+            MethodCard(
               method: 'join()',
               description: 'List를 String으로',
               example: '["A","B"].join(",") → "A,B"',
@@ -468,18 +452,9 @@ class ListMapRelatedScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'List는 순서가 있고, Map은 key-value 쌍',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'sort()는 원본을 수정, [...list]..sort()는 복사본',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'map()은 변환, where()는 필터링',
-                  ),
+                  const InfoItem('List는 순서가 있고, Map은 key-value 쌍'),
+                  const InfoItem('sort()는 원본을 수정, [...list]..sort()는 복사본'),
+                  const InfoItem('map()은 변환, where()는 필터링'),
                 ],
               ),
             ),
@@ -489,167 +464,7 @@ class ListMapRelatedScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required String code,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              code,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: 'monospace',
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          child,
-        ],
-      ),
-    );
-  }
 
-  // 메서드 카드
-  Widget _buildMethodCard({
-    required ThemeData theme,
-    required String method,
-    required String description,
-    required String example,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              method,
-              style: theme.textTheme.labelMedium?.copyWith(
-                fontFamily: 'monospace',
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 2,
-              children: [
-                Text(
-                  description,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  example,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontFamily: 'monospace',
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

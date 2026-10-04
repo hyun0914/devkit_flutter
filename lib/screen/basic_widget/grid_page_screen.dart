@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../widget/default_scaffold.dart';
 
 class GridPageScreen extends StatefulWidget {
   const GridPageScreen({super.key});
@@ -37,7 +36,7 @@ class _GridPageScreenState extends State<GridPageScreen> {
     final theme = Theme.of(context);
     final totalPages = (colorsList.length / 12).ceil();
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('GridView + PageView'),
         actions: [

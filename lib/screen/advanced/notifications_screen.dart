@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -184,7 +184,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('로컬 알림')),
       body: SafeArea(
         child: ListView(
@@ -203,13 +203,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
             const SizedBox(height: 24),
 
-            _buildSectionHeader(theme, '알림 권한'),
+            const SectionHeader('알림 권한'),
             const SizedBox(height: 12),
             _buildPermissionCard(theme),
 
             const SizedBox(height: 24),
 
-            _buildSectionHeader(theme, '알림 타입'),
+            const SectionHeader('알림 타입'),
             const SizedBox(height: 12),
 
             _buildNotificationButton(
@@ -250,7 +250,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
             const SizedBox(height: 24),
 
-            _buildSectionHeader(theme, '알림 관리'),
+            const SectionHeader('알림 관리'),
             const SizedBox(height: 12),
             OutlinedButton.icon(
               onPressed: _cancelAll,
@@ -265,7 +265,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
             if (_lastTappedPayload.isNotEmpty) ...[
               const SizedBox(height: 24),
-              _buildSectionHeader(theme, '알림 탭 감지'),
+              const SectionHeader('알림 탭 감지'),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -416,26 +416,4 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }

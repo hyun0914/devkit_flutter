@@ -9,7 +9,7 @@ import 'package:ios_utsname_ext/extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class AppDeviceInfoScreen extends StatefulWidget {
   const AppDeviceInfoScreen({super.key});
@@ -177,7 +177,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
     final orientation = MediaQuery.of(context).orientation;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('앱 & 기기 정보'),
         actions: [
@@ -210,7 +210,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
             const SizedBox(height: 24),
 
             // 1. 앱 정보
-            _buildSectionHeader(theme, '앱 정보'),
+            const SectionHeader('앱 정보'),
             const SizedBox(height: 12),
             if (_packageInfo != null)
               _buildInfoCard(
@@ -252,7 +252,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
             const SizedBox(height: 24),
 
             // 2. 디바이스 정보
-            _buildSectionHeader(theme, '디바이스 정보'),
+            const SectionHeader('디바이스 정보'),
             const SizedBox(height: 12),
             _buildInfoCard(
               theme: theme,
@@ -289,7 +289,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
 
             // 3. 배터리 정보
             if (!kIsWeb) ...[
-              _buildSectionHeader(theme, '배터리 정보'),
+              const SectionHeader('배터리 정보'),
               const SizedBox(height: 12),
               _buildInfoCard(
                 theme: theme,
@@ -319,7 +319,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
             ],
 
             // 4. 화면 정보
-            _buildSectionHeader(theme, '화면 정보'),
+            const SectionHeader('화면 정보'),
             const SizedBox(height: 12),
             _buildInfoCard(
               theme: theme,
@@ -365,7 +365,7 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
             const SizedBox(height: 24),
 
             // 사용된 패키지
-            _buildSectionHeader(theme, '사용된 패키지'),
+            const SectionHeader('사용된 패키지'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -421,29 +421,6 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 정보 카드
   Widget _buildInfoCard({

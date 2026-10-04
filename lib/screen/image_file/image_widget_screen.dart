@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class ImageWidgetScreen extends StatefulWidget {
   const ImageWidgetScreen({super.key});
@@ -55,7 +55,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 & SVG'),
       ),
@@ -77,7 +77,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // pubspec.yaml 안내
-            _buildSectionHeader(theme, 'pubspec.yaml 등록'),
+            const SectionHeader('pubspec.yaml 등록'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -140,7 +140,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 이미지 타입 비교
-            _buildSectionHeader(theme, '이미지 타입 비교'),
+            const SectionHeader('이미지 타입 비교'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -188,7 +188,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // SVG 섹션
-            _buildSectionHeader(theme, '0. SVG (flutter_svg)'),
+            const SectionHeader('0. SVG (flutter_svg)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -270,7 +270,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 1. InteractiveViewer + TransformationController
-            _buildSectionHeader(theme, '1. InteractiveViewer (핀치 줌/패닝)'),
+            const SectionHeader('1. InteractiveViewer (핀치 줌/패닝)'),
             const SizedBox(height: 12),
             Container(
               height: 300,
@@ -324,8 +324,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 2. Image.network loadingBuilder + errorBuilder
-            _buildSectionHeader(
-                theme, '2. Image.network (loadingBuilder / errorBuilder)'),
+            const SectionHeader('2. Image.network (loadingBuilder / errorBuilder)'),
             const SizedBox(height: 12),
             Row(
               spacing: 12,
@@ -429,8 +428,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 3. FadeInImage
-            _buildSectionHeader(
-                theme, '3. FadeInImage (플레이스홀더 → 페이드인)'),
+            const SectionHeader('3. FadeInImage (플레이스홀더 → 페이드인)'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -537,7 +535,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 4. 배경 이미지
-            _buildSectionHeader(theme, '4. 배경 이미지 (DecorationImage)'),
+            const SectionHeader('4. 배경 이미지 (DecorationImage)'),
             const SizedBox(height: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -591,7 +589,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 5. BoxFit 옵션
-            _buildSectionHeader(theme, '5. BoxFit 옵션'),
+            const SectionHeader('5. BoxFit 옵션'),
             const SizedBox(height: 12),
 
             _buildBoxFitExample(
@@ -639,7 +637,7 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // BoxFit 비교표
-            _buildSectionHeader(theme, 'BoxFit 비교표'),
+            const SectionHeader('BoxFit 비교표'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -781,30 +779,6 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildTypeRow(
       ThemeData theme, String name, String desc, IconData icon) {

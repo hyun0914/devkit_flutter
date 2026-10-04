@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class EquatableScreen extends StatelessWidget {
   const EquatableScreen({super.key});
@@ -42,7 +42,7 @@ class EquatableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('데이터 비교'),
       ),
@@ -112,7 +112,7 @@ class EquatableScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Equatable 사용
-            _buildSectionHeader(theme, 'Equatable 사용'),
+            const SectionHeader('Equatable 사용'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -222,7 +222,7 @@ class EquatableScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Equatable 없이
-            _buildSectionHeader(theme, 'Equatable 없이 비교 (4단계)'),
+            const SectionHeader('Equatable 없이 비교 (4단계)'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -332,7 +332,7 @@ class EquatableScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 비교표
-            _buildSectionHeader(theme, '4단계 비교표'),
+            const SectionHeader('4단계 비교표'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -395,7 +395,7 @@ class EquatableScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 코드 예제
-            _buildSectionHeader(theme, '코드 예제'),
+            const SectionHeader('코드 예제'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -490,7 +490,7 @@ class EquatableScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 장단점
-            _buildSectionHeader(theme, 'Equatable 장단점'),
+            const SectionHeader('Equatable 장단점'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -526,10 +526,10 @@ class EquatableScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      _buildInfoItem(theme: theme, text: '간단한 코드', icon: Icons.check),
-                      _buildInfoItem(theme: theme, text: '== 연산자 자동 생성', icon: Icons.check),
-                      _buildInfoItem(theme: theme, text: 'hashCode 자동 생성', icon: Icons.check),
-                      _buildInfoItem(theme: theme, text: 'toString() 자동 생성', icon: Icons.check),
+                      const InfoItem('간단한 코드', icon: Icons.check),
+                      const InfoItem('== 연산자 자동 생성', icon: Icons.check),
+                      const InfoItem('hashCode 자동 생성', icon: Icons.check),
+                      const InfoItem('toString() 자동 생성', icon: Icons.check),
                     ],
                   ),
                   const Divider(),
@@ -554,8 +554,8 @@ class EquatableScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      _buildInfoItem(theme: theme, text: '외부 패키지 의존성', icon: Icons.info),
-                      _buildInfoItem(theme: theme, text: 'props 수동 관리 필요', icon: Icons.info),
+                      const InfoItem('외부 패키지 의존성', icon: Icons.info),
+                      const InfoItem('props 수동 관리 필요', icon: Icons.info),
                     ],
                   ),
                 ],
@@ -594,21 +594,9 @@ class EquatableScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'BLoC 패턴의 State 클래스에 유용',
-                    icon: Icons.check_circle,
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'props에 모든 필드를 포함하는 것이 일반적',
-                    icon: Icons.check_circle,
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'const 생성자 사용 권장',
-                    icon: Icons.check_circle,
-                  ),
+                  const InfoItem('BLoC 패턴의 State 클래스에 유용', icon: Icons.check_circle),
+                  const InfoItem('props에 모든 필드를 포함하는 것이 일반적', icon: Icons.check_circle),
+                  const InfoItem('const 생성자 사용 권장', icon: Icons.check_circle),
                 ],
               ),
             ),
@@ -726,29 +714,6 @@ class EquatableScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({
@@ -806,31 +771,6 @@ class EquatableScreen extends StatelessWidget {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-    IconData icon = Icons.check_circle,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 // 1단계: SimpleBook (아무것도 없음)

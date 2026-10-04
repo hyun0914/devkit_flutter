@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 // ── 서비스 정의 ────────────────────────────────────────────────
 class ApiService {
@@ -120,7 +120,7 @@ class _GetItScreenState extends State<GetItScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('get_it (의존성 주입)'),
         actions: [
@@ -150,7 +150,7 @@ class _GetItScreenState extends State<GetItScreen> {
             const SizedBox(height: 24),
 
             // 등록 타입
-            _buildSectionHeader(theme, '등록 타입'),
+            const SectionHeader('등록 타입'),
             const SizedBox(height: 12),
             _buildTypeCard(theme, 'registerSingleton', '항상 같은 인스턴스 반환',
                 Colors.blue, '앱 시작 시 즉시 생성'),
@@ -164,7 +164,7 @@ class _GetItScreenState extends State<GetItScreen> {
             const SizedBox(height: 24),
 
             // 설정 & 테스트
-            _buildSectionHeader(theme, '테스트'),
+            const SectionHeader('테스트'),
             const SizedBox(height: 12),
 
             if (!_isSetup)
@@ -195,7 +195,7 @@ class _GetItScreenState extends State<GetItScreen> {
             // 로그
             if (_logs.isNotEmpty) ...[
               const SizedBox(height: 24),
-              _buildSectionHeader(theme, '실행 로그'),
+              const SectionHeader('실행 로그'),
               const SizedBox(height: 12),
               Container(
                 width: double.infinity,
@@ -224,9 +224,9 @@ class _GetItScreenState extends State<GetItScreen> {
             const SizedBox(height: 24),
 
             // 코드 예시
-            _buildSectionHeader(theme, '실제 사용 패턴'),
+            const SectionHeader('실제 사용 패턴'),
             const SizedBox(height: 12),
-            _buildCodeBlock(theme, '''// main.dart
+            CodeBlock('''// main.dart
 void main() {
   setupLocator(); // 등록
   runApp(MyApp());
@@ -307,45 +307,5 @@ final api = sl<ApiService>();'''),
     );
   }
 
-  Widget _buildCodeBlock(ThemeData theme, String code) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color:
-            theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Text(
-        code,
-        style: theme.textTheme.bodySmall
-            ?.copyWith(fontFamily: 'monospace', height: 1.6),
-      ),
-    );
-  }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }

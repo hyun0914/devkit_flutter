@@ -7,7 +7,6 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'example_data.dart';
 import 'example_item.dart';
-import 'screen/widget/default_scaffold.dart';
 import 'screen/widget/example_list_tile.dart';
 
 export 'example_item.dart';
@@ -389,7 +388,7 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         },
         child: const Icon(Icons.swap_vert),
       ),
-      mainScreenWidget: DefaultScaffold(
+      mainScreenWidget: Scaffold(
         appBar: AppBar(
           title: const Text('위젯 & 패키지 샘플'),
           actions: [

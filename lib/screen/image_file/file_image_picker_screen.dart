@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:open_file/open_file.dart';
 
-import '../widget/default_scaffold.dart';
 
 const String urlImg = 'https://i.pinimg.com/736x/26/ef/03/26ef03ec8c0751b4edc938fc8f7b634e.jpg';
 
@@ -158,7 +157,7 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 & 캐시'),
       ),

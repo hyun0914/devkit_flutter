@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 class ListWheelScrollViewScreen extends StatefulWidget {
   const ListWheelScrollViewScreen({super.key});
@@ -43,7 +42,7 @@ class _ListWheelScrollViewScreenState
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('ListWheelScrollView'),
       ),

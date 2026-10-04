@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class TableWidgetScreen extends StatefulWidget {
   const TableWidgetScreen({super.key});
@@ -53,7 +53,7 @@ class _TableWidgetScreenState extends State<TableWidgetScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Table 위젯'),
       ),
@@ -76,22 +76,22 @@ class _TableWidgetScreenState extends State<TableWidgetScreen> {
             ),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, '기본 테이블'),
+            const SectionHeader('기본 테이블'),
             const SizedBox(height: 12),
             _buildBasicTable(theme),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, '월별 통계'),
+            const SectionHeader('월별 통계'),
             const SizedBox(height: 12),
             _buildMonthlyStatsTable(theme),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, '성적표'),
+            const SectionHeader('성적표'),
             const SizedBox(height: 12),
             _buildGradeTable(theme),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, '가격표'),
+            const SectionHeader('가격표'),
             const SizedBox(height: 12),
             _buildPriceTable(theme),
 
@@ -114,12 +114,12 @@ class _TableWidgetScreenState extends State<TableWidgetScreen> {
             ),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, '기본 DataTable'),
+            const SectionHeader('기본 DataTable'),
             const SizedBox(height: 12),
             _buildBasicDataTable(theme),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, 'DataTable (컬럼 정렬)'),
+            const SectionHeader('DataTable (컬럼 정렬)'),
             const SizedBox(height: 4),
             Text(
               '헤더를 탭하면 오름/내림차순으로 정렬됩니다',
@@ -131,7 +131,7 @@ class _TableWidgetScreenState extends State<TableWidgetScreen> {
             _buildSortableDataTable(theme),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(theme, 'DataTable (행 선택)'),
+            const SectionHeader('DataTable (행 선택)'),
             const SizedBox(height: 4),
             Text(
               '체크박스로 행을 선택할 수 있습니다',
@@ -292,29 +292,6 @@ class _TableWidgetScreenState extends State<TableWidgetScreen> {
     );
   }
 
-  // ── 섹션 헤더 ──────────────────────────────────────────────────────────────
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // ── 기본 테이블 ────────────────────────────────────────────────────────────
   Widget _buildBasicTable(ThemeData theme) {

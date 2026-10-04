@@ -11,7 +11,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'package:gal/gal.dart';
 import 'package:scroll_screenshot/scroll_screenshot.dart';
 
-import '../../widget/default_scaffold.dart';
+import '../../widget/example_widgets.dart';
 
 class PackageUtilityScreen extends StatefulWidget {
   const PackageUtilityScreen({super.key});
@@ -111,7 +111,7 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
       onVisibilityLost: () {
         debugPrint('Visibility Lost');
       },
-      child: DefaultScaffold(
+      child: Scaffold(
         appBar: AppBar(
           title: const Text('유틸리티'),
         ),
@@ -136,10 +136,9 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // NumberFormat
-              _buildSectionHeader(theme, 'NumberFormat (intl)'),
+              const SectionHeader('NumberFormat (intl)'),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '숫자 포맷팅',
                 description: '천 단위 콤마',
                 child: Column(
@@ -164,8 +163,7 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '통화 포맷',
                 description: '원화 표시',
                 child: Column(
@@ -208,10 +206,9 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // Fluttertoast
-              _buildSectionHeader(theme, 'Fluttertoast'),
+              const SectionHeader('Fluttertoast'),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '토스트 메시지',
                 description: '짧은 알림 메시지',
                 child: Wrap(
@@ -257,10 +254,9 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // Badges
-              _buildSectionHeader(theme, 'Badges'),
+              const SectionHeader('Badges'),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '배지',
                 description: '알림 카운트 표시',
                 child: Column(
@@ -344,10 +340,9 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // FocusDetector
-              _buildSectionHeader(theme, 'FocusDetector'),
+              const SectionHeader('FocusDetector'),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '포커스 감지',
                 description: '화면 포커스 상태',
                 child: Container(
@@ -378,10 +373,9 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // VisibilityDetector
-              _buildSectionHeader(theme, 'VisibilityDetector'),
+              const SectionHeader('VisibilityDetector'),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '가시성 감지',
                 description: '위젯이 화면에 보이는지 감지',
                 child: Column(
@@ -452,10 +446,9 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // Screenshot
-              _buildSectionHeader(theme, 'Screenshot (Gal)'),
+              const SectionHeader('Screenshot (Gal)'),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '화면 캡처',
                 description: '현재 화면 갤러리 저장',
                 child: Column(
@@ -508,8 +501,7 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              _buildExampleCard(
-                theme: theme,
+              ExampleCard(
                 title: '스크롤 화면 캡처',
                 description: '긴 콘텐츠도 캡처 가능 (scroll_screenshot)',
                 child: Column(
@@ -616,30 +608,12 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
                         ),
                       ],
                     ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'NumberFormat: 천 단위 콤마, 통화',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'Fluttertoast: 간단한 알림',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'Badges: 알림 개수 표시',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'FocusDetector: 화면 포커스 감지',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'VisibilityDetector: 위젯 가시성 감지',
-                    ),
-                    _buildInfoItem(
-                      theme: theme,
-                      text: 'Screenshot: 화면 캡처 & 갤러리 저장',
-                    ),
+                    const InfoItem('NumberFormat: 천 단위 콤마, 통화'),
+                    const InfoItem('Fluttertoast: 간단한 알림'),
+                    const InfoItem('Badges: 알림 개수 표시'),
+                    const InfoItem('FocusDetector: 화면 포커스 감지'),
+                    const InfoItem('VisibilityDetector: 위젯 가시성 감지'),
+                    const InfoItem('Screenshot: 화면 캡처 & 갤러리 저장'),
                   ],
                 ),
               ),
@@ -686,91 +660,6 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class AudioScreen extends StatefulWidget {
   const AudioScreen({super.key});
@@ -55,7 +55,7 @@ class _AudioScreenState extends State<AudioScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('오디오 재생 (just_audio)')),
       body: SafeArea(
         child: ListView(
@@ -291,9 +291,9 @@ class _AudioScreenState extends State<AudioScreen> {
             const SizedBox(height: 24),
 
             // 주요 기능
-            _buildSectionHeader(theme, '주요 기능'),
+            const SectionHeader('주요 기능'),
             const SizedBox(height: 12),
-            _buildCodeBlock(theme, '''// URL에서 로드
+            CodeBlock('''// URL에서 로드
 await player.setUrl('https://...');
 
 // 파일에서 로드
@@ -318,45 +318,5 @@ player.setSpeed(1.5);'''),
     );
   }
 
-  Widget _buildCodeBlock(ThemeData theme, String code) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color:
-            theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Text(
-        code,
-        style: theme.textTheme.bodySmall
-            ?.copyWith(fontFamily: 'monospace', height: 1.6),
-      ),
-    );
-  }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }

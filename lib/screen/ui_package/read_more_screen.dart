@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class ReadMoreScreen extends StatelessWidget {
   const ReadMoreScreen({super.key});
@@ -10,7 +10,7 @@ class ReadMoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('ReadMore'),
       ),
@@ -35,7 +35,7 @@ class ReadMoreScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Line 모드 (기본)
-            _buildSectionHeader(theme, 'TrimMode.Line (줄 수 제한)'),
+            const SectionHeader('TrimMode.Line (줄 수 제한)'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -87,7 +87,7 @@ class ReadMoreScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Length 모드
-            _buildSectionHeader(theme, 'TrimMode.Length (글자 수 제한)'),
+            const SectionHeader('TrimMode.Length (글자 수 제한)'),
             const SizedBox(height: 12),
             _buildExampleCard(
               theme: theme,
@@ -113,7 +113,7 @@ class ReadMoreScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 실제 사용 예제
-            _buildSectionHeader(theme, '실제 사용 예제'),
+            const SectionHeader('실제 사용 예제'),
             const SizedBox(height: 12),
 
             // 뉴스 카드
@@ -149,7 +149,7 @@ class ReadMoreScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 설정표
-            _buildSectionHeader(theme, '주요 설정'),
+            const SectionHeader('주요 설정'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -229,22 +229,10 @@ class ReadMoreScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: '뉴스, 리뷰, 설명 등에 활용',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Line 모드: 레이아웃 일관성 유지',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'Length 모드: 정확한 글자 수 제어',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'moreStyle로 버튼 스타일 커스터마이징',
-                  ),
+                  const InfoItem('뉴스, 리뷰, 설명 등에 활용'),
+                  const InfoItem('Line 모드: 레이아웃 일관성 유지'),
+                  const InfoItem('Length 모드: 정확한 글자 수 제어'),
+                  const InfoItem('moreStyle로 버튼 스타일 커스터마이징'),
                 ],
               ),
             ),
@@ -254,29 +242,6 @@ class ReadMoreScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({
@@ -483,28 +448,4 @@ class ReadMoreScreen extends StatelessWidget {
     );
   }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

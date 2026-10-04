@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 // 1. Sealed Classes + Pattern Matching (API 상태)
 sealed class ApiState {}
@@ -84,7 +83,7 @@ class _Dart3ScreenState extends State<Dart3Screen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Dart 3.x 신기능'),
       ),

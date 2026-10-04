@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../widget/default_scaffold.dart';
 import '../widget/snack_bar_view.dart';
 import '../widget/syncfusion_license_info.dart';
+import '../widget/example_widgets.dart';
 
 class DialogSheetScreen extends StatefulWidget {
   const DialogSheetScreen({super.key});
@@ -29,7 +29,7 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Dialog & Sheet'),
       ),
@@ -54,7 +54,7 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             const SizedBox(height: 24),
 
             // Dialog 섹션
-            _buildSectionHeader(theme, Icons.speaker_notes_outlined, 'Dialogs'),
+            const SectionHeader('Dialogs', icon: Icons.speaker_notes_outlined),
             const SizedBox(height: 12),
             _buildExampleButton(
               theme: theme,
@@ -95,7 +95,7 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             const SizedBox(height: 24),
 
             // Date Picker 섹션
-            _buildSectionHeader(theme, Icons.calendar_today_outlined, 'Date Pickers'),
+            const SectionHeader('Date Pickers', icon: Icons.calendar_today_outlined),
             const SizedBox(height: 12),
             _buildExampleButton(
               theme: theme,
@@ -156,7 +156,7 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             const SizedBox(height: 24),
 
             // Time Picker 섹션
-            _buildSectionHeader(theme, Icons.access_time_outlined, 'Time Pickers'),
+            const SectionHeader('Time Pickers', icon: Icons.access_time_outlined),
             const SizedBox(height: 12),
             _buildExampleButton(
               theme: theme,
@@ -197,7 +197,7 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             const SizedBox(height: 24),
 
             // Action Sheet 섹션
-            _buildSectionHeader(theme, Icons.list_alt, 'Action Sheets'),
+            const SectionHeader('Action Sheets', icon: Icons.list_alt),
             const SizedBox(height: 12),
             _buildExampleButton(
               theme: theme,
@@ -251,22 +251,6 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
     );
   }
 
-  // ── 섹션 헤더 ──
-  Widget _buildSectionHeader(ThemeData theme, IconData icon, String title) {
-    return Row(
-      children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 24),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // ── 예제 버튼 ──
   Widget _buildExampleButton({

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
 
 class TouchBlockingLoadingScreen extends StatefulWidget {
   const TouchBlockingLoadingScreen({super.key});
@@ -32,7 +31,7 @@ class _TouchBlockingLoadingScreenState extends State<TouchBlockingLoadingScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('터치 차단 로딩'),
       ),

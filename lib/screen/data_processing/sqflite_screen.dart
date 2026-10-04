@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
-import '../widget/default_scaffold.dart';
 
 // ── 모델 ──────────────────────────────────────────────────────
 class Todo {
@@ -156,7 +155,7 @@ class _SqfliteScreenState extends State<SqfliteScreen> {
     final theme = Theme.of(context);
     final doneCount = _todos.where((t) => t.isDone).length;
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('sqflite (로컬 DB)')),
       body: SafeArea(
         child: Column(

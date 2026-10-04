@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../widget/default_scaffold.dart';
 
 // ActivateIntent 방식 — 커스텀 Intent (ActivateIntent 상속)
 class _SimActivateIntent extends ActivateIntent {
@@ -105,7 +104,7 @@ class _ButtonTriggerScreenState extends State<ButtonTriggerScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('Button Trigger')),
       body: SafeArea(
         // Shortcuts → Actions가 ListView 상위에 위치해야 트리거 버튼에서도 invoke 가능

@@ -3,7 +3,7 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 // ── 무거운 연산 함수 (최상위 함수여야 Isolate에서 실행 가능) ──────
 int _heavyComputation(int n) {
@@ -111,7 +111,7 @@ class _IsolateScreenState extends State<IsolateScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text('Isolate (백그라운드 처리)')),
       body: SafeArea(
         child: ListView(
@@ -131,7 +131,7 @@ class _IsolateScreenState extends State<IsolateScreen>
             const SizedBox(height: 24),
 
             // 애니메이션 — UI 블로킹 여부 확인용
-            _buildSectionHeader(theme, 'UI 상태 확인'),
+            const SectionHeader('UI 상태 확인'),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -161,7 +161,7 @@ class _IsolateScreenState extends State<IsolateScreen>
 
             const SizedBox(height: 24),
 
-            _buildSectionHeader(theme, '실행 방법 비교'),
+            const SectionHeader('실행 방법 비교'),
             const SizedBox(height: 12),
 
             // 메인 스레드
@@ -202,7 +202,7 @@ class _IsolateScreenState extends State<IsolateScreen>
             const SizedBox(height: 24),
 
             // 결과
-            _buildSectionHeader(theme, '결과'),
+            const SectionHeader('결과'),
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
@@ -251,9 +251,9 @@ class _IsolateScreenState extends State<IsolateScreen>
             const SizedBox(height: 24),
 
             // 코드 패턴
-            _buildSectionHeader(theme, 'Isolate.spawn 패턴'),
+            const SectionHeader('Isolate.spawn 패턴'),
             const SizedBox(height: 12),
-            _buildCodeBlock(theme, '''// 양방향 통신이 필요할 때
+            CodeBlock('''// 양방향 통신이 필요할 때
 final receivePort = ReceivePort();
 
 await Isolate.spawn((sendPort) {
@@ -335,47 +335,5 @@ final result = await receivePort.first;'''),
     );
   }
 
-  Widget _buildCodeBlock(ThemeData theme, String code) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color:
-            theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Text(
-        code,
-        style: theme.textTheme.bodySmall?.copyWith(
-          fontFamily: 'monospace',
-          height: 1.6,
-        ),
-      ),
-    );
-  }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 }

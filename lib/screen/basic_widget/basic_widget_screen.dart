@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../widget/default_scaffold.dart';
 
 // 스크롤 발광 효과 제거
 class NoGlowScrollBehavior extends ScrollBehavior {
@@ -146,7 +145,7 @@ class _BasicWidgetScreenState extends State<BasicWidgetScreen>
     var primaryScrollController = PrimaryScrollController.of(context);
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_reorderable/animated_reorderable.dart';
 import 'package:animated_reorderable_list/animated_reorderable_list.dart';
 
-import '../widget/default_scaffold.dart';
 
 class DragReorderScreen extends StatefulWidget {
   const DragReorderScreen({super.key});
@@ -57,7 +56,7 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
     final theme = Theme.of(context);
     final mode = _currentMode;
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Drag & Reorder'),
       ),

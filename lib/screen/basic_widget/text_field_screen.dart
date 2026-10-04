@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
-import '../widget/default_scaffold.dart';
 import '../widget/snack_bar_view.dart';
+import '../widget/example_widgets.dart';
 
 class TextFieldScreen extends StatefulWidget {
   const TextFieldScreen({super.key});
@@ -86,7 +86,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
     final theme = Theme.of(context);
 
     return KeyboardDismissOnTap(
-      child: DefaultScaffold(
+      child: Scaffold(
         appBar: AppBar(
           title: const Text('TextField 예제'),
         ),
@@ -112,7 +112,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 기본 TextField
-              _buildSectionHeader(theme, Icons.edit_outlined, '기본 TextField'),
+              const SectionHeader('기본 TextField', icon: Icons.edit_outlined),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -146,7 +146,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 포맷팅
-              _buildSectionHeader(theme, Icons.format_shapes, '입력 포맷팅'),
+              const SectionHeader('입력 포맷팅', icon: Icons.format_shapes),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -257,7 +257,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 유효성 검사
-              _buildSectionHeader(theme, Icons.verified_outlined, '유효성 검사'),
+              const SectionHeader('유효성 검사', icon: Icons.verified_outlined),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -311,7 +311,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // Form 여러 필드 + save()
-              _buildSectionHeader(theme, Icons.list_alt_outlined, 'Form 여러 필드 + save()'),
+              const SectionHeader('Form 여러 필드 + save()', icon: Icons.list_alt_outlined),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -409,8 +409,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 다음 필드 포커스 이동
-              _buildSectionHeader(
-                  theme, Icons.keyboard_tab, '다음 필드 포커스 이동'),
+              const SectionHeader('다음 필드 포커스 이동', icon: Icons.keyboard_tab),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -489,7 +488,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 특수 기능
-              _buildSectionHeader(theme, Icons.tune, '특수 기능'),
+              const SectionHeader('특수 기능', icon: Icons.tune),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -594,7 +593,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 스타일링
-              _buildSectionHeader(theme, Icons.palette_outlined, '스타일링'),
+              const SectionHeader('스타일링', icon: Icons.palette_outlined),
               const SizedBox(height: 12),
               _buildExampleCard(
                 theme: theme,
@@ -650,7 +649,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
               const SizedBox(height: 24),
 
               // 입력 트리거 비교
-              _buildSectionHeader(theme, Icons.compare_arrows, '입력 트리거 비교'),
+              const SectionHeader('입력 트리거 비교', icon: Icons.compare_arrows),
               const SizedBox(height: 4),
               Text(
                 '같은 "검색 실행"이라도 언제 트리거하느냐에 따라 사용자 경험과 서버 부하가 달라집니다',
@@ -885,22 +884,6 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, IconData icon, String title) {
-    return Row(
-      children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 24),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   // 예제 카드
   Widget _buildExampleCard({

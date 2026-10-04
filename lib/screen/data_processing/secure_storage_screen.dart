@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class SecureStorageScreen extends StatefulWidget {
   const SecureStorageScreen({super.key});
@@ -202,7 +202,7 @@ class _SecureStorageScreenState extends State<SecureStorageScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('보안 저장소'),
       ),
@@ -266,7 +266,7 @@ class _SecureStorageScreenState extends State<SecureStorageScreen> {
             const SizedBox(height: 24),
 
             // 로그인 시뮬레이션 섹션
-            _buildSectionHeader(theme, Icons.account_circle, '로그인 시뮬레이션'),
+            const SectionHeader('로그인 시뮬레이션', icon: Icons.account_circle),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -317,7 +317,7 @@ class _SecureStorageScreenState extends State<SecureStorageScreen> {
             const SizedBox(height: 24),
 
             // 커스텀 데이터 저장 섹션
-            _buildSectionHeader(theme, Icons.storage, '커스텀 데이터 관리'),
+            const SectionHeader('커스텀 데이터 관리', icon: Icons.storage),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
@@ -374,7 +374,7 @@ class _SecureStorageScreenState extends State<SecureStorageScreen> {
             const SizedBox(height: 24),
 
             // 전체 관리 섹션
-            _buildSectionHeader(theme, Icons.manage_search, '전체 데이터 관리'),
+            const SectionHeader('전체 데이터 관리', icon: Icons.manage_search),
             const SizedBox(height: 12),
             Row(
               spacing: 8,
@@ -478,21 +478,6 @@ class _SecureStorageScreenState extends State<SecureStorageScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, IconData icon, String title) {
-    return Row(
-      children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 24),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildDataRow(ThemeData theme, String label, String? value, IconData icon) {
     return Row(

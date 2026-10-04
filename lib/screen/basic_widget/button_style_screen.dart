@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class ButtonStyleScreen extends StatelessWidget {
   const ButtonStyleScreen({super.key});
@@ -20,7 +20,7 @@ class ButtonStyleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('버튼 스타일'),
       ),
@@ -45,10 +45,9 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 클릭 감지 위젯
-            _buildSectionHeader(theme, '클릭 감지 위젯'),
+            const SectionHeader('클릭 감지 위젯'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'InkWell',
               description: '물결 효과가 있는 클릭 영역',
               child: Center(
@@ -70,8 +69,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'GestureDetector',
               description: '다양한 제스처 감지',
               child: Row(
@@ -132,10 +130,9 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Material 3 버튼
-            _buildSectionHeader(theme, 'Material 3 버튼'),
+            const SectionHeader('Material 3 버튼'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'FilledButton (권장)',
               description: 'Material 3의 주요 액션 버튼',
               child: Wrap(
@@ -159,8 +156,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'ElevatedButton',
               description: '그림자가 있는 버튼',
               child: Wrap(
@@ -180,8 +176,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'OutlinedButton',
               description: '테두리만 있는 버튼',
               child: Wrap(
@@ -201,8 +196,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'TextButton',
               description: '텍스트만 있는 버튼',
               child: Wrap(
@@ -225,10 +219,9 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 버튼 스타일링
-            _buildSectionHeader(theme, '버튼 스타일 커스터마이징'),
+            const SectionHeader('버튼 스타일 커스터마이징'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'styleFrom으로 커스터마이징',
               description: '색상, 그림자, 테두리 등 설정',
               child: Column(
@@ -264,8 +257,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'ButtonStyle로 상태별 스타일',
               description: 'WidgetStateProperty 사용',
               child: SizedBox(
@@ -297,10 +289,9 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 버튼 Shape
-            _buildSectionHeader(theme, '버튼 Shape'),
+            const SectionHeader('버튼 Shape'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: '다양한 모양',
               description: 'RoundedRectangle, Beveled, Circle',
               child: Wrap(
@@ -347,10 +338,9 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 특수 버튼
-            _buildSectionHeader(theme, '특수 버튼'),
+            const SectionHeader('특수 버튼'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'IconButton',
               description: '아이콘만 있는 버튼',
               child: Wrap(
@@ -377,8 +367,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'FloatingActionButton',
               description: 'FAB 버튼',
               child: Wrap(
@@ -402,8 +391,7 @@ class ButtonStyleScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'PopupMenuButton',
               description: '팝업 메뉴',
               child: Center(
@@ -453,10 +441,9 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 토글 버튼
-            _buildSectionHeader(theme, '토글 버튼'),
+            const SectionHeader('토글 버튼'),
             const SizedBox(height: 12),
-            _buildExampleCard(
-              theme: theme,
+            ExampleCard(
               title: 'ToggleSwitch',
               description: '여러 옵션 중 선택',
               child: Center(
@@ -508,22 +495,10 @@ class ButtonStyleScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'FilledButton: 주요 액션 (권장)',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'ElevatedButton: 중요한 액션',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'OutlinedButton: 보조 액션',
-                  ),
-                  _buildInfoItem(
-                    theme: theme,
-                    text: 'TextButton: 덜 중요한 액션',
-                  ),
+                  const InfoItem('FilledButton: 주요 액션 (권장)'),
+                  const InfoItem('ElevatedButton: 중요한 액션'),
+                  const InfoItem('OutlinedButton: 보조 액션'),
+                  const InfoItem('TextButton: 덜 중요한 액션'),
                 ],
               ),
             ),
@@ -533,91 +508,6 @@ class ButtonStyleScreen extends StatelessWidget {
     );
   }
 
-  // 섹션 헤더
-  Widget _buildSectionHeader(ThemeData theme, String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 24,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required String description,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
-      ),
-    );
-  }
 
-  // 정보 아이템
-  Widget _buildInfoItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

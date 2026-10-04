@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-import '../widget/default_scaffold.dart';
+import '../widget/example_widgets.dart';
 
 class SensorsScreen extends StatefulWidget {
   const SensorsScreen({super.key});
@@ -102,7 +102,7 @@ class _SensorsScreenState extends State<SensorsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('디바이스 센서'),
       ),
@@ -172,7 +172,7 @@ class _SensorsScreenState extends State<SensorsScreen> {
             const SizedBox(height: 24),
 
             // 가속도계 (Accelerometer)
-            _buildSectionHeader(theme, Icons.trending_up, 'Accelerometer (가속도계)'),
+            const SectionHeader('Accelerometer (가속도계)', icon: Icons.trending_up),
             const SizedBox(height: 8),
             Text(
               '중력을 포함한 기기의 가속도 (m/s²)',
@@ -192,7 +192,7 @@ class _SensorsScreenState extends State<SensorsScreen> {
             const SizedBox(height: 24),
 
             // 자이로스코프 (Gyroscope)
-            _buildSectionHeader(theme, Icons.rotate_90_degrees_ccw, 'Gyroscope (자이로스코프)'),
+            const SectionHeader('Gyroscope (자이로스코프)', icon: Icons.rotate_90_degrees_ccw),
             const SizedBox(height: 8),
             Text(
               '기기의 회전 속도 (rad/s)',
@@ -212,7 +212,7 @@ class _SensorsScreenState extends State<SensorsScreen> {
             const SizedBox(height: 24),
 
             // 자기계 (Magnetometer) + 나침반
-            _buildSectionHeader(theme, Icons.explore, 'Magnetometer (자기계)'),
+            const SectionHeader('Magnetometer (자기계)', icon: Icons.explore),
             const SizedBox(height: 8),
             Text(
               '주변 자기장 (μT) • 나침반 기능',
@@ -281,21 +281,6 @@ class _SensorsScreenState extends State<SensorsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, IconData icon, String title) {
-    return Row(
-      children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 24),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildSensorCard({
     required ThemeData theme,
