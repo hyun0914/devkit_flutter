@@ -10,6 +10,17 @@ class Categories {
   static const String advanced = '고급 기능';
   static const String stateManagement = '상태 관리';
   static const String favorites = '즐겨찾기';
+
+  // 카테고리 탭 표시 순서
+  static const ordered = [
+    basicWidget,
+    dataProcessing,
+    uiPackage,
+    network,
+    imageFile,
+    advanced,
+    stateManagement,
+  ];
 }
 
 class ExampleItem {
@@ -26,21 +37,4 @@ class ExampleItem {
     required this.icon,
     this.isPractical = true,
   });
-}
-
-class ExampleStats {
-  static const _categoryCounts = {
-    Categories.basicWidget: 15,
-    Categories.dataProcessing: 9,
-    Categories.uiPackage: 24,
-    Categories.network: 5,
-    Categories.imageFile: 4,
-    Categories.advanced: 17,
-    Categories.stateManagement: 4,
-  };
-
-  static int get totalExamples =>
-      _categoryCounts.values.reduce((a, b) => a + b);
-  static int get totalCategories => _categoryCounts.length;
-  static const int totalPackages = 117;
 }

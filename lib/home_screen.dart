@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'example_data.dart';
 import 'example_list_screen.dart';
 import 'oss_licenses/oss_licenses_page.dart';
 
@@ -156,7 +157,7 @@ class SelectHomeView extends StatelessWidget {
               child: _StatItem(
                 icon: Icons.widgets_outlined,
                 label: '총 예제',
-                value: '${ExampleStats.totalExamples}',
+                value: '${ExampleData.totalExamples}',
                 color: theme.colorScheme.primary,
               ),
             ),
@@ -164,7 +165,7 @@ class SelectHomeView extends StatelessWidget {
               child: _StatItem(
                 icon: Icons.category_outlined,
                 label: '카테고리',
-                value: '${ExampleStats.totalCategories}',
+                value: '${ExampleData.totalCategories}',
                 color: Colors.orange,
               ),
             ),
@@ -172,7 +173,7 @@ class SelectHomeView extends StatelessWidget {
               child: _StatItem(
                 icon: Icons.extension_outlined,
                 label: '패키지',
-                value: '${ExampleStats.totalPackages}+',
+                value: '${ExampleData.totalPackages}+',
                 color: Colors.blue,
               ),
             ),
@@ -357,26 +358,19 @@ class _StatItem extends StatelessWidget {
   }
 }
 
-void showToast({
-  required String msg,
-}) {
-  Fluttertoast.showToast(
-    msg: msg,
-    backgroundColor: Colors.green,
-    toastLength: Toast.LENGTH_LONG,
-    timeInSecForIosWeb: 1,
-    gravity: ToastGravity.TOP,
-  );
-}
-
-
 DateTime? backPressTime;
 void onBackTwo() {
   DateTime now = DateTime.now();
   if (backPressTime == null ||
       now.difference(backPressTime!) > const Duration(seconds: 2)) {
     backPressTime = now;
-    showToast(msg: '🔙 뒤로가기 버튼을 한 번 더 누르면 종료됩니다.');
+    Fluttertoast.showToast(
+      msg: '🔙 뒤로가기 버튼을 한 번 더 누르면 종료됩니다.',
+      backgroundColor: Colors.green,
+      toastLength: Toast.LENGTH_LONG,
+      timeInSecForIosWeb: 1,
+      gravity: ToastGravity.TOP,
+    );
   } else {
     SystemNavigator.pop();
   }

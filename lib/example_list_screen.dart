@@ -1,5 +1,4 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:floating_draggable_widget/floating_draggable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,16 +42,6 @@ class _ExampleListScreenState extends State<ExampleListScreen>
   final Map<String, ScrollController> _scrollControllers = {};
 
   late final List<ExampleItem> allExamples;
-
-  static const _orderedCats = [
-    Categories.basicWidget,
-    Categories.dataProcessing,
-    Categories.uiPackage,
-    Categories.network,
-    Categories.imageFile,
-    Categories.advanced,
-    Categories.stateManagement,
-  ];
 
   @override
   void initState() {
@@ -116,7 +105,7 @@ class _ExampleListScreenState extends State<ExampleListScreen>
       result.add(Categories.favorites);
     }
 
-    for (final cat in _orderedCats) {
+    for (final cat in Categories.ordered) {
       if (usedCats.contains(cat)) result.add(cat);
     }
 
@@ -164,46 +153,38 @@ class _ExampleListScreenState extends State<ExampleListScreen>
     await prefs.setStringList('favorites', favoriteItems.toList());
   }
 
-  Future<void> _handleTap(BuildContext context, ExampleItem example) async {
-    if (example.title.contains('캐시 이미지')) {
-      await FastCachedImageConfig.init(
-        clearCacheAfter: const Duration(days: 15),
-      );
-    }
-    if (context.mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => example.screen),
-      );
-    }
+  void _clearSearch() {
+    searchController.clear();
+    setState(() {
+      searchQuery = '';
+      _rebuildCats();
+    });
   }
 
   TargetFocus _buildTargetFocus({
-    required dynamic identify,
+    required String identify,
     required GlobalKey keyTarget,
-    ShapeLightFocus? shape,
-    double? paddingFocus,
+    required ShapeLightFocus shape,
     required ContentAlign align,
     required EdgeInsets padding,
-    required CrossAxisAlignment crossAxisAlignment,
-    required List<Widget> children,
+    required String text,
   }) {
     return TargetFocus(
       identify: identify,
       keyTarget: keyTarget,
-      shape: shape ?? ShapeLightFocus.RRect,
+      shape: shape,
       color: Colors.black26,
       enableOverlayTab: true,
       focusAnimationDuration: const Duration(milliseconds: 400),
       unFocusAnimationDuration: const Duration(milliseconds: 400),
-      paddingFocus: paddingFocus,
+      paddingFocus: 1,
       contents: [
         TargetContent(
           align: align,
           padding: padding,
-          builder: (context, controller) => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: crossAxisAlignment,
-            children: children,
+          builder: (context, controller) => Text(
+            text,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
           ),
         ),
       ],
@@ -217,40 +198,25 @@ class _ExampleListScreenState extends State<ExampleListScreen>
           identify: 'Target 1',
           keyTarget: tutorialKey,
           shape: ShapeLightFocus.Circle,
-          paddingFocus: 1,
           align: ContentAlign.left,
           padding: const EdgeInsets.fromLTRB(160, 0, 0, 10),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('위/아래 스크롤 버튼',
-                style: TextStyle(fontSize: 16, color: Colors.white)),
-          ],
+          text: '위/아래 스크롤 버튼',
         ),
         _buildTargetFocus(
           identify: 'Target 2',
           keyTarget: tutorialKey2,
           shape: ShapeLightFocus.RRect,
-          paddingFocus: 1,
           align: ContentAlign.bottom,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('검색 기능으로 예제를 빠르게 찾을 수 있습니다',
-                style: TextStyle(fontSize: 16, color: Colors.white)),
-          ],
+          text: '검색 기능으로 예제를 빠르게 찾을 수 있습니다',
         ),
         _buildTargetFocus(
           identify: 'Target 3',
           keyTarget: tutorialKey3,
           shape: ShapeLightFocus.RRect,
-          paddingFocus: 1,
           align: ContentAlign.top,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('카테고리 탭으로 분류별로 볼 수 있습니다',
-                style: TextStyle(fontSize: 16, color: Colors.white)),
-          ],
+          text: '카테고리 탭으로 분류별로 볼 수 있습니다',
         ),
       ],
       colorShadow: Colors.grey.shade200,
@@ -301,13 +267,7 @@ class _ExampleListScreenState extends State<ExampleListScreen>
             if (searchQuery.isNotEmpty) ...[
               const SizedBox(height: 12),
               TextButton.icon(
-                onPressed: () {
-                  searchController.clear();
-                  setState(() {
-                    searchQuery = '';
-                    _rebuildCats();
-                  });
-                },
+                onPressed: _clearSearch,
                 icon: const Icon(Icons.clear, size: 16),
                 label: const Text('검색어 초기화'),
               ),
@@ -321,13 +281,7 @@ class _ExampleListScreenState extends State<ExampleListScreen>
         category == Categories.all || category == Categories.favorites;
 
     return CustomMaterialIndicator(
-      onRefresh: () async {
-        searchController.clear();
-        setState(() {
-          searchQuery = '';
-          _rebuildCats();
-        });
-      },
+      onRefresh: () async => _clearSearch(),
       indicatorBuilder: (context, controller) => const Icon(
         Icons.refresh,
         size: 30,
@@ -349,7 +303,9 @@ class _ExampleListScreenState extends State<ExampleListScreen>
             example: example,
             isFavorite: favoriteItems.contains(example.title),
             showCategory: showCategory,
-            onTap: () => _handleTap(context, example),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => example.screen),
+            ),
             onFavoriteToggle: () => _toggleFavorite(example.title),
           );
         },
@@ -421,13 +377,7 @@ class _ExampleListScreenState extends State<ExampleListScreen>
                   suffixIcon: searchQuery.isNotEmpty
                       ? IconButton(
                           icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            searchController.clear();
-                            setState(() {
-                              searchQuery = '';
-                              _rebuildCats();
-                            });
-                          },
+                          onPressed: _clearSearch,
                         )
                       : null,
                   border: OutlineInputBorder(

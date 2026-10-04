@@ -91,7 +91,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 
 **주요 예제:**
 - `이미지 & SVG` — `Image.asset / .file / .memory / .network` 타입 비교, `pubspec.yaml` 등록 안내, `errorBuilder` 실패 대체 위젯, `FadeInImage` 투명 GIF placeholder → 페이드인, `DecorationImage` 배경 이미지 (colorFilter 오버레이), `InteractiveViewer + TransformationController` 원래 크기 복귀, SVG `colorFilter` / defs 주의사항
-- `이미지 & 캐시` — `pickVideo` 동영상 선택, `Image.network cacheWidth/cacheHeight` + `devicePixelRatio` 최적화 (Extension 패턴)
+- `이미지 & 캐시` — `pickVideo` 동영상 선택, `Image.network cacheWidth/cacheHeight` + `devicePixelRatio` 최적화 (Extension 패턴), `FastCachedImageConfig.init(clearCacheAfter:)` 캐시 만료 기간 설정 (화면 이동 전 재호출로 화면별 변경 가능, `main.dart` 참고)
 - `PDF` — `pw.MemoryImage` 이미지 삽입 (Asset / 파일 / 네트워크 3가지 방법), 커스텀 폰트 (한글 NotoSansKR), 인쇄 & 공유
 
 ### 6. 고급 기능
@@ -257,6 +257,7 @@ devkit_flutter/
 │   ├── home_screen.dart
 │   ├── example_list_screen.dart
 │   ├── example_data.dart
+│   ├── example_item.dart
 │   └── main.dart
 ├── assets/
 │   └── translations/
@@ -264,6 +265,11 @@ devkit_flutter/
 │   └── clean_oss_licenses.py
 └── pubspec.yaml
 ```
+
+## 예제 추가 방법
+
+- 새 예제 화면은 `lib/example_data.dart`의 `ExampleData.items`에 `ExampleItem`으로 추가합니다.
+- 홈 화면의 예제·카테고리 수는 이 목록에서 자동 계산됩니다. 패키지 수(`totalPackages`)만 직접 수정합니다.
 
 ## 공통 UI 규칙
 
