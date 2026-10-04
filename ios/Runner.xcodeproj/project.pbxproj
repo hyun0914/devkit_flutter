@@ -505,6 +505,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.devkit.flutter.devkitFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -687,6 +688,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.devkit.flutter.devkitFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -709,6 +711,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.devkit.flutter.devkitFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

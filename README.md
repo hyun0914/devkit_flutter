@@ -256,14 +256,37 @@ dart run dart_pubspec_licenses:generate
 - 각 `Package`에서 `name`, `version`, `description`, `homepage`, `license`(라이선스 본문) 사용 가능
 
 ```dart
+import 'package:flutter/material.dart';
+
 import 'oss_licenses.dart';
 
-ListView(
-  children: [
-    for (final p in dependencies)
-      ListTile(title: Text(p.name), subtitle: Text('v${p.version}')),
-  ],
-);
+class MyLicensesPage extends StatelessWidget {
+  const MyLicensesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('오픈소스 라이선스')),
+      body: ListView(
+        children: [
+          for (final p in dependencies)
+            ListTile(
+              title: Text(p.name),
+              subtitle: p.version == null ? null : Text('v${p.version}'),
+              // 탭하면 라이선스 본문 보기
+              onTap: () => showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text(p.name),
+                  content: SingleChildScrollView(child: Text(p.license ?? '')),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
 ```
 
 ## 요구 사항
