@@ -2,11 +2,12 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'example_data.dart';
 import 'example_list_screen.dart';
-import 'oss_licenses/oss_licenses_page.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,7 +15,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: DevicePreview.locale(context),
+      // Flutter 기본 위젯(라이선스 화면·날짜 선택기·복사/붙여넣기 등) 문구를 한글로 고정
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: const [Locale('ko'), Locale('en')],
+      locale: const Locale('ko'),
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -117,10 +121,22 @@ class SelectHomeView extends StatelessWidget {
                       // OSS 링크
                       Center(
                         child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const OssLicensesPage(),
+                          // Flutter 내장 라이선스 화면 (패키지 LICENSE를 빌드 시 자동 수집)
+                          onPressed: () async {
+                            // 버전은 pubspec.yaml의 version을 읽어 자동 반영
+                            final info = await PackageInfo.fromPlatform();
+                            if (!context.mounted) return;
+                            showLicensePage(
+                              context: context,
+                              applicationName: 'DevKit Flutter',
+                              applicationVersion: 'v${info.version}',
+                              applicationIcon: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Icon(
+                                  Icons.terminal_rounded,
+                                  size: 48,
+                                  color: theme.colorScheme.primary,
+                                ),
                               ),
                             );
                           },

@@ -98,7 +98,7 @@ class ExampleData {
   // 홈 화면 통계 (예제 목록에서 계산하므로 예제 추가 시 자동 반영)
   static int get totalExamples => items.length;
   static int get totalCategories => items.map((e) => e.category).toSet().length;
-  static const int totalPackages = 117;
+  static const int totalPackages = 115; // pubspec dependencies 중 SDK 항목(flutter 등) 제외
 
   static List<ExampleItem> get items => [
         // 기본 위젯

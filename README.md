@@ -10,7 +10,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 ## 구성 현황
 
 - **78개**의 예제 화면
-- **117개**의 패키지 통합
+- **115개**의 패키지 통합
 - **7개 카테고리** + **실무 / 특수** 필터 탭
 - **즐겨찾기** 기능으로 자주 쓰는 레퍼런스 바로 접근
 - **검색** — 탭 내 실시간 필터링 + pull-to-refresh 초기화
@@ -116,6 +116,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 ### 코드 정리 & 빌드 수정
 - 예제 화면 공통 위젯 추출 — `SectionHeader`, `ExampleCard`, `DemoCard`, `InfoBox`, `InfoItem`, `CodeBlock`, `MethodCard`, `PackageItem`, `showResultDialog()` (`lib/screen/widget/example_widgets.dart`)
 - 인자만 넘기던 `DefaultScaffold` 래퍼 제거 → 기본 `Scaffold` 사용
+- 오픈소스 라이선스 화면을 Flutter 내장 `showLicensePage()`로 교체 (`dart_pubspec_licenses`·정리 스크립트 제거, 사용법은 README에 보관)
 - `Sliver 탭` — `SliverPersistentHeaderDelegate`의 `shrinkOffset`으로 축소 비율 계산, 아이콘 페이드 + 축소 % 표시
 - Flutter 3.47 빌드 오류 수정 — `page_transition` 2.2.2 업데이트, `CupertinoPageTransitionsBuilder` cupertino import
 
@@ -219,17 +220,50 @@ flutter run
 - focus_detector, visibility_detector
 
 ### 개발자 도구
-- device_preview, dart_pubspec_licenses
+- device_preview
 - flutter_code_view, syntax_highlight
 
 ### 온디바이스 AI
 - flutter_local_ai (ML Kit GenAI, Gemini Nano)
 
-## OSS 라이선스 업데이트
+## 오픈소스 라이선스
+
+홈 화면의 `오픈소스 라이선스`는 Flutter 내장 `showLicensePage()`를 사용합니다.
+패키지마다 들어 있는 LICENSE를 빌드할 때 자동으로 모으므로, 패키지를 추가하거나 지워도 따로 할 일이 없습니다.
+화면 문구는 `lib/home_screen.dart`의 `MaterialApp`에서 `flutter_localizations`로 한글 고정되어 있습니다 (날짜 선택기·복사/붙여넣기 등 Flutter 기본 위젯도 동일).
+
+```dart
+showLicensePage(context: context, applicationName: 'DevKit Flutter');
+```
+
+### 참고: 라이선스 화면을 직접 꾸미고 싶을 때 (dart_pubspec_licenses)
+
+버전·설명 표시나 커스텀 디자인이 필요하면 `dart_pubspec_licenses`로 패키지 정보를 Dart 코드로 생성해 직접 화면을 만들 수 있습니다.
+
+```yaml
+# pubspec.yaml
+dev_dependencies:
+  dart_pubspec_licenses: ^3.0.15
+```
 
 ```bash
+# 패키지를 추가·삭제할 때마다 다시 실행
 dart run dart_pubspec_licenses:generate
-python3 tools/clean_oss_licenses.py
+```
+
+- 생성 파일: `lib/oss_licenses.dart`
+- `dependencies` (직접 추가한 패키지), `devDependencies` 목록 제공
+- 각 `Package`에서 `name`, `version`, `description`, `homepage`, `license`(라이선스 본문) 사용 가능
+
+```dart
+import 'oss_licenses.dart';
+
+ListView(
+  children: [
+    for (final p in dependencies)
+      ListTile(title: Text(p.name), subtitle: Text('v${p.version}')),
+  ],
+);
 ```
 
 ## 요구 사항
@@ -237,7 +271,6 @@ python3 tools/clean_oss_licenses.py
 - Dart SDK: ^3.10.8 (Flutter 3.47.5에서 빌드 확인)
 - iOS 15.5 이상 (mobile_scanner 7.x 요구 사항)
 - Android API 26 이상
-- Python 3 (OSS 라이선스 정리용)
 
 ## 프로젝트 구조
 
@@ -253,7 +286,6 @@ devkit_flutter/
 │   │   ├── advanced/            # 고급 기능
 │   │   ├── stateManagement/     # 상태 관리
 │   │   └── widget/              # 공통 위젯
-│   ├── oss_licenses/
 │   ├── home_screen.dart
 │   ├── example_list_screen.dart
 │   ├── example_data.dart
@@ -261,8 +293,6 @@ devkit_flutter/
 │   └── main.dart
 ├── assets/
 │   └── translations/
-├── tools/
-│   └── clean_oss_licenses.py
 └── pubspec.yaml
 ```
 
