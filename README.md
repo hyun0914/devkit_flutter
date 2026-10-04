@@ -114,7 +114,7 @@ Flutter 위젯 & 패키지 예제를 빠르게 참조하는 개인 레퍼런스 
 ## 최근 업데이트
 
 ### 코드 정리 & 빌드 수정
-- 예제 화면 공통 위젯 추출 — `SectionHeader`, `ExampleCard`, `InfoItem`, `CodeBlock`, `MethodCard` (`lib/screen/widget/example_widgets.dart`)
+- 예제 화면 공통 위젯 추출 — `SectionHeader`, `ExampleCard`, `DemoCard`, `InfoBox`, `InfoItem`, `CodeBlock`, `MethodCard`, `PackageItem`, `showResultDialog()` (`lib/screen/widget/example_widgets.dart`)
 - 인자만 넘기던 `DefaultScaffold` 래퍼 제거 → 기본 `Scaffold` 사용
 - `Sliver 탭` — `SliverPersistentHeaderDelegate`의 `shrinkOffset`으로 축소 비율 계산, 아이콘 페이드 + 축소 % 표시
 - Flutter 3.47 빌드 오류 수정 — `page_transition` 2.2.2 업데이트, `CupertinoPageTransitionsBuilder` cupertino import
@@ -267,7 +267,8 @@ devkit_flutter/
 
 ## 공통 UI 규칙
 
-- **예제 화면 공통 위젯**: 섹션 헤더·예제 카드·안내 문구·코드 블록은 `lib/screen/widget/example_widgets.dart`의 `SectionHeader`, `ExampleCard`, `InfoItem`, `CodeBlock`, `MethodCard`를 사용합니다.
+- **예제 화면 공통 위젯**: 섹션 헤더·예제 카드·정보 박스·안내 문구·코드 블록 등은 `lib/screen/widget/example_widgets.dart`의 공통 위젯을 사용합니다.
+  - `SectionHeader`, `ExampleCard`, `DemoCard`, `InfoBox`, `InfoItem`, `CodeBlock`, `MethodCard`, `PackageItem`, `showResultDialog()`
 - **Scaffold**: 별도 래퍼 없이 Flutter 기본 `Scaffold`를 그대로 사용합니다.
   - 배경색·AppBar 등 **스타일**을 공통으로 바꾸려면 `lib/home_screen.dart`의 `ThemeData`(`scaffoldBackgroundColor`, `appBarTheme` 등)를 수정합니다. `theme`와 `darkTheme` 양쪽에 함께 지정해야 합니다.
   - `SafeArea`, 키보드 닫기 등 **공통 동작**이 필요해지면 그때 래퍼 위젯을 추가합니다.

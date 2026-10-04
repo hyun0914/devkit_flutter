@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:sizer/sizer.dart';
+import '../widget/example_widgets.dart';
 
 
 class ResponsiveScreen extends StatelessWidget {
@@ -288,36 +289,20 @@ class _ResponsiveScreenContent extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.lightbulb_outline, color: theme.colorScheme.primary, size: 20),
-                      const SizedBox(width: 8),
-                      Text('💡 언제 무엇을 쓸까?',
-                          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
-                    ],
+            InfoBox(
+              icon: Icons.lightbulb_outline,
+              title: '💡 언제 무엇을 쓸까?',
+              children: [
+                Text(
+                  '• responsive_builder: 모바일/태블릿/데스크탑 레이아웃을 완전히 다르게 구성할 때\n'
+                      '• sizer: 기존 레이아웃 구조는 유지하면서 크기만 비율로 맞출 때\n'
+                      '• 함께 사용: 레이아웃 분기는 responsive_builder, 크기 조절은 sizer',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.6,
                   ),
-                  Text(
-                    '• responsive_builder: 모바일/태블릿/데스크탑 레이아웃을 완전히 다르게 구성할 때\n'
-                        '• sizer: 기존 레이아웃 구조는 유지하면서 크기만 비율로 맞출 때\n'
-                        '• 함께 사용: 레이아웃 분기는 responsive_builder, 크기 조절은 sizer',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      height: 1.6,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

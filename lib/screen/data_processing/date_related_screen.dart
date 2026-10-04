@@ -20,42 +20,6 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
     initializeDateFormatting();
   }
 
-  void _showResult(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        final theme = Theme.of(context);
-        return AlertDialog(
-          title: Text(title),
-          content: Container(
-            constraints: const BoxConstraints(maxHeight: 400),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  content,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontFamily: 'monospace',
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          actions: [
-            FilledButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +102,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                   final tomorrow = _today.add(const Duration(days: 1));
                   final nextWeek = _today.add(const Duration(days: 7));
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '날짜 연산',
                     '어제: ${DateFormat('yyyy-MM-dd').format(yesterday)}\n'
@@ -160,7 +124,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                   final targetDate = DateTime(2024, 12, 31);
                   final diff = targetDate.difference(_today);
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '날짜 차이',
                     '목표: ${DateFormat('yyyy-MM-dd').format(targetDate)}\n'
@@ -186,7 +150,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                   final result1 = _today.compareTo(pastDate);
                   final result2 = _today.compareTo(futureDate);
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '날짜 비교',
                     '과거 날짜와 비교: $result1 (양수 = 미래)\n'
@@ -212,7 +176,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
               code: "DateFormat('yyyy-MM-dd').format(date)",
               child: FilledButton(
                 onPressed: () {
-                  _showResult(
+                  showResultDialog(
                     context,
                     '날짜 포맷팅',
                     "yyyy-MM-dd: ${DateFormat('yyyy-MM-dd').format(_today)}\n"
@@ -238,7 +202,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                   final method2 = _today.toIso8601String().split('T')[0];
                   final method3 = DateFormat('yyyy-MM-dd').format(_today);
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '시간 제외',
                     '방법 1 (DateTime): $method1\n'
@@ -271,7 +235,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                     weekDates.add('${DateFormat('MM/dd').format(date)} ($dayName)');
                   }
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '이번 주',
                     '월요일: ${DateFormat('yyyy-MM-dd').format(monday)}\n'
@@ -292,7 +256,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                   final firstDay = DateTime(_today.year, _today.month, 1);
                   final lastDay = DateTime(_today.year, _today.month + 1, 0);
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '이번 달',
                     '첫날: ${DateFormat('yyyy-MM-dd (E)', 'ko_KR').format(firstDay)}\n'
@@ -322,7 +286,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                     dDay = 'D-Day';
                   }
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'D-Day',
                     '목표: ${DateFormat('yyyy-MM-dd').format(targetDate)}\n'
@@ -354,7 +318,7 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
                     dateStr2.replaceAll(RegExp(r'\D'), ''),
                   );
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     '문자열 → DateTime',
                     '입력 1: "$dateStr1"\n'
@@ -411,40 +375,14 @@ class _DateRelatedScreenState extends State<DateRelatedScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 주요 패키지',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('intl: 날짜 포맷팅 (DateFormat)'),
-                  const InfoItem('DateTime: Dart 기본 클래스'),
-                  const InfoItem('Duration: 시간 간격 표현'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 주요 패키지',
+              children: [
+                const InfoItem('intl: 날짜 포맷팅 (DateFormat)'),
+                const InfoItem('DateTime: Dart 기본 클래스'),
+                const InfoItem('Duration: 시간 간격 표현'),
+              ],
             ),
           ],
         ),

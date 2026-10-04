@@ -565,40 +565,14 @@ class EquatableScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.lightbulb_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('BLoC 패턴의 State 클래스에 유용', icon: Icons.check_circle),
-                  const InfoItem('props에 모든 필드를 포함하는 것이 일반적', icon: Icons.check_circle),
-                  const InfoItem('const 생성자 사용 권장', icon: Icons.check_circle),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.lightbulb_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('BLoC 패턴의 State 클래스에 유용', icon: Icons.check_circle),
+                const InfoItem('props에 모든 필드를 포함하는 것이 일반적', icon: Icons.check_circle),
+                const InfoItem('const 생성자 사용 권장', icon: Icons.check_circle),
+              ],
             ),
           ],
         ),

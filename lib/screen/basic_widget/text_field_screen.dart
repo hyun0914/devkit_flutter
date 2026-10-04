@@ -760,95 +760,43 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              InfoBox(
+                icon: Icons.compare_arrows,
+                title: '비교',
+                children: [
+                  Text(
+                    '• 디바운스: 입력마다 호출되는 자동완성/실시간 검색에 적합 (서버 부하 ↓)\n'
+                    '• onSubmitted: 사용자가 명확히 "검색" 의도를 표현했을 때만 실행하고 싶을 때\n'
+                    '• FocusNode(포커스 해제): 입력을 마치고 다른 작업으로 넘어가는 시점에 저장/검증할 때\n'
+                    '   ※ onEditingComplete는 키보드 완료 액션 시 호출되어 onSubmitted와 유사하며,\n'
+                    '     "포커스 손실" 자체를 감지하려면 FocusNode 리스너(hasFocus)가 필요합니다',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      height: 1.5,
+                    ),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 12,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.compare_arrows,
-                          color: theme.colorScheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '비교',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      '• 디바운스: 입력마다 호출되는 자동완성/실시간 검색에 적합 (서버 부하 ↓)\n'
-                      '• onSubmitted: 사용자가 명확히 "검색" 의도를 표현했을 때만 실행하고 싶을 때\n'
-                      '• FocusNode(포커스 해제): 입력을 마치고 다른 작업으로 넘어가는 시점에 저장/검증할 때\n'
-                      '   ※ onEditingComplete는 키보드 완료 액션 시 호출되어 onSubmitted와 유사하며,\n'
-                      '     "포커스 손실" 자체를 감지하려면 FocusNode 리스너(hasFocus)가 필요합니다',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
 
               const SizedBox(height: 24),
 
               // 정보 카드
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              InfoBox(
+                icon: Icons.lightbulb_outline,
+                title: '💡 Tip',
+                children: [
+                  Text(
+                    '• inputFormatters: 입력 형식 지정\n'
+                    '• validator: 유효성 검사\n'
+                    '• maxLength: 최대 입력 길이\n'
+                    '• keyboardType: 키보드 타입 지정\n'
+                    '• onChanged: 입력값 변경 감지',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      height: 1.5,
+                    ),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 12,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.lightbulb_outline,
-                          color: theme.colorScheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '💡 Tip',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      '• inputFormatters: 입력 형식 지정\n'
-                      '• validator: 유효성 검사\n'
-                      '• maxLength: 최대 입력 길이\n'
-                      '• keyboardType: 키보드 타입 지정\n'
-                      '• onChanged: 입력값 변경 감지',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
 
               const SizedBox(height: 16),

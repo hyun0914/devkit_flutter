@@ -288,40 +288,14 @@ class _NumberRelatedScreenState extends State<NumberRelatedScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 주의사항',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('ceil, floor, round는 정수(int) 반환'),
-                  const InfoItem('toStringAsFixed는 문자열(String) 반환'),
-                  const InfoItem('Random은 import "dart:math" 필요'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 주의사항',
+              children: [
+                const InfoItem('ceil, floor, round는 정수(int) 반환'),
+                const InfoItem('toStringAsFixed는 문자열(String) 반환'),
+                const InfoItem('Random은 import "dart:math" 필요'),
+              ],
             ),
           ],
         ),

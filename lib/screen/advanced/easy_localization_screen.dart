@@ -83,8 +83,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           SectionHeader('basic.title'.tr()),
           const SizedBox(height: 12),
 
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'basic.simple'.tr(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,8 +110,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
 
           const SizedBox(height: 12),
 
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'basic.with_args'.tr(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,8 +137,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           SectionHeader('plural.title'.tr()),
           const SizedBox(height: 12),
 
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'plural.title'.tr(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,8 +197,7 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
           SectionHeader('gender.title'.tr()),
           const SizedBox(height: 12),
 
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'gender.title'.tr(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -377,37 +373,6 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
   }
 
 
-  // 예제 카드
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 정보 카드
   Widget _buildInfoCard(ThemeData theme) {
@@ -437,31 +402,14 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
               ),
             ],
           ),
-          _buildInfoItem(theme, Icons.info_outline, 'info.version'.tr()),
-          _buildInfoItem(theme, Icons.translate, 'info.supported'.tr()),
-          _buildInfoItem(theme, Icons.save_outlined, 'info.storage'.tr()),
+          InfoItem('info.version'.tr(), icon: Icons.info_outline),
+          InfoItem('info.supported'.tr(), icon: Icons.translate),
+          InfoItem('info.storage'.tr(), icon: Icons.save_outlined),
         ],
       ),
     );
   }
 
-  Widget _buildInfoItem(ThemeData theme, IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 16, color: theme.colorScheme.primary),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   // 고급 사용법 카드
   Widget _buildAdvancedInfo(ThemeData theme) {

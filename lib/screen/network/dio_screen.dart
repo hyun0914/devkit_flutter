@@ -348,41 +348,15 @@ class DioScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('Android 13+ 권한 자동 허용'),
-                  const InfoItem('중복 파일명 자동 처리 (1), (2)...'),
-                  const InfoItem('시뮬레이터: 앱 폴더에 저장 (경로 표시)'),
-                  const InfoItem('실기기: Download 폴더 + 알림'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('Android 13+ 권한 자동 허용'),
+                const InfoItem('중복 파일명 자동 처리 (1), (2)...'),
+                const InfoItem('시뮬레이터: 앱 폴더에 저장 (경로 표시)'),
+                const InfoItem('실기기: Download 폴더 + 알림'),
+              ],
             ),
           ],
         ),

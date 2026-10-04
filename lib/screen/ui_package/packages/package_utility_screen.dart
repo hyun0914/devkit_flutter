@@ -579,43 +579,17 @@ class _PackageUtilityScreenState extends State<PackageUtilityScreen> {
               const SizedBox(height: 24),
 
               // 정보 카드
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 12,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: theme.colorScheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '💡 사용 팁',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const InfoItem('NumberFormat: 천 단위 콤마, 통화'),
-                    const InfoItem('Fluttertoast: 간단한 알림'),
-                    const InfoItem('Badges: 알림 개수 표시'),
-                    const InfoItem('FocusDetector: 화면 포커스 감지'),
-                    const InfoItem('VisibilityDetector: 위젯 가시성 감지'),
-                    const InfoItem('Screenshot: 화면 캡처 & 갤러리 저장'),
-                  ],
-                ),
+              InfoBox(
+                icon: Icons.info_outline,
+                title: '💡 사용 팁',
+                children: [
+                  const InfoItem('NumberFormat: 천 단위 콤마, 통화'),
+                  const InfoItem('Fluttertoast: 간단한 알림'),
+                  const InfoItem('Badges: 알림 개수 표시'),
+                  const InfoItem('FocusDetector: 화면 포커스 감지'),
+                  const InfoItem('VisibilityDetector: 위젯 가시성 감지'),
+                  const InfoItem('Screenshot: 화면 캡처 & 갤러리 저장'),
+                ],
               ),
             ],
           ),

@@ -8,6 +8,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:open_file/open_file.dart';
+import '../widget/example_widgets.dart';
 
 
 const String urlImg = 'https://i.pinimg.com/736x/26/ef/03/26ef03ec8c0751b4edc938fc8f7b634e.jpg';
@@ -893,45 +894,18 @@ class _FileImagePickerScreenState extends State<FileImagePickerScreen> {
             // 패키지 정보
             _buildSectionHeader(theme, '사용된 패키지'),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 패키지 목록',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  _buildPackageItem(theme, 'file_picker', '파일 선택'),
-                  _buildPackageItem(theme, 'open_file_plus', '파일 열기'),
-                  _buildPackageItem(theme, 'image_picker', '갤러리/카메라 이미지·동영상'),
-                  _buildPackageItem(theme, 'multi_image_picker_view', '멀티 이미지 UI'),
-                  _buildPackageItem(theme, 'cached_network_image', '네트워크 이미지 캐싱'),
-                  _buildPackageItem(theme, 'flutter_cache_manager', '파일 캐시 관리'),
-                  _buildPackageItem(theme, 'fast_cached_network_image', '빠른 이미지 캐싱'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 패키지 목록',
+              children: [
+                _buildPackageItem(theme, 'file_picker', '파일 선택'),
+                _buildPackageItem(theme, 'open_file_plus', '파일 열기'),
+                _buildPackageItem(theme, 'image_picker', '갤러리/카메라 이미지·동영상'),
+                _buildPackageItem(theme, 'multi_image_picker_view', '멀티 이미지 UI'),
+                _buildPackageItem(theme, 'cached_network_image', '네트워크 이미지 캐싱'),
+                _buildPackageItem(theme, 'flutter_cache_manager', '파일 캐시 관리'),
+                _buildPackageItem(theme, 'fast_cached_network_image', '빠른 이미지 캐싱'),
+              ],
             ),
           ],
         ),

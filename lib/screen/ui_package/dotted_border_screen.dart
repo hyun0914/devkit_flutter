@@ -54,8 +54,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // CustomPaint - 점선 테두리
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '점선 테두리 (Rect)',
             child: CustomPaint(
               painter: _DashedBorderPainter(
@@ -77,8 +76,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // CustomPaint - 점선
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '점선 (Line)',
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,8 +128,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Rect
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'Rect (직사각형)',
             child: Center(
               child: DottedBorder(
@@ -148,8 +145,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // RoundedRect
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'RoundedRect (둥근 직사각형)',
             child: Center(
               child: DottedBorder(
@@ -167,8 +163,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Circular
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: 'Circular (원형)',
             child: Center(
               child: DottedBorder(
@@ -189,8 +184,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // 실제 활용 - 파일 업로드 영역
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '실제 활용 - 파일 업로드 영역',
             child: DottedBorder(
               options: RoundedRectDottedBorderOptions(
@@ -249,16 +243,14 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // 기본 사용
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '기본 수평 점선',
             child: const DottedLine(),
           ),
           const SizedBox(height: 12),
 
           // 커스텀 점선
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '커스텀 점선',
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,8 +285,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // 수직 점선
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '수직 점선',
             child: SizedBox(
               height: 100,
@@ -329,8 +320,7 @@ class DottedBorderScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // 실제 활용 - 타임라인
-          _buildExampleCard(
-            theme: theme,
+          DemoCard(
             title: '실제 활용 - 타임라인',
             child: Column(
               children: [
@@ -374,37 +364,6 @@ class DottedBorderScreen extends StatelessWidget {
   }
 
 
-  // 예제 카드 래퍼
-  Widget _buildExampleCard({
-    required ThemeData theme,
-    required String title,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          child,
-        ],
-      ),
-    );
-  }
 
   // 비교 카드
   Widget _buildComparisonCard(ThemeData theme) {
@@ -556,56 +515,17 @@ class DottedBorderScreen extends StatelessWidget {
 
   // 정리 카드
   Widget _buildSummaryCard(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.lightbulb_outline, color: theme.colorScheme.primary, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '💡 핵심 정리',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          _buildSummaryItem(theme, Icons.check, 'dotted_border ^3.1.0 - options 파라미터로 BorderType 선택'),
-          _buildSummaryItem(theme, Icons.check, 'dotted_line ^3.2.3 - direction으로 수평/수직 전환'),
-          _buildSummaryItem(theme, Icons.check, 'CustomPaint - 패키지 없이 구현, 코드 복잡도 높음'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSummaryItem(ThemeData theme, IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return InfoBox(
+      icon: Icons.lightbulb_outline,
+      title: '💡 핵심 정리',
       children: [
-        Icon(icon, size: 16, color: theme.colorScheme.primary),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
+        const InfoItem('dotted_border ^3.1.0 - options 파라미터로 BorderType 선택', icon: Icons.check),
+        const InfoItem('dotted_line ^3.2.3 - direction으로 수평/수직 전환', icon: Icons.check),
+        const InfoItem('CustomPaint - 패키지 없이 구현, 코드 복잡도 높음', icon: Icons.check),
       ],
     );
   }
+
 }
 
 // ── CustomPaint Painters ──

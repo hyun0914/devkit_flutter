@@ -359,54 +359,32 @@ class _WakelockScreenState extends State<WakelockScreen> {
             const SizedBox(height: 24),
 
             // 코드 예제
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
+            InfoBox(
+              icon: Icons.code,
+              title: '간단한 사용법',
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 4,
                     children: [
-                      Icon(Icons.code, color: theme.colorScheme.primary, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        '간단한 사용법',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      _buildCodeLine('// 활성화'),
+                      _buildCodeLine('await WakelockPlus.enable();'),
+                      const SizedBox(height: 8),
+                      _buildCodeLine('// 비활성화'),
+                      _buildCodeLine('await WakelockPlus.disable();'),
+                      const SizedBox(height: 8),
+                      _buildCodeLine('// 상태 확인'),
+                      _buildCodeLine('bool enabled = await WakelockPlus.enabled;'),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.black87,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 4,
-                      children: [
-                        _buildCodeLine('// 활성화'),
-                        _buildCodeLine('await WakelockPlus.enable();'),
-                        const SizedBox(height: 8),
-                        _buildCodeLine('// 비활성화'),
-                        _buildCodeLine('await WakelockPlus.disable();'),
-                        const SizedBox(height: 8),
-                        _buildCodeLine('// 상태 확인'),
-                        _buildCodeLine('bool enabled = await WakelockPlus.enabled;'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

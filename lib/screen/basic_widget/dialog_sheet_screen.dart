@@ -211,39 +211,22 @@ class _DialogSheetScreenState extends State<DialogSheetScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 Tip',
+              children: [
+                Text(
+                  '• AlertDialog: 간단한 확인/취소 다이얼로그\n'
+                      '• showGeneralDialog: 커스텀 애니메이션 가능\n'
+                      '• Cupertino: iOS 스타일 UI 제공\n'
+                      '• Board DatePicker: 캘린더+피커 통합, 범위 선택 지원\n'
+                      '• ActionSheet: 여러 옵션 선택에 적합',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.5,
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.info_outline, color: theme.colorScheme.primary, size: 20),
-                      const SizedBox(width: 8),
-                      Text('💡 Tip', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Text(
-                    '• AlertDialog: 간단한 확인/취소 다이얼로그\n'
-                        '• showGeneralDialog: 커스텀 애니메이션 가능\n'
-                        '• Cupertino: iOS 스타일 UI 제공\n'
-                        '• Board DatePicker: 캘린더+피커 통합, 범위 선택 지원\n'
-                        '• ActionSheet: 여러 옵션 선택에 적합',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
           ],
         ),

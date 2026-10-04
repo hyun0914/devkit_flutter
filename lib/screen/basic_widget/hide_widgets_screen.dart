@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widget/example_widgets.dart';
 
 
 class HideWidgetsScreen extends StatefulWidget {
@@ -279,64 +280,41 @@ class _HideWidgetsScreenState extends State<HideWidgetsScreen> {
                   const SizedBox(height: 24),
 
                   // 권장 사항
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: theme.colorScheme.outline
-                              .withValues(alpha: 0.2)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 12,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.recommend,
-                                color: theme.colorScheme.primary, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              '💡 언제 뭘 쓸까',
-                              style: theme.textTheme.titleSmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        _buildRecommendation(
-                          theme: theme,
-                          method: 'if 조건문',
-                          useCase: '완전 제거 (공간·State 불필요) — 가장 성능 유리',
-                        ),
-                        _buildRecommendation(
-                          theme: theme,
-                          method: 'Visibility',
-                          useCase: '일반적인 show/hide (공간 제거)',
-                        ),
-                        _buildRecommendation(
-                          theme: theme,
-                          method: 'Visibility(maintain)',
-                          useCase: '공간 유지 + State 유지',
-                        ),
-                        _buildRecommendation(
-                          theme: theme,
-                          method: 'Offstage',
-                          useCase: '공간 없이 State 유지 + 크기 사전 측정',
-                        ),
-                        _buildRecommendation(
-                          theme: theme,
-                          method: 'AnimatedOpacity',
-                          useCase: '투명도 애니메이션 (페이드 인/아웃)',
-                        ),
-                        _buildRecommendation(
-                          theme: theme,
-                          method: 'Opacity',
-                          useCase: '공간 유지 + 터치 이벤트 살려야 할 때',
-                        ),
-                      ],
-                    ),
+                  InfoBox(
+                    icon: Icons.recommend,
+                    title: '💡 언제 뭘 쓸까',
+                    children: [
+                      _buildRecommendation(
+                        theme: theme,
+                        method: 'if 조건문',
+                        useCase: '완전 제거 (공간·State 불필요) — 가장 성능 유리',
+                      ),
+                      _buildRecommendation(
+                        theme: theme,
+                        method: 'Visibility',
+                        useCase: '일반적인 show/hide (공간 제거)',
+                      ),
+                      _buildRecommendation(
+                        theme: theme,
+                        method: 'Visibility(maintain)',
+                        useCase: '공간 유지 + State 유지',
+                      ),
+                      _buildRecommendation(
+                        theme: theme,
+                        method: 'Offstage',
+                        useCase: '공간 없이 State 유지 + 크기 사전 측정',
+                      ),
+                      _buildRecommendation(
+                        theme: theme,
+                        method: 'AnimatedOpacity',
+                        useCase: '투명도 애니메이션 (페이드 인/아웃)',
+                      ),
+                      _buildRecommendation(
+                        theme: theme,
+                        method: 'Opacity',
+                        useCase: '공간 유지 + 터치 이벤트 살려야 할 때',
+                      ),
+                    ],
                   ),
                 ],
               ),

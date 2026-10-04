@@ -302,41 +302,15 @@ class PackageLoadingScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('Shimmer: 간단한 로딩 효과'),
-                  const InfoItem('Skeletonizer: 실제 UI 구조 미리 보기'),
-                  const InfoItem('SpinKit: 다양한 로딩 스피너'),
-                  const InfoItem('SpoilerWidget: 스포일러 방지'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('Shimmer: 간단한 로딩 효과'),
+                const InfoItem('Skeletonizer: 실제 UI 구조 미리 보기'),
+                const InfoItem('SpinKit: 다양한 로딩 스피너'),
+                const InfoItem('SpoilerWidget: 스포일러 방지'),
+              ],
             ),
           ],
         ),

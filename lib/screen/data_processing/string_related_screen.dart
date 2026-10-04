@@ -353,40 +353,14 @@ class StringRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 권장 사항',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('String Interpolation 우선 사용 (더 간결)'),
-                  const InfoItem('sprintf는 복잡한 포맷팅에만 사용'),
-                  const InfoItem('RegExp는 성능이 필요하면 재사용'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 권장 사항',
+              children: [
+                const InfoItem('String Interpolation 우선 사용 (더 간결)'),
+                const InfoItem('sprintf는 복잡한 포맷팅에만 사용'),
+                const InfoItem('RegExp는 성능이 필요하면 재사용'),
+              ],
             ),
           ],
         ),

@@ -265,41 +265,15 @@ class FlexibleExpandedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 핵심 정리',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('Expanded = Flexible(fit: FlexFit.tight)'),
-                  const InfoItem('flex: 공간 비율 (기본값 1)'),
-                  const InfoItem('FlexFit.tight: 공간 채움'),
-                  const InfoItem('FlexFit.loose: 내용 크기만큼'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 핵심 정리',
+              children: [
+                const InfoItem('Expanded = Flexible(fit: FlexFit.tight)'),
+                const InfoItem('flex: 공간 비율 (기본값 1)'),
+                const InfoItem('FlexFit.tight: 공간 채움'),
+                const InfoItem('FlexFit.loose: 내용 크기만큼'),
+              ],
             ),
           ],
         ),

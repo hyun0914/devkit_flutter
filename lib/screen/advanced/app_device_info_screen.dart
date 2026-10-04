@@ -379,38 +379,18 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
               ),
               child: Column(
                 children: [
-                  _buildPackageItem(
-                    theme: theme,
-                    name: 'package_info_plus',
-                    description: '앱 정보',
-                  ),
+                  const PackageItem(name: 'package_info_plus', description: '앱 정보'),
                   const SizedBox(height: 8),
-                  _buildPackageItem(
-                    theme: theme,
-                    name: 'device_info_plus',
-                    description: '디바이스 정보',
-                  ),
+                  const PackageItem(name: 'device_info_plus', description: '디바이스 정보'),
                   const SizedBox(height: 8),
-                  _buildPackageItem(
-                    theme: theme,
-                    name: 'battery_plus',
-                    description: '배터리 정보',
-                  ),
+                  const PackageItem(name: 'battery_plus', description: '배터리 정보'),
                   if (Platform.isAndroid) ...[
                     const SizedBox(height: 8),
-                    _buildPackageItem(
-                      theme: theme,
-                      name: 'android_intent_plus',
-                      description: 'Android 인텐트',
-                    ),
+                    const PackageItem(name: 'android_intent_plus', description: 'Android 인텐트'),
                   ],
                   if (Platform.isIOS) ...[
                     const SizedBox(height: 8),
-                    _buildPackageItem(
-                      theme: theme,
-                      name: 'ios_utsname_ext',
-                      description: 'iOS 기기명',
-                    ),
+                    const PackageItem(name: 'ios_utsname_ext', description: 'iOS 기기명'),
                   ],
                 ],
               ),
@@ -497,46 +477,4 @@ class _AppDeviceInfoScreenState extends State<AppDeviceInfoScreen> {
     );
   }
 
-  // 패키지 아이템
-  Widget _buildPackageItem({
-    required ThemeData theme,
-    required String name,
-    required String description,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Icon(
-            Icons.extension,
-            size: 16,
-            color: theme.colorScheme.primary,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: RichText(
-              text: TextSpan(
-                style: theme.textTheme.bodySmall,
-                children: [
-                  TextSpan(
-                    text: name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' - $description',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

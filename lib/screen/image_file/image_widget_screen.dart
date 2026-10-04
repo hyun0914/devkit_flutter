@@ -741,37 +741,17 @@ class _ImageWidgetScreenState extends State<ImageWidgetScreen> {
             const SizedBox(height: 24),
 
             // 실무 팁 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(children: [
-                    Icon(Icons.info_outline,
-                        color: theme.colorScheme.primary, size: 20),
-                    const SizedBox(width: 8),
-                    Text(
-                      '💡 실무 팁',
-                      style: theme.textTheme.titleSmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-                  _buildTipItem(theme: theme, text: 'SVG: 아이콘/로고에 사용 (확대해도 깨지지 않음, colorFilter로 색상 변경)'),
-                  _buildTipItem(theme: theme, text: '썸네일/카드: BoxFit.cover 사용'),
-                  _buildTipItem(theme: theme, text: '상품 상세: BoxFit.contain 사용'),
-                  _buildTipItem(theme: theme, text: '확대/축소: InteractiveViewer + TransformationController (원래 크기 복귀)'),
-                  _buildTipItem(theme: theme, text: '배경 이미지: DecorationImage + colorFilter 오버레이로 텍스트 가독성 확보'),
-                  _buildTipItem(theme: theme, text: 'FadeInImage: 로딩 중 placeholder → 완료 후 fade 전환으로 부드러운 UX'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 실무 팁',
+              children: [
+                _buildTipItem(theme: theme, text: 'SVG: 아이콘/로고에 사용 (확대해도 깨지지 않음, colorFilter로 색상 변경)'),
+                _buildTipItem(theme: theme, text: '썸네일/카드: BoxFit.cover 사용'),
+                _buildTipItem(theme: theme, text: '상품 상세: BoxFit.contain 사용'),
+                _buildTipItem(theme: theme, text: '확대/축소: InteractiveViewer + TransformationController (원래 크기 복귀)'),
+                _buildTipItem(theme: theme, text: '배경 이미지: DecorationImage + colorFilter 오버레이로 텍스트 가독성 확보'),
+                _buildTipItem(theme: theme, text: 'FadeInImage: 로딩 중 placeholder → 완료 후 fade 전환으로 부드러운 UX'),
+              ],
             ),
           ],
         ),

@@ -466,41 +466,15 @@ class ButtonStyleScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 버튼 선택 가이드',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('FilledButton: 주요 액션 (권장)'),
-                  const InfoItem('ElevatedButton: 중요한 액션'),
-                  const InfoItem('OutlinedButton: 보조 액션'),
-                  const InfoItem('TextButton: 덜 중요한 액션'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 버튼 선택 가이드',
+              children: [
+                const InfoItem('FilledButton: 주요 액션 (권장)'),
+                const InfoItem('ElevatedButton: 중요한 액션'),
+                const InfoItem('OutlinedButton: 보조 액션'),
+                const InfoItem('TextButton: 덜 중요한 액션'),
+              ],
             ),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:bodychart_heatmap/bodychart_heatmap.dart';
 import 'package:contribution_heatmap/contribution_heatmap.dart';
 import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:flutter/material.dart';
+import '../widget/example_widgets.dart';
 
 
 class HeatmapScreen extends StatefulWidget {
@@ -427,43 +428,16 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
             // 사용된 패키지
             _buildSectionHeader(theme, '사용된 패키지'),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 패키지 목록',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  _buildPackageItem(
-                      theme, 'contribution_heatmap', 'GitHub 스타일 기여도 차트'),
-                  _buildPackageItem(theme, 'fl_heatmap', '데이터 매트릭스 히트맵'),
-                  _buildPackageItem(
-                      theme, 'bodychart_heatmap', '신체 부위 히트맵'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 패키지 목록',
+              children: [
+                _buildPackageItem(
+                    theme, 'contribution_heatmap', 'GitHub 스타일 기여도 차트'),
+                _buildPackageItem(theme, 'fl_heatmap', '데이터 매트릭스 히트맵'),
+                _buildPackageItem(
+                    theme, 'bodychart_heatmap', '신체 부위 히트맵'),
+              ],
             ),
           ],
         ),

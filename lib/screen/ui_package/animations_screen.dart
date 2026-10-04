@@ -341,41 +341,15 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 실무 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  _buildTipItem(theme: theme, text: 'Hero: 같은 요소의 위치/크기 변화'),
-                  _buildTipItem(theme: theme, text: 'OpenContainer: Material Design 스타일'),
-                  _buildTipItem(theme: theme, text: 'SharedAxis: 관계 있는 페이지 간 전환'),
-                  _buildTipItem(theme: theme, text: 'FadeScale: 모달/다이얼로그에 적합'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 실무 팁',
+              children: [
+                const InfoItem('Hero: 같은 요소의 위치/크기 변화'),
+                const InfoItem('OpenContainer: Material Design 스타일'),
+                const InfoItem('SharedAxis: 관계 있는 페이지 간 전환'),
+                const InfoItem('FadeScale: 모달/다이얼로그에 적합'),
+              ],
             ),
           ],
         ),
@@ -497,29 +471,6 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
     );
   }
 
-  Widget _buildTipItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 // Hero 상세 화면

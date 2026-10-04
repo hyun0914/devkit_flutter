@@ -363,41 +363,15 @@ class PackageCarouselScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('FlutterCarousel: 이미지 갤러리, 광고 배너'),
-                  const InfoItem('TabContainer: 카테고리 분류'),
-                  const InfoItem('viewportFraction: 0.9 권장 (좌우 미리보기)'),
-                  const InfoItem('TabEdge: left, right, top, bottom'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('FlutterCarousel: 이미지 갤러리, 광고 배너'),
+                const InfoItem('TabContainer: 카테고리 분류'),
+                const InfoItem('viewportFraction: 0.9 권장 (좌우 미리보기)'),
+                const InfoItem('TabEdge: left, right, top, bottom'),
+              ],
             ),
           ],
         ),

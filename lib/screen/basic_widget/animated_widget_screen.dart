@@ -630,48 +630,22 @@ class _AnimatedWidgetScreenState extends State<AnimatedWidgetScreen>
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 Animated 위젯 종류',
+              children: [
+                const InfoItem('AnimatedContainer: 가장 범용적'),
+                const InfoItem('AnimatedOpacity: 페이드 효과'),
+                const InfoItem('AnimatedSwitcher: 위젯 교체'),
+                const InfoItem('TweenAnimationBuilder: 커스텀 애니메이션'),
+                const Divider(),
+                Text(
+                  '모든 Animated 위젯은 duration과 curve를 지정할 수 있습니다.',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 Animated 위젯 종류',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('AnimatedContainer: 가장 범용적'),
-                  const InfoItem('AnimatedOpacity: 페이드 효과'),
-                  const InfoItem('AnimatedSwitcher: 위젯 교체'),
-                  const InfoItem('TweenAnimationBuilder: 커스텀 애니메이션'),
-                  const Divider(),
-                  Text(
-                    '모든 Animated 위젯은 duration과 curve를 지정할 수 있습니다.',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
 
             const SizedBox(height: 16),

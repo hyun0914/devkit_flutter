@@ -6,42 +6,6 @@ import '../widget/example_widgets.dart';
 class ListMapRelatedScreen extends StatelessWidget {
   const ListMapRelatedScreen({super.key});
 
-  void _showResult(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        final theme = Theme.of(context);
-        return AlertDialog(
-          title: Text(title),
-          content: Container(
-            constraints: const BoxConstraints(maxHeight: 400),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  content,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontFamily: 'monospace',
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          actions: [
-            FilledButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +46,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                 onPressed: () {
                   final list = ['A', 'B', 'C', 1, 2];
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List 기본',
                     'list: $list\n'
@@ -113,7 +77,7 @@ class ListMapRelatedScreen extends StatelessWidget {
 
                   final sorted = [...listInt]..sort();
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List 최대/최소',
                     'list: $listInt\n\n'
@@ -146,7 +110,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                   final combined = [...list1, ...list2];
                   final withZero = [0, ...list1];
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List 합치기',
                     'list1: $list1\n'
@@ -171,7 +135,7 @@ class ListMapRelatedScreen extends StatelessWidget {
 
                   copy1.removeWhere((value) => value == 333);
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List 복사',
                     'original: $original\n'
@@ -194,7 +158,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                   final list2 = ['A', 'B', 'C'];
                   final list3 = ['A', 'B', 'D'];
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List 비교',
                     'list1: $list1\n'
@@ -229,7 +193,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                   final names = testList.map((e) => e['name']).toList();
                   final expensive = testList.where((e) => (e['price']! as int) >= 2000).toList();
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List<Map> 처리',
                     'original: $testList\n\n'
@@ -256,7 +220,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                   final ascending = [...listMap]..sort((a, b) => (a['score']! as int).compareTo(b['score']! as int));
                   final descending = [...listMap]..sort((a, b) => (b['score']! as int).compareTo(a['score']! as int));
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'List<Map> 정렬',
                     '[오름차순]\n$ascending\n\n'
@@ -280,7 +244,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                 onPressed: () {
                   final map = {'name': '홍길동', 'age': 30, 'city': '서울'};
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'Map 기본',
                     'map: $map\n'
@@ -311,7 +275,7 @@ class ListMapRelatedScreen extends StatelessWidget {
 
                   step2.remove('a');
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'Map 추가/삭제',
                     '초기: $map\n'
@@ -344,7 +308,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                       map.entries.toList()..sort((a, b) => b.key.compareTo(a.key))
                   );
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'Map 정렬',
                     '원본: $map\n\n'
@@ -372,7 +336,7 @@ class ListMapRelatedScreen extends StatelessWidget {
                   map[1]!.addAll(['B', 'C']);
                   map[2]!.addAll(['D', 'E', 'F']);
 
-                  _showResult(
+                  showResultDialog(
                     context,
                     'Map<int, List>',
                     '결과: $map\n\n'
@@ -423,40 +387,14 @@ class ListMapRelatedScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 주의사항',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('List는 순서가 있고, Map은 key-value 쌍'),
-                  const InfoItem('sort()는 원본을 수정, [...list]..sort()는 복사본'),
-                  const InfoItem('map()은 변환, where()는 필터링'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 주의사항',
+              children: [
+                const InfoItem('List는 순서가 있고, Map은 key-value 쌍'),
+                const InfoItem('sort()는 원본을 수정, [...list]..sort()는 복사본'),
+                const InfoItem('map()은 변환, where()는 필터링'),
+              ],
             ),
           ],
         ),

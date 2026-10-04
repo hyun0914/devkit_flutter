@@ -303,25 +303,13 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '5가지 데이터 타입 지원',
-                  ),
+                  const InfoItem('5가지 데이터 타입 지원'),
                   const SizedBox(height: 8),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '앱 재시작 후에도 유지',
-                  ),
+                  const InfoItem('앱 재시작 후에도 유지'),
                   const SizedBox(height: 8),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '간단한 설정/환경변수 저장',
-                  ),
+                  const InfoItem('간단한 설정/환경변수 저장'),
                   const SizedBox(height: 8),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '카드 탭으로 값 수정 가능',
-                  ),
+                  const InfoItem('카드 탭으로 값 수정 가능'),
                 ],
               ),
             ),
@@ -502,28 +490,4 @@ class _SharedPreferencesScreenState extends State<SharedPreferencesScreen> {
     );
   }
 
-  // 기능 아이템
-  Widget _buildFeatureItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

@@ -121,6 +121,7 @@ class InfoItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, size: 16, color: theme.colorScheme.primary),
         const SizedBox(width: 8),
@@ -237,4 +238,172 @@ class MethodCard extends StatelessWidget {
       ),
     );
   }
+}
+
+// 아이콘 + 제목 아래에 안내 문구(InfoItem 등)를 나열하는 정보 박스
+class InfoBox extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final List<Widget> children;
+
+  const InfoBox({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 12,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: theme.colorScheme.primary, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          ...children,
+        ],
+      ),
+    );
+  }
+}
+
+// 제목 아래에 데모 위젯을 보여주는 카드 (설명 없이 간단한 버전)
+class DemoCard extends StatelessWidget {
+  final String title;
+  final Widget child;
+
+  const DemoCard({super.key, required this.title, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 12,
+        children: [
+          Text(
+            title,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+// 패키지 이름(굵은 고정폭) - 설명 한 줄
+class PackageItem extends StatelessWidget {
+  final String name;
+  final String description;
+
+  const PackageItem({super.key, required this.name, required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(Icons.extension, size: 16, color: theme.colorScheme.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: theme.textTheme.bodySmall,
+                children: [
+                  TextSpan(
+                    text: name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' - $description',
+                    style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 실행 결과를 고정폭 글꼴로 보여주는 다이얼로그
+void showResultDialog(BuildContext context, String title, String content) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      final theme = Theme.of(context);
+      return AlertDialog(
+        title: Text(title),
+        content: Container(
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                content,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontFamily: 'monospace',
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('확인'),
+          ),
+        ],
+      );
+    },
+  );
 }

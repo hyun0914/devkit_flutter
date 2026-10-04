@@ -189,36 +189,15 @@ class FeedbackScreen extends StatelessWidget {
               ),
             ],
           ),
-          _buildIntroItem(theme, Icons.draw_outlined,
-              '사용자가 현재 화면에 직접 그림을 그려 문제 위치를 표시'),
-          _buildIntroItem(theme, Icons.text_fields,
-              '텍스트로 추가 설명 입력'),
-          _buildIntroItem(theme, Icons.screenshot_outlined,
-              '스크린샷 + 텍스트를 콜백으로 전달'),
-          _buildIntroItem(theme, Icons.send_outlined,
-              '서버 전송, 이메일, Firebase 등 다양한 방법으로 활용'),
+          const InfoItem('사용자가 현재 화면에 직접 그림을 그려 문제 위치를 표시', icon: Icons.draw_outlined),
+          const InfoItem('텍스트로 추가 설명 입력', icon: Icons.text_fields),
+          const InfoItem('스크린샷 + 텍스트를 콜백으로 전달', icon: Icons.screenshot_outlined),
+          const InfoItem('서버 전송, 이메일, Firebase 등 다양한 방법으로 활용', icon: Icons.send_outlined),
         ],
       ),
     );
   }
 
-  Widget _buildIntroItem(ThemeData theme, IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 16, color: theme.colorScheme.primary),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   // 활용 방법 카드
   Widget _buildUseCaseCard(ThemeData theme) {
@@ -310,12 +289,11 @@ class FeedbackScreen extends StatelessWidget {
               ),
             ],
           ),
-          _buildIntroItem(theme, Icons.check, 'feedback: ^3.2.0'),
-          _buildIntroItem(theme, Icons.check, 'BetterFeedback로 앱 최상단 감싸기'),
-          _buildIntroItem(theme, Icons.check, 'BetterFeedback.of(context).show()로 피드백 UI 열기'),
-          _buildIntroItem(theme, Icons.check, 'UserFeedback.screenshot으로 스크린샷(Uint8List) 접근'),
-          _buildIntroItem(theme, Icons.warning_amber_outlined,
-              'Platform View (WebView, Google Maps) 스크린샷 불가'),
+          const InfoItem('feedback: ^3.2.0', icon: Icons.check),
+          const InfoItem('BetterFeedback로 앱 최상단 감싸기', icon: Icons.check),
+          const InfoItem('BetterFeedback.of(context).show()로 피드백 UI 열기', icon: Icons.check),
+          const InfoItem('UserFeedback.screenshot으로 스크린샷(Uint8List) 접근', icon: Icons.check),
+          const InfoItem('Platform View (WebView, Google Maps) 스크린샷 불가', icon: Icons.warning_amber_outlined),
         ],
       ),
     );

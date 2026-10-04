@@ -292,41 +292,15 @@ class TextOverflowScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('ellipsis가 가장 많이 사용됨'),
-                  const InfoItem('fade는 softWrap: false와 함께 사용'),
-                  const InfoItem('maxLines로 줄 수 제한 가능'),
-                  const InfoItem('visible은 디버깅 용도로 유용'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('ellipsis가 가장 많이 사용됨'),
+                const InfoItem('fade는 softWrap: false와 함께 사용'),
+                const InfoItem('maxLines로 줄 수 제한 가능'),
+                const InfoItem('visible은 디버깅 용도로 유용'),
+              ],
             ),
           ],
         ),

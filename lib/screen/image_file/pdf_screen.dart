@@ -568,30 +568,15 @@ class _PdfScreenState extends State<PdfScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: 'PDF 뷰어 (네트워크 PDF)',
-                  ),
+                  const InfoItem('PDF 뷰어 (네트워크 PDF)'),
                   const SizedBox(height: 12),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: 'PDF 생성 (영문 지원)',
-                  ),
+                  const InfoItem('PDF 생성 (영문 지원)'),
                   const SizedBox(height: 12),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '한글: assets 폰트 권장',
-                  ),
+                  const InfoItem('한글: assets 폰트 권장'),
                   const SizedBox(height: 12),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '테이블, 텍스트, 스타일링',
-                  ),
+                  const InfoItem('테이블, 텍스트, 스타일링'),
                   const SizedBox(height: 12),
-                  _buildFeatureItem(
-                    theme: theme,
-                    text: '인쇄 및 공유',
-                  ),
+                  const InfoItem('인쇄 및 공유'),
                 ],
               ),
             ),
@@ -613,23 +598,11 @@ class _PdfScreenState extends State<PdfScreen> {
               ),
               child: Column(
                 children: [
-                  _buildPackageItem(
-                    theme: theme,
-                    name: 'syncfusion_flutter_pdfviewer',
-                    description: 'PDF 뷰어',
-                  ),
+                  const PackageItem(name: 'syncfusion_flutter_pdfviewer', description: 'PDF 뷰어'),
                   const SizedBox(height: 8),
-                  _buildPackageItem(
-                    theme: theme,
-                    name: 'pdf',
-                    description: 'PDF 생성',
-                  ),
+                  const PackageItem(name: 'pdf', description: 'PDF 생성'),
                   const SizedBox(height: 8),
-                  _buildPackageItem(
-                    theme: theme,
-                    name: 'printing',
-                    description: '인쇄 & 공유',
-                  ),
+                  const PackageItem(name: 'printing', description: '인쇄 & 공유'),
                 ],
               ),
             ),
@@ -640,71 +613,5 @@ class _PdfScreenState extends State<PdfScreen> {
   }
 
 
-  // 기능 아이템
-  Widget _buildFeatureItem({
-    required ThemeData theme,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          Icons.check_circle,
-          size: 16,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
-  // 패키지 아이템
-  Widget _buildPackageItem({
-    required ThemeData theme,
-    required String name,
-    required String description,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Icon(
-            Icons.extension,
-            size: 16,
-            color: theme.colorScheme.primary,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: RichText(
-              text: TextSpan(
-                style: theme.textTheme.bodySmall,
-                children: [
-                  TextSpan(
-                    text: name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' - $description',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

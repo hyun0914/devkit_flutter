@@ -181,17 +181,17 @@ class LoggingScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildTalkerCard(theme: theme, level: 'verbose', emoji: '📋', description: '상세 로그', code: "talker.verbose('message')", color: Colors.grey, onPressed: () => _talker.verbose('📋 Verbose: 상세 로그')),
+            _buildLoggerCard(theme: theme, level: 'verbose', emoji: '📋', description: '상세 로그', code: "talker.verbose('message')", color: Colors.grey, onPressed: () => _talker.verbose('📋 Verbose: 상세 로그')),
             const SizedBox(height: 8),
-            _buildTalkerCard(theme: theme, level: 'debug', emoji: '🐛', description: '디버깅 정보', code: "talker.debug('message')", color: Colors.cyan, onPressed: () => _talker.debug('🐛 Debug: 디버깅 정보')),
+            _buildLoggerCard(theme: theme, level: 'debug', emoji: '🐛', description: '디버깅 정보', code: "talker.debug('message')", color: Colors.cyan, onPressed: () => _talker.debug('🐛 Debug: 디버깅 정보')),
             const SizedBox(height: 8),
-            _buildTalkerCard(theme: theme, level: 'info', emoji: 'ℹ️', description: '일반 정보', code: "talker.info('message')", color: Colors.blue, onPressed: () => _talker.info('ℹ️ Info: 일반 정보')),
+            _buildLoggerCard(theme: theme, level: 'info', emoji: 'ℹ️', description: '일반 정보', code: "talker.info('message')", color: Colors.blue, onPressed: () => _talker.info('ℹ️ Info: 일반 정보')),
             const SizedBox(height: 8),
-            _buildTalkerCard(theme: theme, level: 'warning', emoji: '⚠️', description: '경고 메시지', code: "talker.warning('message')", color: Colors.orange, onPressed: () => _talker.warning('⚠️ Warning: 경고 메시지')),
+            _buildLoggerCard(theme: theme, level: 'warning', emoji: '⚠️', description: '경고 메시지', code: "talker.warning('message')", color: Colors.orange, onPressed: () => _talker.warning('⚠️ Warning: 경고 메시지')),
             const SizedBox(height: 8),
-            _buildTalkerCard(theme: theme, level: 'error', emoji: '❌', description: '에러 발생', code: "talker.error('message')", color: Colors.red, onPressed: () => _talker.error('❌ Error: 에러 발생')),
+            _buildLoggerCard(theme: theme, level: 'error', emoji: '❌', description: '에러 발생', code: "talker.error('message')", color: Colors.red, onPressed: () => _talker.error('❌ Error: 에러 발생')),
             const SizedBox(height: 8),
-            _buildTalkerCard(theme: theme, level: 'critical', emoji: '🚨', description: '치명적 오류', code: "talker.critical('message')", color: Colors.deepOrange, onPressed: () => _talker.critical('🚨 Critical: 치명적 오류')),
+            _buildLoggerCard(theme: theme, level: 'critical', emoji: '🚨', description: '치명적 오류', code: "talker.critical('message')", color: Colors.deepOrange, onPressed: () => _talker.critical('🚨 Critical: 치명적 오류')),
             const SizedBox(height: 8),
 
             // 예외 처리 예제
@@ -277,33 +277,16 @@ class LoggingScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── 권장 사항 ──
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.lightbulb_outline, color: theme.colorScheme.primary, size: 20),
-                      const SizedBox(width: 8),
-                      Text('💡 권장 사항', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  const InfoItem('print() 대신 debugPrint() 사용'),
-                  const InfoItem('log()는 상세 정보 필요할 때'),
-                  const InfoItem('Logger는 레벨 관리가 필요한 중규모 프로젝트에'),
-                  const InfoItem('Talker는 UI 로그 뷰어가 필요한 대규모 프로젝트에'),
-                  const InfoItem('Release 빌드에서는 자동으로 제거됨'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.lightbulb_outline,
+              title: '💡 권장 사항',
+              children: [
+                const InfoItem('print() 대신 debugPrint() 사용'),
+                const InfoItem('log()는 상세 정보 필요할 때'),
+                const InfoItem('Logger는 레벨 관리가 필요한 중규모 프로젝트에'),
+                const InfoItem('Talker는 UI 로그 뷰어가 필요한 대규모 프로젝트에'),
+                const InfoItem('Release 빌드에서는 자동으로 제거됨'),
+              ],
             ),
 
             const SizedBox(height: 24),
@@ -422,56 +405,6 @@ class LoggingScreen extends StatelessWidget {
     );
   }
 
-  // Talker 카드 (Logger 카드와 동일한 구조)
-  Widget _buildTalkerCard({
-    required ThemeData theme,
-    required String level,
-    required String emoji,
-    required String description,
-    required String code,
-    required Color color,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(child: Text(emoji, style: const TextStyle(fontSize: 20))),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 2,
-              children: [
-                Text(level, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: color)),
-                Text(description, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-                Text(code, style: theme.textTheme.bodySmall?.copyWith(fontFamily: 'monospace', color: theme.colorScheme.onSurfaceVariant)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          FilledButton(
-            onPressed: onPressed,
-            style: FilledButton.styleFrom(backgroundColor: color, padding: const EdgeInsets.symmetric(horizontal: 16)),
-            child: const Text('실행'),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildComparisonRow(ThemeData theme, String method, String production, String level, String uiViewer) {
     return Container(

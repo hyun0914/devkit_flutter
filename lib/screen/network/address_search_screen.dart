@@ -361,42 +361,15 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 기능',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('카카오 우편번호 서비스'),
-                  const InfoItem('도로명, 지번, 건물명 검색'),
-                  const InfoItem('좌표(위도/경도) 정보 제공'),
-                  const InfoItem('결과 복사 기능'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 기능',
+              children: [
+                const InfoItem('카카오 우편번호 서비스'),
+                const InfoItem('도로명, 지번, 건물명 검색'),
+                const InfoItem('좌표(위도/경도) 정보 제공'),
+                const InfoItem('결과 복사 기능'),
+              ],
             ),
           ],
         ),

@@ -444,43 +444,16 @@ class _PackageChartScreenState extends State<PackageChartScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('DChart: 카테고리 비율(Pie) · 항목 비교(Bar) — 통계 대시보드, 리포트'),
-                  const InfoItem('Gauge Indicator: 목표 달성률, 배터리 잔량, 속도계 — 수치 시각화'),
-                  const InfoItem('Geekyants Gauges: Linear(진행 바) · Radial(원형 계기판) — 헬스·IoT 대시보드'),
-                  const InfoItem('Transform: 차트 방향 전환, 미러 효과 — 좌우 대칭 비교 차트'),
-                  const InfoItem('import "dart:math" as math 필요'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('DChart: 카테고리 비율(Pie) · 항목 비교(Bar) — 통계 대시보드, 리포트'),
+                const InfoItem('Gauge Indicator: 목표 달성률, 배터리 잔량, 속도계 — 수치 시각화'),
+                const InfoItem('Geekyants Gauges: Linear(진행 바) · Radial(원형 계기판) — 헬스·IoT 대시보드'),
+                const InfoItem('Transform: 차트 방향 전환, 미러 효과 — 좌우 대칭 비교 차트'),
+                const InfoItem('import "dart:math" as math 필요'),
+              ],
             ),
           ],
         ),

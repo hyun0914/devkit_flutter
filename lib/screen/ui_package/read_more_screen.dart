@@ -200,41 +200,15 @@ class ReadMoreScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('뉴스, 리뷰, 설명 등에 활용'),
-                  const InfoItem('Line 모드: 레이아웃 일관성 유지'),
-                  const InfoItem('Length 모드: 정확한 글자 수 제어'),
-                  const InfoItem('moreStyle로 버튼 스타일 커스터마이징'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('뉴스, 리뷰, 설명 등에 활용'),
+                const InfoItem('Line 모드: 레이아웃 일관성 유지'),
+                const InfoItem('Length 모드: 정확한 글자 수 제어'),
+                const InfoItem('moreStyle로 버튼 스타일 커스터마이징'),
+              ],
             ),
           ],
         ),

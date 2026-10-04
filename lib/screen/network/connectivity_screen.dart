@@ -222,44 +222,22 @@ class _ConnectivityScreenState extends State<ConnectivityScreen> {
 
 
   Widget _buildInfoCard(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+    return InfoBox(
+      icon: Icons.info_outline,
+      title: '💡 connectivity_plus 속성',
+      children: [
+        Text(
+          '• checkConnectivity(): 현재 상태 1회 확인\n'
+          '• onConnectivityChanged: 상태 변경 스트림\n'
+          '• ConnectivityResult.wifi / mobile / none\n'
+          '• 복수 결과 반환 가능 (List<ConnectivityResult>)\n'
+          '• StreamSubscription은 dispose()에서 cancel() 필수',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+            height: 1.6,
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.info_outline, color: theme.colorScheme.primary, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '💡 connectivity_plus 속성',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            '• checkConnectivity(): 현재 상태 1회 확인\n'
-            '• onConnectivityChanged: 상태 변경 스트림\n'
-            '• ConnectivityResult.wifi / mobile / none\n'
-            '• 복수 결과 반환 가능 (List<ConnectivityResult>)\n'
-            '• StreamSubscription은 dispose()에서 cancel() 필수',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              height: 1.6,
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 

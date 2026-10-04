@@ -652,52 +652,30 @@ class _TableWidgetScreenState extends State<TableWidgetScreen> {
 
   // ── 정보 카드 ──────────────────────────────────────────────────────────────
   Widget _buildInfoCard(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+    return InfoBox(
+      icon: Icons.info_outline,
+      title: '💡 Table vs DataTable',
+      children: [
+        _buildInfoSection(
+          theme,
+          'Table',
+          '• columnWidths: 열 너비 지정\n'
+              '• border: 테두리 스타일\n'
+              '• defaultVerticalAlignment: 수직 정렬\n'
+              '• TableRow / FlexColumnWidth\n'
+              '→ 자유로운 커스텀 레이아웃에 적합',
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.info_outline,
-                  color: theme.colorScheme.primary, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '💡 Table vs DataTable',
-                style: theme.textTheme.titleSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          _buildInfoSection(
-            theme,
-            'Table',
-            '• columnWidths: 열 너비 지정\n'
-                '• border: 테두리 스타일\n'
-                '• defaultVerticalAlignment: 수직 정렬\n'
-                '• TableRow / FlexColumnWidth\n'
-                '→ 자유로운 커스텀 레이아웃에 적합',
-          ),
-          Divider(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-          _buildInfoSection(
-            theme,
-            'DataTable',
-            '• DataColumn(onSort, numeric): 정렬 가능한 헤더\n'
-                '• DataRow(selected, onSelectChanged): 행 선택·체크박스\n'
-                '• sortColumnIndex / sortAscending: 정렬 상태 표시\n'
-                '• PaginatedDataTable: 페이지네이션 확장\n'
-                '→ 정렬·선택이 필요한 데이터 목록에 적합',
-          ),
-        ],
-      ),
+        Divider(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+        _buildInfoSection(
+          theme,
+          'DataTable',
+          '• DataColumn(onSort, numeric): 정렬 가능한 헤더\n'
+              '• DataRow(selected, onSelectChanged): 행 선택·체크박스\n'
+              '• sortColumnIndex / sortAscending: 정렬 상태 표시\n'
+              '• PaginatedDataTable: 페이지네이션 확장\n'
+              '→ 정렬·선택이 필요한 데이터 목록에 적합',
+        ),
+      ],
     );
   }
 

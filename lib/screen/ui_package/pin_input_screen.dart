@@ -353,42 +353,16 @@ class _PinInputScreenScreenState extends State<PinInputScreen> {
             const SizedBox(height: 24),
 
             // 정보 카드
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '💡 사용 팁',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const InfoItem('defaultPinTheme: 기본 상태'),
-                  const InfoItem('focusedPinTheme: 포커스된 상태'),
-                  const InfoItem('submittedPinTheme: 입력 완료 상태'),
-                  const InfoItem('onCompleted: 입력 완료 시 호출'),
-                  const InfoItem('obscureText: 비밀번호 모드'),
-                ],
-              ),
+            InfoBox(
+              icon: Icons.info_outline,
+              title: '💡 사용 팁',
+              children: [
+                const InfoItem('defaultPinTheme: 기본 상태'),
+                const InfoItem('focusedPinTheme: 포커스된 상태'),
+                const InfoItem('submittedPinTheme: 입력 완료 상태'),
+                const InfoItem('onCompleted: 입력 완료 시 호출'),
+                const InfoItem('obscureText: 비밀번호 모드'),
+              ],
             ),
 
             const SizedBox(height: 16),
