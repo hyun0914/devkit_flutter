@@ -409,9 +409,10 @@ class _DragReorderScreenState extends State<DragReorderScreen> {
                 icon: Icons.drag_handle,
               );
             },
-            onReorder: (int oldIndex, int newIndex) {
+            // onReorder는 deprecated. onReorderItem은 newIndex가 이미 보정되어 넘어오므로
+            // `if (oldIndex < newIndex) newIndex -= 1;` 보정이 필요 없다
+            onReorderItem: (int oldIndex, int newIndex) {
               setState(() {
-                if (oldIndex < newIndex) newIndex -= 1;
                 final User user = _list.removeAt(oldIndex);
                 _list.insert(newIndex, user);
               });

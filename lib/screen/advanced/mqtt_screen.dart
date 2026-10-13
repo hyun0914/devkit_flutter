@@ -74,7 +74,7 @@ class _MqttScreenState extends State<MqttScreen> {
           throw TimeoutException('연결 시간 초과');
         },
       );
-    } on NoConnectionException catch (e) {
+    } on NoConnectionException {
       if (mounted) {
         _showSnackBar('연결 실패: 브로커 응답 없음', isError: true);
       }

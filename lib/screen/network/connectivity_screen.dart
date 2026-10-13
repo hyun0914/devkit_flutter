@@ -193,7 +193,7 @@ class _ConnectivityScreenState extends State<ConnectivityScreen> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: _logs.length,
-        separatorBuilder: (_, __) => Divider(
+        separatorBuilder: (_, _) => Divider(
           height: 1,
           color: theme.colorScheme.outline.withValues(alpha: 0.1),
         ),

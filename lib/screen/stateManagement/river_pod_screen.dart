@@ -34,7 +34,7 @@ class RiverPodScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
-                'StateProvider + ConsumerWidget',
+                'NotifierProvider + ConsumerWidget',
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.bold,

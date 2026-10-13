@@ -75,6 +75,8 @@ class LoggingScreen extends StatelessWidget {
               status: '권장하지 않음',
               statusColor: Colors.red,
               child: FilledButton(
+                // 권장하지 않는 방식을 보여주는 데모라 의도적으로 print를 호출한다
+                // ignore: avoid_print
                 onPressed: () => print('🔴 print: 테스트 메시지'),
                 style: FilledButton.styleFrom(backgroundColor: Colors.red),
                 child: const Text('실행 (콘솔 확인)'),

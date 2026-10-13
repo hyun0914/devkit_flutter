@@ -78,7 +78,7 @@ class _LocalAiScreenState extends State<LocalAiScreen> {
 
     try {
       final response = await _ai.generateText(prompt: prompt);
-      setState(() => _result = response.text ?? '응답 없음');
+      setState(() => _result = response.text);
     } catch (e) {
       setState(() => _result = '생성 실패: $e');
     } finally {
@@ -200,7 +200,7 @@ class _LocalAiScreenState extends State<LocalAiScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: Colors.grey.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Text(
@@ -307,10 +307,10 @@ class _LocalAiScreenState extends State<LocalAiScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.05),
+                          color: Colors.blue.withValues(alpha: 0.05),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: Colors.blue.withOpacity(0.2),
+                            color: Colors.blue.withValues(alpha: 0.2),
                           ),
                         ),
                         child: Text(

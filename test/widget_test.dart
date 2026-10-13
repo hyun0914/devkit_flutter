@@ -1,52 +1,48 @@
+import 'package:devkit_flutter/example_data.dart';
+import 'package:devkit_flutter/example_list_screen.dart';
 import 'package:devkit_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// 테스트 기본 화면(800x600 가로)에서는 홈 화면이 세로로 넘치므로 폰 크기로 맞춘다.
+Future<void> pumpHome(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1170, 2532);
+  tester.view.devicePixelRatio = 3;
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(const HomeScreen());
+}
 
 void main() {
   testWidgets('HomeScreen 기본 UI 테스트', (WidgetTester tester) async {
-    // HomeScreen 렌더링
-    await tester.pumpWidget(const HomeScreen());
+    await pumpHome(tester);
 
     // 타이틀 확인
     expect(find.text('DevKit Flutter'), findsOneWidget);
     expect(find.text('Flutter 개발자 도구'), findsOneWidget);
+    expect(find.byIcon(Icons.terminal_rounded), findsOneWidget);
 
-    // 통계 텍스트 확인
-    expect(find.text('62+'), findsOneWidget); // 총 예제
-    expect(find.text('6'), findsOneWidget);   // 카테고리
-    expect(find.text('98+'), findsOneWidget); // 패키지
+    // 통계 텍스트 확인 (ExampleData에서 자동 계산되는 값)
+    expect(find.text('${ExampleData.totalExamples}'), findsOneWidget);
+    expect(find.text('${ExampleData.totalCategories}'), findsOneWidget);
+    expect(find.text('${ExampleData.totalPackages}+'), findsOneWidget);
 
-    // 주요 버튼 확인
-    expect(find.text('예제 앱 화면 열기'), findsOneWidget);
-    expect(find.text('네트워크 상태 체크'), findsOneWidget);
+    // 카테고리 그리드 & 라이선스 버튼 확인
+    expect(find.text(Categories.all), findsOneWidget);
+    for (final category in Categories.ordered) {
+      expect(find.text(category), findsOneWidget);
+    }
     expect(find.text('오픈소스 라이선스'), findsOneWidget);
   });
 
-  testWidgets('HomeScreen 아이콘 확인', (WidgetTester tester) async {
-    await tester.pumpWidget(const HomeScreen());
+  testWidgets('카테고리 탭 시 예제 목록으로 네비게이션 테스트', (WidgetTester tester) async {
+    // ExampleListScreen이 즐겨찾기를 SharedPreferences에서 읽는다.
+    SharedPreferences.setMockInitialValues({});
+    await pumpHome(tester);
 
-    // 주요 아이콘들 존재 확인
-    expect(find.byIcon(Icons.terminal_rounded), findsOneWidget);
-    expect(find.byIcon(Icons.analytics_outlined), findsOneWidget);
-    expect(find.byIcon(Icons.widgets_outlined), findsOneWidget);
-    expect(find.byIcon(Icons.apps_rounded), findsOneWidget);
-    expect(find.byIcon(Icons.wifi_tethering_rounded), findsOneWidget);
-    expect(find.byIcon(Icons.description_outlined), findsOneWidget);
-  });
-
-  testWidgets('예제 앱 화면으로 네비게이션 테스트', (WidgetTester tester) async {
-    await tester.pumpWidget(const HomeScreen());
-
-    // "예제 앱 화면 열기" 버튼 찾기
-    final exampleButton = find.text('예제 앱 화면 열기');
-    expect(exampleButton, findsOneWidget);
-
-    // 버튼 탭하고 네비게이션 완료 대기
-    await tester.tap(exampleButton);
+    await tester.tap(find.text(Categories.basicWidget));
     await tester.pumpAndSettle();
 
-    // ExampleListScreen으로 이동했는지 확인
-    // ExampleListScreen에 있는 요소 확인 (카테고리 버튼)
-    expect(find.text('기본 위젯'), findsWidgets);
+    expect(find.byType(ExampleListScreen), findsOneWidget);
   });
 }

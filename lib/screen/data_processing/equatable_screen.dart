@@ -774,8 +774,8 @@ class IncompleteBook {
   // 의도적으로 hashCode를 생략했습니다 (교육 목적)
   // == 만 구현하면 왜 안 되는지 보여주기 위한 예제입니다.
   // 실무에서는 반드시 hashCode도 함께 오버라이드하세요
-  // ignore: must_override_hash_code
   @override
+  // ignore: hash_and_equals
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is IncompleteBook &&
